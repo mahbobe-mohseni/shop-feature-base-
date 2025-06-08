@@ -119,4 +119,15 @@
   body {
     @apply bg-background text-foreground;
   }
+  /* src/app/globals.css */
+ 
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+  body {
+    @apply antialiased;
+  }
+}
 }
