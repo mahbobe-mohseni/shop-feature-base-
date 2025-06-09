@@ -1,6 +1,6 @@
 import React from "react";
 import BeautifulSlider from "@/components/BeautifulSlider";
-import ProductFilterBox from "product-filter-box";
+import ProductFilterBox from "@/components/product-filter-box";
 import ProductsList from "@/features/products/components/products-list";
 import Footer from "@/components/layout/footer";
 const Page = () => {

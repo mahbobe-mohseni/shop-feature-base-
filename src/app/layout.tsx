@@ -5,12 +5,12 @@ import "./globals.css";
 const vazirFont = localFont({
   src: [
     {
-      path:  "../../public/fonts/Farsi-Digits-Without-Latin/Vazir-Medium-FD-WOL.woff",
+      path: "../../public/fonts/Farsi-Digits-Without-Latin/Vazir-Medium-FD-WOL.woff",
       weight: "400",
       style: "normal",
     },
     {
-      path:  "../../public/fonts/Farsi-Digits-Without-Latin/Vazir-Medium-FD-WOL.woff",
+      path: "../../public/fonts/Farsi-Digits-Without-Latin/Vazir-Medium-FD-WOL.woff",
       weight: "700",
       style: "normal",
     },
@@ -29,8 +29,10 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="fa" dir="rtl">
-<body className={`${vazirFont.className} antialiased`}>{children}</body>
+    <html lang="fa" dir="rtl ">
+      <body className={`${vazirFont.className} antialiased  select-none`}>
+        {children}
+      </body>
     </html>
   );
 }
