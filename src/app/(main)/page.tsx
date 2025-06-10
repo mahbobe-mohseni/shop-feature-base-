@@ -1,20 +1,28 @@
 import React from "react";
-import BeautifulSlider from "@/components/BeautifulSlider";
-import ProductFilterBox from "@/components/product-filter-box";
+import BeautifulSlider from "@/components/layout/ui/BeautifulSlider";
+import ProductFilterBox from "@/components/layout/ui/product-filter-box";
 import ProductsList from "@/features/products/components/products-list";
-import Footer from "@/components/layout/footer";
 const Page = () => {
   return (
     <div className="bg-background text-foreground">
-      <div className="flex items-start justify-between gap-4">
-        <div className="max-w-sm">
+      {/* slider */}
+      <BeautifulSlider />
+
+      {/* products section */}
+      <div className="flex w-full items-start md:flex-row flex-col justify-between gap-4 rtl px-4 pt-10">
+        
+        {/* desktop filters */}
+        <div className="min-w-sm lg:block hidden">
           <ProductFilterBox />
         </div>
 
         <div className="flex flex-col gap-5">
-          <div className="mt-10">
-            <BeautifulSlider />
+          {/* mobile filters */}
+          <div className="lg:hidden">
+            <ProductFilterBox />
           </div>
+
+          {/* products list */}
           <ProductsList />
         </div>
       </div>

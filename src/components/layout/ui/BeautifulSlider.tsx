@@ -7,8 +7,8 @@ import { Button } from "@/components/ui/button"
 import { ChevronLeft, ChevronRight } from 'lucide-react'
 
 const slides = [
-  { id: 1, title: 'Slide One', image: '/images/1.webp' },
-  { id: 2, title: 'Slide Two', image: '/images/2.jpg' },
+  { id: 1, title: 'Slide One', image: '/images/01-nissan-genuine-parts.jpg' },
+  { id: 2, title: 'Slide Two', image: '/images/2.png' },
  ]
 
 export default function BeautifulSlider() {
@@ -18,7 +18,7 @@ export default function BeautifulSlider() {
   const prevSlide = () => setIndex((index - 1 + slides.length) % slides.length)
 
   return (
-<div className="relative w-full max-w-7xl mx-auto overflow-hidden rounded-2xl shadow-2xl aspect-[16/9] ">
+<div className="relative w-full   mx-auto overflow-hidden rounded-2xl aspect-[16/9] max-h-[400px]">
       <div className="relative h-full">
         <AnimatePresence initial={false}>
           <motion.img

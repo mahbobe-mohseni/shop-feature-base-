@@ -17,41 +17,8 @@ import { Label } from "@/components/ui/label";
 import { Slider } from "@/components/ui/slider";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
-
-const categories = [
-  { id: "engine", name: "موتور", count: 45 },
-  { id: "suspension", name: "سیستم تعلیق", count: 32 },
-  { id: "brake", name: "ترمز", count: 28 },
-  { id: "electric", name: "برق خودرو", count: 19 },
-  { id: "body", name: "بدنه", count: 15 },
-  { id: "interior", name: "داخلی کابین", count: 12 },
-];
-
-const brands = [
-  { id: "saipa", name: "سایپا", count: 12 },
-  { id: "ismaco", name: "ایساکو", count: 9 },
-  { id: "mahdi", name: "مهدی یدک", count: 6 },
-  { id: "mehrkam", name: "مهرکام پارس", count: 7 },
-  { id: "seco", name: "سکو", count: 4 },
-];
-
-const colors = [
-  { name: "مشکی", value: "#000000" },
-  { name: "سفید", value: "#FFFFFF" },
-  { name: "نقره‌ای", value: "#C0C0C0" },
-  { name: "قرمز", value: "#EF4444" },
-];
-
-interface FilterState {
-  categories: string[];
-  brands: string[];
-  priceRange: [number, number];
-  rating: number;
-  inStock: boolean;
-  onSale: boolean;
-  colors: string[];
-  searchTerm: string;
-}
+import { FilterState } from "@/types";
+import { categories, brands } from "@/data";
 
 export default function ProductFilterBox() {
   const [filters, setFilters] = React.useState<FilterState>({
@@ -66,6 +33,12 @@ export default function ProductFilterBox() {
   });
 
   const [isOpen, setIsOpen] = React.useState(false);
+  const [isClient, setIsClient] = React.useState(false);
+
+  // Fix hydration by ensuring client-side rendering
+  React.useEffect(() => {
+    setIsClient(true);
+  }, []);
 
   const handleCategoryChange = (categoryId: string, checked: boolean) => {
     setFilters((prev) => ({
@@ -107,7 +80,7 @@ export default function ProductFilterBox() {
     });
   };
 
-  const getActiveFiltersCount = () => {
+  const getActiveFiltersCount = React.useMemo(() => {
     return (
       filters.categories.length +
       filters.brands.length +
@@ -117,12 +90,31 @@ export default function ProductFilterBox() {
       (filters.rating > 0 ? 1 : 0) +
       (filters.searchTerm ? 1 : 0)
     );
-  };
+  }, [filters]);
 
-  const activeFiltersCount = getActiveFiltersCount();
+  // loading for Prevent hydration mismatch by not rendering responsive content until client-side
+  if (!isClient) {
+    return (
+      <div className="w-full">
+        <Card>
+          <CardHeader className="pb-3">
+            <CardTitle className="text-lg font-semibold">
+              فیلتر محصولات
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="animate-pulse space-y-4">
+              <div className="h-10 bg-gray-200 rounded"></div>
+              <div className="h-32 bg-gray-200 rounded"></div>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+    );
+  }
 
   return (
-    <div className="w-full mt-5">
+    <div className="w-full">
       <div className="lg:hidden mb-4">
         <Button
           variant="outline"
@@ -132,20 +124,20 @@ export default function ProductFilterBox() {
           <div className="flex items-center gap-2">
             <Filter className="h-4 w-4" />
             فیلترها
-            {activeFiltersCount > 0 && (
-              <Badge variant="secondary">{activeFiltersCount}</Badge>
+            {getActiveFiltersCount > 0 && (
+              <Badge variant="secondary">{getActiveFiltersCount}</Badge>
             )}
           </div>
         </Button>
       </div>
 
-      <Card className={`${isOpen ? "block" : "hidden"} lg:block`}>
+      <Card dir="rtl" className={`${isOpen ? "block" : "hidden"} lg:block`}>
         <CardHeader className="pb-3">
           <div className="flex items-center justify-between">
             <CardTitle className="text-lg font-semibold">
               فیلتر محصولات
             </CardTitle>
-            {activeFiltersCount > 0 && (
+            {getActiveFiltersCount > 0 && (
               <Button
                 variant="ghost"
                 size="sm"
@@ -203,26 +195,31 @@ export default function ProductFilterBox() {
                 )}
               </AccordionTrigger>
               <AccordionContent>
-                {categories.map((cat) => (
-                  <div key={cat.id} className="flex items-center space-x-2">
-                    <Checkbox
-                      id={cat.id}
-                      checked={filters.categories.includes(cat.id)}
-                      onCheckedChange={(checked) =>
-                        handleCategoryChange(cat.id, checked as boolean)
-                      }
-                    />
-                    <Label
-                      htmlFor={cat.id}
-                      className="text-sm font-normal cursor-pointer flex-1"
+                <div className="space-y-3">
+                  {categories.map((cat) => (
+                    <div
+                      key={cat.id}
+                      className="flex items-center space-x-2 space-x-reverse"
                     >
-                      {cat.name}
-                    </Label>
-                    <span className="text-xs text-muted-foreground">
-                      ({cat.count})
-                    </span>
-                  </div>
-                ))}
+                      <Checkbox
+                        id={cat.id}
+                        checked={filters.categories.includes(cat.id)}
+                        onCheckedChange={(checked) =>
+                          handleCategoryChange(cat.id, checked as boolean)
+                        }
+                      />
+                      <Label
+                        htmlFor={cat.id}
+                        className="text-sm font-normal cursor-pointer flex-1"
+                      >
+                        {cat.name}
+                      </Label>
+                      <span className="text-xs text-muted-foreground">
+                        ({cat.count})
+                      </span>
+                    </div>
+                  ))}
+                </div>
               </AccordionContent>
             </AccordionItem>
 
@@ -231,22 +228,24 @@ export default function ProductFilterBox() {
                 محدوده قیمت (تومان)
               </AccordionTrigger>
               <AccordionContent>
-                <Slider
-                  value={filters.priceRange}
-                  onValueChange={(val) =>
-                    setFilters((prev) => ({
-                      ...prev,
-                      priceRange: val as [number, number],
-                    }))
-                  }
-                  max={10000000}
-                  min={0}
-                  step={50000}
-                  className="w-full"
-                />
-                <div className="flex justify-between text-sm">
-                  <span>{filters.priceRange[0].toLocaleString()} تومان</span>
-                  <span>{filters.priceRange[1].toLocaleString()} تومان</span>
+                <div className="space-y-4">
+                  <Slider
+                    value={filters.priceRange}
+                    onValueChange={(val) =>
+                      setFilters((prev) => ({
+                        ...prev,
+                        priceRange: val as [number, number],
+                      }))
+                    }
+                    max={10000000}
+                    min={0}
+                    step={50000}
+                    className="w-full"
+                  />
+                  <div className="flex justify-between text-sm">
+                    <span>{filters.priceRange[0].toLocaleString()} تومان</span>
+                    <span>{filters.priceRange[1].toLocaleString()} تومان</span>
+                  </div>
                 </div>
               </AccordionContent>
             </AccordionItem>
@@ -259,113 +258,40 @@ export default function ProductFilterBox() {
                 )}
               </AccordionTrigger>
               <AccordionContent>
-                {brands.map((brand) => (
-                  <div key={brand.id} className="flex items-center space-x-2">
-                    <Checkbox
-                      id={brand.id}
-                      checked={filters.brands.includes(brand.id)}
-                      onCheckedChange={(checked) =>
-                        handleBrandChange(brand.id, checked as boolean)
-                      }
-                    />
-                    <Label
-                      htmlFor={brand.id}
-                      className="text-sm font-normal cursor-pointer flex-1"
-                    >
-                      {brand.name}
-                    </Label>
-                    <span className="text-xs text-muted-foreground">
-                      ({brand.count})
-                    </span>
-                  </div>
-                ))}
-              </AccordionContent>
-            </AccordionItem>
-
-            <AccordionItem value="rating">
-              <AccordionTrigger className="text-sm font-medium">
-                امتیاز مشتریان
-              </AccordionTrigger>
-              <AccordionContent>
-                {[5, 4, 3, 2, 1].map((rate) => (
-                  <div key={rate} className="flex items-center space-x-2">
-                    <Checkbox
-                      id={`rate-${rate}`}
-                      checked={filters.rating === rate}
-                      onCheckedChange={(checked) =>
-                        setFilters((prev) => ({
-                          ...prev,
-                          rating: checked ? rate : 0,
-                        }))
-                      }
-                    />
-                    <Label
-                      htmlFor={`rate-${rate}`}
-                      className="text-sm flex items-center gap-1"
-                    >
-                      <div className="flex">
-                        {Array.from({ length: 5 }).map((_, i) => (
-                          <Star
-                            key={i}
-                            className={`h-3 w-3 ${
-                              i < rate
-                                ? "fill-yellow-400 text-yellow-400"
-                                : "text-gray-300"
-                            }`}
-                          />
-                        ))}
-                      </div>
-                      و بالاتر
-                    </Label>
-                  </div>
-                ))}
-              </AccordionContent>
-            </AccordionItem>
-
-            <AccordionItem value="colors">
-              <AccordionTrigger className="text-sm font-medium">
-                رنگ‌ها
-                {filters.colors.length > 0 && (
-                  <Badge variant="secondary">{filters.colors.length}</Badge>
-                )}
-              </AccordionTrigger>
-              <AccordionContent>
-                <div className="grid grid-cols-2 gap-3">
-                  {colors.map((color) => (
+                <div className="space-y-3">
+                  {brands.map((brand) => (
                     <div
-                      key={color.name}
-                      className="flex items-center space-x-2"
+                      key={brand.id}
+                      className="flex items-center space-x-2 space-x-reverse"
                     >
                       <Checkbox
-                        id={`color-${color.name}`}
-                        checked={filters.colors.includes(color.name)}
+                        id={brand.id}
+                        checked={filters.brands.includes(brand.id)}
                         onCheckedChange={(checked) =>
-                          handleColorChange(color.name, checked as boolean)
+                          handleBrandChange(brand.id, checked as boolean)
                         }
                       />
                       <Label
-                        htmlFor={`color-${color.name}`}
-                        className="text-sm font-normal cursor-pointer flex items-center gap-2"
+                        htmlFor={brand.id}
+                        className="text-sm font-normal cursor-pointer flex-1"
                       >
-                        <div
-                          className="w-4 h-4 rounded-full border border-gray-300"
-                          style={{ backgroundColor: color.value }}
-                        />
-                        {color.name}
+                        {brand.name}
                       </Label>
+                      <span className="text-xs text-muted-foreground">
+                        ({brand.count})
+                      </span>
                     </div>
                   ))}
                 </div>
               </AccordionContent>
             </AccordionItem>
-
             <AccordionItem value="availability">
               <AccordionTrigger className="text-sm font-medium">
                 موجودی و تخفیف
               </AccordionTrigger>
               <AccordionContent>
                 <div className="space-y-3">
-                  <div className="flex items-center space-x-2">
+                  <div className="flex items-center space-x-2 space-x-reverse">
                     <Checkbox
                       id="in-stock"
                       checked={filters.inStock}
@@ -383,7 +309,7 @@ export default function ProductFilterBox() {
                       فقط کالاهای موجود
                     </Label>
                   </div>
-                  <div className="flex items-center space-x-2">
+                  <div className="flex items-center space-x-2 space-x-reverse">
                     <Checkbox
                       id="on-sale"
                       checked={filters.onSale}
@@ -409,12 +335,12 @@ export default function ProductFilterBox() {
           <div className="pt-4">
             <Button className="w-full" size="lg">
               اعمال فیلترها
-              {activeFiltersCount > 0 && (
+              {getActiveFiltersCount > 0 && (
                 <Badge
                   variant="secondary"
                   className="ml-2 bg-white text-primary"
                 >
-                  {activeFiltersCount}
+                  {getActiveFiltersCount}
                 </Badge>
               )}
             </Button>

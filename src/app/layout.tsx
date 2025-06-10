@@ -29,8 +29,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="fa" dir="rtl ">
-      <body className={`${vazirFont.className} antialiased  select-none`}>
+    <html lang="fa" dir="rtl">
+      <body className={`${vazirFont.className} antialiased  select-none overflow-x-hidden overflow-y-auto`}>
         {children}
       </body>
     </html>
