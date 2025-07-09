@@ -23,6 +23,7 @@ import {
   Clock,
   Mail,
 } from "lucide-react";
+import Link from "next/link";
 
 export default function Header() {
   const [isSearchOpen, setIsSearchOpen] = useState(false);
@@ -90,6 +91,7 @@ export default function Header() {
             <div className="relative w-full">
               <div className="flex">
                 <Input
+                  type="text"
                   placeholder="جستجو بر اساس شماره قطعه، مدل یا توضیح..."
                   className="rounded-none border-x-0 flex-1"
                 />
@@ -113,16 +115,16 @@ export default function Header() {
             </Button>
 
             {/* حساب کاربری */}
-            <DropdownMenu>
+            <DropdownMenu dir="rtl">
               <DropdownMenuTrigger asChild>
                 <Button variant="ghost" size="sm" className="hidden sm:flex">
                   <User className="h-5 w-5 ml-2" />
                   حساب کاربری
                 </Button>
               </DropdownMenuTrigger>
-              <DropdownMenuContent align="end">
-                <DropdownMenuItem>ورود</DropdownMenuItem>
-                <DropdownMenuItem>ثبت‌نام</DropdownMenuItem>
+              <DropdownMenuContent align="center">
+                <DropdownMenuItem ><Link className="h-full w-full " href="/auth/login">ورود</Link></DropdownMenuItem>
+                <DropdownMenuItem><Link className="h-full w-full" href="/auth/register">ثبت‌نام</Link></DropdownMenuItem>
                 <DropdownMenuItem>پیگیری سفارش</DropdownMenuItem>
                 <DropdownMenuItem>تاریخچه سفارشات</DropdownMenuItem>
               </DropdownMenuContent>
@@ -134,7 +136,10 @@ export default function Header() {
               <Badge className="absolute -top-2 -right-2 h-5 w-5 rounded-full p-0 flex items-center justify-center text-xs bg-blue-600">
                 ۳
               </Badge>
-              <span className="hidden sm:inline mr-2">سبد خرید</span>
+              <span className="hidden sm:inline mr-2">
+                <Link href="/cart">سبد خرید</Link>
+                
+                   </span>
             </Button>
 
             {/* منوی موبایل */}
@@ -154,7 +159,11 @@ export default function Header() {
                   {/* جستجو در موبایل */}
                   <div className="mb-6">
                     <div className="flex gap-2">
-                      <Input placeholder="جستجو قطعات..." className="flex-1" />
+                      <Input
+                        type="text"
+                        placeholder="جستجو قطعات..."
+                        className="flex-1"
+                      />
                       <Button size="sm" className="bg-blue-600">
                         <Search className="h-4 w-4" />
                       </Button>
@@ -188,7 +197,11 @@ export default function Header() {
         {isSearchOpen && (
           <div className="lg:hidden pb-4">
             <div className="flex gap-2">
-              <Input placeholder="جستجو قطعات..." className="flex-1" />
+              <Input
+                type="text"
+                placeholder="جستجو قطعات..."
+                className="flex-1"
+              />
               <Button className="bg-blue-600 hover:bg-blue-700">
                 <Search className="h-4 w-4" />
               </Button>

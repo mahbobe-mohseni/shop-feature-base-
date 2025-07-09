@@ -156,6 +156,7 @@ export default function ProductFilterBox() {
               <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
               <Input
                 id="search"
+                type="text"
                 placeholder="مثلاً لنت جلو..."
                 value={filters.searchTerm}
                 onChange={(e) =>

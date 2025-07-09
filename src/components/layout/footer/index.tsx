@@ -1,8 +1,8 @@
-"use client"
+"use client";
 
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Separator } from "@/components/ui/separator"
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Separator } from "@/components/ui/separator";
 import {
   Truck,
   Phone,
@@ -16,7 +16,7 @@ import {
   Shield,
   CreditCard,
   Headphones,
-} from "lucide-react"
+} from "lucide-react";
 
 export default function Footer() {
   const partCategories = [
@@ -28,7 +28,7 @@ export default function Footer() {
     "فیلترها و روغن‌ها",
     "سیستم تعلیق",
     "سیستم خروجی",
-  ]
+  ];
 
   const quickLinks = [
     "درباره ما",
@@ -39,7 +39,7 @@ export default function Footer() {
     "راهنمای نصب",
     "سفارش عمده",
     "پشتیبانی فنی",
-  ]
+  ];
 
   const nissanModels = [
     "نیسان پیکاپ D21",
@@ -50,7 +50,7 @@ export default function Footer() {
     "نیسان فرانتیر",
     "وسایل نقلیه تجاری",
     "همه مدل‌ها",
-  ]
+  ];
 
   return (
     <footer className="bg-gray-900 text-white">
@@ -67,7 +67,8 @@ export default function Footer() {
               </div>
             </div>
             <p className="text-gray-300 text-sm leading-relaxed">
-              منبع معتبر شما برای خرید لوازم یدکی وانت‌های نیسان. بیش از ۱۰ سال سابقه در خدمت‌رسانی به مالکان وانت و مکانیک‌ها.
+              منبع معتبر شما برای خرید لوازم یدکی وانت‌های نیسان. بیش از ۱۰ سال
+              سابقه در خدمت‌رسانی به مالکان وانت و مکانیک‌ها.
             </p>
 
             {/* اطلاعات تماس */}
@@ -97,7 +98,9 @@ export default function Footer() {
 
           {/* دسته‌بندی قطعات */}
           <div>
-            <h4 className="text-lg font-semibold mb-4 text-blue-400">دسته‌بندی قطعات</h4>
+            <h4 className="text-lg font-semibold mb-4 text-blue-400">
+              دسته‌بندی قطعات
+            </h4>
             <ul className="space-y-2">
               {partCategories.map((category, index) => (
                 <li key={index}>
@@ -114,7 +117,9 @@ export default function Footer() {
 
           {/* مدل‌های نیسان */}
           <div>
-            <h4 className="text-lg font-semibold mb-4 text-blue-400">مدل‌های نیسان</h4>
+            <h4 className="text-lg font-semibold mb-4 text-blue-400">
+              مدل‌های نیسان
+            </h4>
             <ul className="space-y-2">
               {nissanModels.map((model, index) => (
                 <li key={index}>
@@ -131,7 +136,9 @@ export default function Footer() {
 
           {/* لینک‌های سریع و خبرنامه */}
           <div>
-            <h4 className="text-lg font-semibold mb-4 text-blue-400">لینک‌های مفید</h4>
+            <h4 className="text-lg font-semibold mb-4 text-blue-400">
+              لینک‌های مفید
+            </h4>
             <ul className="space-y-2 mb-6">
               {quickLinks.slice(0, 6).map((link, index) => (
                 <li key={index}>
@@ -148,9 +155,12 @@ export default function Footer() {
             {/* ثبت‌نام در خبرنامه */}
             <div className="bg-gray-800 p-4 rounded-lg">
               <h5 className="font-semibold mb-2 text-blue-400">دریافت اخبار</h5>
-              <p className="text-xs text-gray-400 mb-3">عضویت در خبرنامه برای اطلاع از جدیدترین محصولات و تخفیف‌ها</p>
+              <p className="text-xs text-gray-400 mb-3">
+                عضویت در خبرنامه برای اطلاع از جدیدترین محصولات و تخفیف‌ها
+              </p>
               <div className="flex gap-2">
                 <Input
+                  type="text"
                   placeholder="ایمیل شما"
                   className="bg-gray-700 border-gray-600 text-white placeholder-gray-400 text-sm"
                 />
@@ -177,7 +187,9 @@ export default function Footer() {
             <Truck className="h-8 w-8 text-blue-400 flex-shrink-0" />
             <div>
               <h5 className="font-semibold text-sm">ارسال سریع</h5>
-              <p className="text-xs text-gray-400">حمل و نقل سریع در سراسر کشور</p>
+              <p className="text-xs text-gray-400">
+                حمل و نقل سریع در سراسر کشور
+              </p>
             </div>
           </div>
           <div className="flex items-center gap-3 text-center md:text-left">
@@ -212,13 +224,25 @@ export default function Footer() {
           <div className="flex items-center gap-4">
             {/* شبکه‌های اجتماعی */}
             <div className="flex gap-2">
-              <Button size="sm" variant="ghost" className="h-8 w-8 p-0 hover:bg-blue-600">
+              <Button
+                size="sm"
+                variant="ghost"
+                className="h-8 w-8 p-0 hover:bg-blue-600"
+              >
                 <Facebook className="h-4 w-4" />
               </Button>
-              <Button size="sm" variant="ghost" className="h-8 w-8 p-0 hover:bg-pink-600">
+              <Button
+                size="sm"
+                variant="ghost"
+                className="h-8 w-8 p-0 hover:bg-pink-600"
+              >
                 <Instagram className="h-4 w-4" />
               </Button>
-              <Button size="sm" variant="ghost" className="h-8 w-8 p-0 hover:bg-green-600">
+              <Button
+                size="sm"
+                variant="ghost"
+                className="h-8 w-8 p-0 hover:bg-green-600"
+              >
                 <MessageCircle className="h-4 w-4" />
               </Button>
             </div>
@@ -238,12 +262,16 @@ export default function Footer() {
           <div className="flex flex-col sm:flex-row justify-center items-center gap-4 text-center">
             <div className="flex items-center gap-2">
               <Phone className="h-4 w-4" />
-              <span className="text-sm font-medium">خط تماس اضطراری: +1 (555) 911-PART</span>
+              <span className="text-sm font-medium">
+                خط تماس اضطراری: +1 (555) 911-PART
+              </span>
             </div>
-            <div className="text-xs opacity-90">در دسترس 24 ساعته برای وانت‌های در حال خرابی</div>
+            <div className="text-xs opacity-90">
+              در دسترس 24 ساعته برای وانت‌های در حال خرابی
+            </div>
           </div>
         </div>
       </div>
     </footer>
-  )
+  );
 }

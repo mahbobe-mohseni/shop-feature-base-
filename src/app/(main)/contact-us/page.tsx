@@ -153,6 +153,7 @@ export default function ContactUs() {
                         id="name"
                         placeholder="نام خود را وارد کنید"
                         value={formData.name}
+                        type="text"
                         onChange={(e) =>
                           handleInputChange("name", e.target.value)
                         }
