@@ -24,6 +24,7 @@ import {
   Mail,
 } from "lucide-react";
 import Link from "next/link";
+import { useCartStore } from "@/store/useCartStore";
 
 export default function Header() {
   const [isSearchOpen, setIsSearchOpen] = useState(false);
@@ -34,6 +35,8 @@ export default function Header() {
     { name: "درباره ما", href: "/about-us" },
     { name: "تماس با ما", href: "/contact-us" },
   ];
+
+  const { cartItems } = useCartStore();
 
   return (
     <header className="bg-white shadow-lg sticky top-0 z-50">
@@ -123,8 +126,16 @@ export default function Header() {
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="center">
-                <DropdownMenuItem ><Link className="h-full w-full " href="/auth/login">ورود</Link></DropdownMenuItem>
-                <DropdownMenuItem><Link className="h-full w-full" href="/auth/register">ثبت‌نام</Link></DropdownMenuItem>
+                <DropdownMenuItem>
+                  <Link className="h-full w-full " href="/auth/login">
+                    ورود
+                  </Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem>
+                  <Link className="h-full w-full" href="/auth/register">
+                    ثبت‌نام
+                  </Link>
+                </DropdownMenuItem>
                 <DropdownMenuItem>پیگیری سفارش</DropdownMenuItem>
                 <DropdownMenuItem>تاریخچه سفارشات</DropdownMenuItem>
               </DropdownMenuContent>
@@ -133,13 +144,18 @@ export default function Header() {
             {/* سبد خرید */}
             <Button variant="ghost" size="sm" className="relative">
               <ShoppingCart className="h-5 w-5" />
-              <Badge className="absolute -top-2 -right-2 h-5 w-5 rounded-full p-0 flex items-center justify-center text-xs bg-blue-600">
-                ۳
-              </Badge>
+
+              {cartItems.length > 0 ? (
+                <Badge className="absolute -top-2 -right-2 h-5 w-5 rounded-full p-0 flex items-center justify-center text-xs bg-blue-600">
+                  {cartItems.length}
+                </Badge>
+              ) : (
+                ""
+              )}
+
               <span className="hidden sm:inline mr-2">
                 <Link href="/cart">سبد خرید</Link>
-                
-                   </span>
+              </span>
             </Button>
 
             {/* منوی موبایل */}
