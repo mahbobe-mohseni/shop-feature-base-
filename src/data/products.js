@@ -7,6 +7,7 @@ export const productsMockData = [
     discount: 5,
     imageUrl: "/images/4.png",
     isNew: true,
+    inStock: true,
   },
   {
     id: 2,
@@ -16,6 +17,7 @@ export const productsMockData = [
     discount: 10,
     imageUrl: "/images/p3.png",
     isNew: false,
+    inStock: false,
   },
   {
     id: 3,
@@ -25,6 +27,7 @@ export const productsMockData = [
     discount: 0,
     imageUrl: "/images/p2.jpg",
     isNew: true,
+    inStock: true,
   },
   {
     id: 4,
@@ -34,6 +37,7 @@ export const productsMockData = [
     discount: 7,
     imageUrl: "/images/7.avif",
     isNew: false,
+    inStock: false,
   },
   {
     id: 5,
@@ -43,6 +47,7 @@ export const productsMockData = [
     discount: 4,
     imageUrl: "/images/8.avif",
     isNew: true,
+    inStock: true,
   },
   {
     id: 6,
@@ -52,5 +57,6 @@ export const productsMockData = [
     discount: 2,
     imageUrl: "/images/10.avif",
     isNew: false,
+    inStock: false,
   },
 ];
