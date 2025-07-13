@@ -37,7 +37,7 @@ export default function Login() {
   };
 
   const handleInputChange = (field: string, value: string | boolean) => {
-    setFormData((prev) => ({ ...prev, [field]: value }));
+    setFormData((agoValue) => ({ ...agoValue, [field]: value }));
   };
 
   return (
