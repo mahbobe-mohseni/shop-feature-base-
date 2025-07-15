@@ -93,11 +93,16 @@ export default function Register() {
   async function createUser() {
     try {
       const bodyData = {
-        name: "mehdi",
-        family: "rostami",
-        email: "m3hdi.rostmai@gmail.com",
+        id: 1,
+        name: "نیسان 370Z",
+        description: "خودروی اسپرت دو در با عملکرد بالا و طراحی کلاسیک ژاپنی.",
+        price: 1799500000,
+        discount: 5,
+        imageUrl: "/images/4.png",
+        isNew: true,
+        inStock: true,
       };
-      const res = await fetch("/api/users", {
+      const res = await fetch("/api/products", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -112,9 +117,28 @@ export default function Register() {
     }
   }
 
+  async function fillProducts() {
+    try {
+      const res = await fetch("/api/products/cusotm", {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      const result = await res.json();
+      console.log("🚀 ~ fillProducts ~ result:", result)
+    } catch (error) {
+      console.log("🚀 ~ fillProducts ~ error:", error);
+    }
+  }
+
+  // useEffect(() => {
+  //   createUser();
+  // }, [createUser]);
   useEffect(() => {
-    createUser();
-  }, [createUser]);
+    fillProducts();
+  }, [fillProducts]);
 
   return (
     <div className="min-h-screen bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
