@@ -30,7 +30,7 @@ const ProductCard = ({ product }: Props) => {
   const [quantity, setQuantity] = useState(1);
   const [isAdded, setIsAdded] = useState(false);
 
-  const { handleAddToCart, cartItems } = useCartStore();
+  const { handleAddToCart } = useCartStore();
 
   const { price, discount } = product;
   const finalPrice = price - (price * discount) / 100;
@@ -74,9 +74,12 @@ const ProductCard = ({ product }: Props) => {
               </Badge>
             )}
           </div>
-          <p className="text-sm text-muted-foreground">
-            {product.description || "توضیحات محصول در دسترس نیست."}
-          </p>
+          <div className="relative overflow-hidden w-full h-6">
+            <p className="absolute whitespace-nowrap animate-loop text-sm text-muted-foreground">
+              {product.description || "توضیحات محصول در دسترس نیست."}
+            </p>
+          </div>
+
           {product.partNumber && (
             <p className="text-xs text-gray-500 mt-1">
               کد قطعه: {product.partNumber}
@@ -117,11 +120,10 @@ const ProductCard = ({ product }: Props) => {
         {/* Stock Status */}
         <div className="flex items-center justify-between">
           <Badge
-            className={`text-xs ${
-              product.inStock
-                ? "bg-green-100 text-green-800"
-                : "bg-red-100 text-red-800"
-            }`}
+            className={`text-xs ${product.inStock
+              ? "bg-green-100 text-green-800"
+              : "bg-red-100 text-red-800"
+              }`}
           >
             {product.inStock ? "موجود" : "ناموجود"}
           </Badge>
@@ -169,11 +171,10 @@ const ProductCard = ({ product }: Props) => {
             {/* Add to Cart Button */}
             <Button
               onClick={onAddToCart}
-              className={`w-full ${
-                isAdded
-                  ? "bg-green-600 hover:bg-green-700"
-                  : "bg-blue-600 hover:bg-blue-700"
-              }`}
+              className={`w-full ${isAdded
+                ? "bg-green-600 hover:bg-green-700"
+                : "bg-blue-600 hover:bg-blue-700"
+                }`}
               disabled={isAdded}
               size="lg"
             >

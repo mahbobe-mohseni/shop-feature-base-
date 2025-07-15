@@ -6,37 +6,37 @@ interface CartStore {
   handleRemoveOfCart: (id: number | string) => void;
 }
 
-export const useCartStore = create<CartStore>((set, get) => ({
+export const useCartStore = create<CartStore>((set: any, get: any) => ({
   // state
   cartItems: [],
 
   // actions
-  handleAddToCart: (item) => {
+  handleAddToCart: (item: any) => {
     const { cartItems } = get();
-    let updatedItem = { ...item, quantity: 1 };
-    
-    const alreadyExistItem = cartItems.find(({ id }) => id === item.id);
-    if (alreadyExistItem) {
-      // exisit add
-      const updatedCartItems = cartItems.map((cartItem) => {
-        const quantity =
-          alreadyExistItem.id === cartItem.id
-            ? cartItem.quantity + 1
-            : cartItem.quantity;
 
-        return { ...cartItem, quantity };
-      });
-      set({ cartItems: updatedCartItems });
+    const itemIndex = cartItems.findIndex(
+      (cartItem: any) => cartItem.id === item.id
+    );
+
+    if (itemIndex !== -1) {
+      const clonedCartItems = [...cartItems];
+
+      clonedCartItems[itemIndex] = {
+        ...clonedCartItems[itemIndex],
+        quantity: clonedCartItems[itemIndex].quantity + 1,
+      };
+      set({ cartItems: clonedCartItems });
     } else {
-      // new add
-      set({ cartItems: [...cartItems, updatedItem] });
+      set({ cartItems: [...cartItems, { ...item, quantity: 1 }] });
     }
   },
-  handleRemoveOfCart: (deletedId: any) => {
+  handleRemoveOfCart: (deletedId: number | string) => {
     const { cartItems } = get();
 
-    const updatedCartItems = cartItems.filter(({ id }) => id !== deletedId);
+    const clonedCartItems = cartItems.filter(
+      ({ id }: { id: number | string }) => id !== deletedId
+    );
 
-    set({ cartItems: updatedCartItems });
+    set({ cartItems: clonedCartItems });
   },
 }));

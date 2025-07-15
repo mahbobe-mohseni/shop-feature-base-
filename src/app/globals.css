@@ -120,14 +120,26 @@
     @apply bg-background text-foreground;
   }
   /* src/app/globals.css */
- 
 
-@layer base {
-  html {
-    scroll-behavior: smooth;
-  }
-  body {
-    @apply antialiased;
+  @layer base {
+    html {
+      scroll-behavior: smooth;
+    }
+    body {
+      @apply antialiased;
+    }
   }
 }
+
+@keyframes loop {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+.animate-loop {
+  animation: loop 10s linear infinite;
 }
