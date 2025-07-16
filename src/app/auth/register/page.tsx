@@ -13,15 +13,11 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Checkbox } from "@/components/ui/checkbox";
 import { Separator } from "@/components/ui/separator";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+// src/app/layout.tsx
+import { SessionProvider } from "next-auth/react";
+
+
 import {
   Truck,
   Eye,
@@ -33,51 +29,77 @@ import {
   MapPin,
 } from "lucide-react";
 import Link from "next/link";
+import { useSession, signIn } from "next-auth/react";
+import { useRouter } from "next/router";
 
 export default function Register() {
+  const { data: session } = useSession();
+  const router = useRouter();
+  const { redirect }:any = router.query;
+  useEffect(() => {
+    console.log("session:", session)
+    if (session?.user) {
+      router.push(redirect || "/");
+    }
+  }, [router, session, redirect]);
+
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [formData, setFormData] = useState({
-    firstName: "",
-    lastName: "",
+    name: "",
+    family: "",
     email: "",
     phone: "",
     password: "",
     confirmPassword: "",
-    city: "",
-    birthDay: "",
-    birthMonth: "",
-    birthYear: "",
-    gender: "",
-    agreeToTerms: false,
-    subscribeNewsletter: false,
   });
 
   const [errors, setErrors] = useState<Record<string, string>>({});
 
-  const handleSubmit = (e: React.FormEvent) => {
+  // create user
+  async function handleCreateUser() {
+    try {
+      const res = await fetch("/api/users", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
+      const result = await res.json();
+
+      const { email, password } = formData;
+      const resultSignin = await signIn("credentials", {
+        redirect: false,
+        email,
+        password,
+      });
+      console.log("🚀 ~ handleCreateUser ~ resultSignin:", resultSignin);
+    } catch (error) {
+      console.log("🚀 ~ createUser ~ error:", error);
+    }
+  }
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
     // Basic validation
     const newErrors: Record<string, string> = {};
 
-    if (!formData.firstName.trim()) newErrors.firstName = "نام الزامی است";
-    if (!formData.lastName.trim())
-      newErrors.lastName = "نام خانوادگی الزامی است";
+    if (!formData.name.trim()) newErrors.name = "نام الزامی است";
+    if (!formData.family.trim()) newErrors.family = "نام خانوادگی الزامی است";
     if (!formData.email.trim()) newErrors.email = "ایمیل الزامی است";
     if (!formData.phone.trim()) newErrors.phone = "شماره تلفن الزامی است";
     if (!formData.password) newErrors.password = "رمز عبور الزامی است";
     if (formData.password !== formData.confirmPassword) {
       newErrors.confirmPassword = "رمز عبور و تکرار آن یکسان نیستند";
     }
-    if (!formData.agreeToTerms)
-      newErrors.agreeToTerms = "پذیرش قوانین الزامی است";
 
     setErrors(newErrors);
 
     if (Object.keys(newErrors).length === 0) {
-      console.log("Registration data:", formData);
-      // Handle registration logic here
+      // request to server
+      handleCreateUser();
     }
   };
 
@@ -88,57 +110,6 @@ export default function Register() {
       setErrors((prev) => ({ ...prev, [field]: "" }));
     }
   };
-
-  // create user
-  async function createUser() {
-    try {
-      const bodyData = {
-        id: 1,
-        name: "نیسان 370Z",
-        description: "خودروی اسپرت دو در با عملکرد بالا و طراحی کلاسیک ژاپنی.",
-        price: 1799500000,
-        discount: 5,
-        imageUrl: "/images/4.png",
-        isNew: true,
-        inStock: true,
-      };
-      const res = await fetch("/api/products", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(bodyData),
-      });
-
-      const result = await res.json();
-      console.log("🚀 ~ createUser ~ response:", result);
-    } catch (error) {
-      console.log("🚀 ~ createUser ~ error:", error);
-    }
-  }
-
-  async function fillProducts() {
-    try {
-      const res = await fetch("/api/products/cusotm", {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-
-      const result = await res.json();
-      console.log("🚀 ~ fillProducts ~ result:", result)
-    } catch (error) {
-      console.log("🚀 ~ fillProducts ~ error:", error);
-    }
-  }
-
-  // useEffect(() => {
-  //   createUser();
-  // }, [createUser]);
-  useEffect(() => {
-    fillProducts();
-  }, [fillProducts]);
 
   return (
     <div className="min-h-screen bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
@@ -181,142 +152,48 @@ export default function Register() {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   {/* First Name */}
                   <div className="space-y-2">
-                    <Label htmlFor="firstName">نام *</Label>
+                    <Label htmlFor="name">نام *</Label>
                     <div className="relative">
                       <User className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
                       <Input
-                        id="firstName"
+                        id="name"
                         type="text"
                         placeholder="نام خود را وارد کنید"
-                        value={formData.firstName}
+                        value={formData.name}
                         onChange={(e) =>
-                          handleInputChange("firstName", e.target.value)
+                          handleInputChange("name", e.target.value)
                         }
                         className={`pl-10 ${
-                          errors.firstName ? "border-red-500" : ""
+                          errors.name ? "border-red-500" : ""
                         }`}
                       />
                     </div>
-                    {errors.firstName && (
-                      <p className="text-sm text-red-500">{errors.firstName}</p>
+                    {errors.name && (
+                      <p className="text-sm text-red-500">{errors.name}</p>
                     )}
                   </div>
 
                   {/* Last Name */}
                   <div className="space-y-2">
-                    <Label htmlFor="lastName">نام خانوادگی *</Label>
+                    <Label htmlFor="family">نام خانوادگی *</Label>
                     <div className="relative">
                       <User className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
                       <Input
-                        id="lastName"
+                        id="family"
                         type="text"
                         placeholder="نام خانوادگی خود را وارد کنید"
-                        value={formData.lastName}
+                        value={formData.family}
                         onChange={(e) =>
-                          handleInputChange("lastName", e.target.value)
+                          handleInputChange("family", e.target.value)
                         }
                         className={`pl-10 ${
-                          errors.lastName ? "border-red-500" : ""
+                          errors.family ? "border-red-500" : ""
                         }`}
                       />
                     </div>
-                    {errors.lastName && (
-                      <p className="text-sm text-red-500">{errors.lastName}</p>
+                    {errors.family && (
+                      <p className="text-sm text-red-500">{errors.family}</p>
                     )}
-                  </div>
-                </div>
-
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
-                  {/* Gender */}
-                  <div className="space-y-2">
-                    <Label htmlFor="gender">جنسیت</Label>
-                    <Select
-                      onValueChange={(value) =>
-                        handleInputChange("gender", value)
-                      }
-                    >
-                      <SelectTrigger>
-                        <SelectValue placeholder="انتخاب کنید" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="male">آقا</SelectItem>
-                        <SelectItem value="female">خانم</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </div>
-
-                  {/* Birth Date - Persian */}
-                  <div className="space-y-2">
-                    <Label htmlFor="birthDate">تاریخ تولد</Label>
-                    <div className="grid grid-cols-3 gap-2">
-                      {/* Day */}
-                      <Select
-                        onValueChange={(value) =>
-                          handleInputChange("birthDay", value)
-                        }
-                      >
-                        <SelectTrigger>
-                          <SelectValue placeholder="روز" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          {Array.from({ length: 31 }, (_, i) => i + 1).map(
-                            (day) => (
-                              <SelectItem key={day} value={day.toString()}>
-                                {new Intl.NumberFormat("fa-IR").format(day)}
-                              </SelectItem>
-                            )
-                          )}
-                        </SelectContent>
-                      </Select>
-
-                      {/* Month */}
-                      <Select
-                        onValueChange={(value) =>
-                          handleInputChange("birthMonth", value)
-                        }
-                      >
-                        <SelectTrigger>
-                          <SelectValue placeholder="ماه" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="1">فروردین</SelectItem>
-                          <SelectItem value="2">اردیبهشت</SelectItem>
-                          <SelectItem value="3">خرداد</SelectItem>
-                          <SelectItem value="4">تیر</SelectItem>
-                          <SelectItem value="5">مرداد</SelectItem>
-                          <SelectItem value="6">شهریور</SelectItem>
-                          <SelectItem value="7">مهر</SelectItem>
-                          <SelectItem value="8">آبان</SelectItem>
-                          <SelectItem value="9">آذر</SelectItem>
-                          <SelectItem value="10">دی</SelectItem>
-                          <SelectItem value="11">بهمن</SelectItem>
-                          <SelectItem value="12">اسفند</SelectItem>
-                        </SelectContent>
-                      </Select>
-
-                      {/* Year */}
-                      <Select
-                        onValueChange={(value) =>
-                          handleInputChange("birthYear", value)
-                        }
-                      >
-                        <SelectTrigger>
-                          <SelectValue placeholder="سال" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          {Array.from({ length: 80 }, (_, i) => 1403 - i).map(
-                            (year) => (
-                              <SelectItem key={year} value={year.toString()}>
-                                {new Intl.NumberFormat("fa-IR").format(year)}
-                              </SelectItem>
-                            )
-                          )}
-                        </SelectContent>
-                      </Select>
-                    </div>
-                    <p className="text-xs text-gray-500">
-                      تاریخ تولد بر اساس تقویم شمسی
-                    </p>
                   </div>
                 </div>
               </div>
@@ -374,24 +251,6 @@ export default function Register() {
                     {errors.phone && (
                       <p className="text-sm text-red-500">{errors.phone}</p>
                     )}
-                  </div>
-                </div>
-
-                {/* City */}
-                <div className="space-y-2 mt-4">
-                  <Label htmlFor="city">شهر</Label>
-                  <div className="relative">
-                    <MapPin className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
-                    <Input
-                      id="city"
-                      type="text"
-                      placeholder="شهر محل سکونت"
-                      value={formData.city}
-                      onChange={(e) =>
-                        handleInputChange("city", e.target.value)
-                      }
-                      className="pl-10"
-                    />
                   </div>
                 </div>
               </div>
@@ -490,55 +349,6 @@ export default function Register() {
 
               <Separator />
 
-              {/* Terms and Newsletter */}
-              <div className="space-y-4">
-                {/* Terms Agreement */}
-                <div className="flex items-start space-x-2">
-                  <Checkbox
-                    id="agreeToTerms"
-                    checked={formData.agreeToTerms}
-                    onCheckedChange={(checked) =>
-                      handleInputChange("agreeToTerms", checked)
-                    }
-                    className={errors.agreeToTerms ? "border-red-500" : ""}
-                  />
-                  <Label htmlFor="agreeToTerms" className="text-sm leading-5">
-                    با{" "}
-                    <Link
-                      href="/terms"
-                      className="text-blue-600 hover:text-blue-500"
-                    >
-                      قوانین و مقررات
-                    </Link>{" "}
-                    و{" "}
-                    <Link
-                      href="/privacy"
-                      className="text-blue-600 hover:text-blue-500"
-                    >
-                      حریم خصوصی
-                    </Link>{" "}
-                    موافقم *
-                  </Label>
-                </div>
-                {errors.agreeToTerms && (
-                  <p className="text-sm text-red-500">{errors.agreeToTerms}</p>
-                )}
-
-                {/* Newsletter Subscription */}
-                <div className="flex items-start space-x-2">
-                  <Checkbox
-                    id="subscribeNewsletter"
-                    checked={formData.subscribeNewsletter}
-                    onCheckedChange={(checked) =>
-                      handleInputChange("subscribeNewsletter", checked)
-                    }
-                  />
-                  <Label htmlFor="subscribeNewsletter" className="text-sm">
-                    مایل به دریافت اخبار و تخفیف‌های ویژه هستم
-                  </Label>
-                </div>
-              </div>
-
               {/* Submit Button */}
               <Button
                 type="submit"
@@ -564,7 +374,7 @@ export default function Register() {
             </div>
 
             {/* Social Registration */}
-            <div className="mt-6">
+            <div className="mt-6 hidden">
               <div className="relative">
                 <div className="absolute inset-0 flex items-center">
                   <Separator />

@@ -6,8 +6,14 @@ const userSchema = new mongoose.Schema({
     required: true,
     unique: true,
   },
+  phone: {
+    type: String,
+    required: true,
+    unique: true,
+  },
   name: { type: String },
   family: { type: String },
+  password: { type: String, required: true },
   orders: [{ type: mongoose.Schema.Types.ObjectId, ref: "Order" }],
   createdAt: { type: Date, default: Date.now },
 });
