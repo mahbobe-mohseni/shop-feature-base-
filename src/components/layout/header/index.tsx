@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
@@ -22,11 +22,33 @@ import {
   MapPin,
   Clock,
   Mail,
+  LogIn,
+  LogOut,
 } from "lucide-react";
 import Link from "next/link";
 import { useCartStore } from "@/store/useCartStore";
+import { getCurrentUser, logout } from "@/services";
+import { useCurrentUserStore } from "@/store/useCurrentUserStore";
+import { UserType } from "@/types";
 
 export default function Header() {
+  const { currentUser, handelSetCurrentUser } = useCurrentUserStore();
+
+  useEffect(() => {
+    const fetchUser = async () => {
+      const user = await getCurrentUser();
+      handelSetCurrentUser(user as UserType);
+    };
+    fetchUser();
+  }, [handelSetCurrentUser]);
+
+  const handleLogout = async () => {
+    const { state } = await logout();
+    if (state) {
+      handelSetCurrentUser(null);
+    }
+  };
+
   const [isSearchOpen, setIsSearchOpen] = useState(false);
 
   const navItems = [
@@ -118,45 +140,56 @@ export default function Header() {
             </Button>
 
             {/* حساب کاربری */}
-            <DropdownMenu dir="rtl">
-              <DropdownMenuTrigger asChild>
+            {currentUser ? (
+              <DropdownMenu dir="rtl">
+                <DropdownMenuTrigger asChild>
+                  <Button variant="ghost" size="sm" className="hidden sm:flex">
+                    <User className="h-5 w-5" />
+                    {currentUser.phone}
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="center">
+
+                  <DropdownMenuItem>
+                    <Link className="h-full w-full" href="/auth/register">
+                      پروفایل
+                    </Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem>پیگیری سفارش</DropdownMenuItem>
+                  <DropdownMenuItem>تاریخچه سفارشات</DropdownMenuItem>
+                  <DropdownMenuItem variant="destructive" onClick={handleLogout}>
+                    <LogOut className="h-5 w-5" />
+                    خروج از حساب
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            ) : (
+              <Link href="/auth/login">
                 <Button variant="ghost" size="sm" className="hidden sm:flex">
-                  <User className="h-5 w-5 ml-2" />
-                  حساب کاربری
+                  <LogIn className="h-5 w-5" />
+                  ورود به حساب
                 </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="center">
-                <DropdownMenuItem>
-                  <Link className="h-full w-full " href="/auth/login">
-                    ورود
-                  </Link>
-                </DropdownMenuItem>
-                <DropdownMenuItem>
-                  <Link className="h-full w-full" href="/auth/register">
-                    ثبت‌نام
-                  </Link>
-                </DropdownMenuItem>
-                <DropdownMenuItem>پیگیری سفارش</DropdownMenuItem>
-                <DropdownMenuItem>تاریخچه سفارشات</DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
+              </Link>
+            )}
 
             {/* سبد خرید */}
-            <Button variant="ghost" size="sm" className="relative">
-              <ShoppingCart className="h-5 w-5" />
+            {currentUser ? (
+              <Button variant="ghost" size="sm" className="relative">
+                <ShoppingCart className="h-5 w-5" />
 
-              {cartItems.length > 0 ? (
-                <Badge className="absolute -top-2 -right-2 h-5 w-5 rounded-full p-0 flex items-center justify-center text-xs bg-blue-600">
-                  {cartItems.length}
-                </Badge>
-              ) : (
-                ""
-              )}
+                {cartItems.length > 0 ? (
+                  <Badge className="absolute -top-2 -right-2 h-5 w-5 rounded-full p-0 flex items-center justify-center text-xs bg-blue-600">
+                    {cartItems.length}
+                  </Badge>
+                ) : (
+                  ""
+                )}
 
-              <span className="hidden sm:inline mr-2">
-                <Link href="/cart">سبد خرید</Link>
-              </span>
-            </Button>
+                <span className="hidden sm:inline mr-2">
+                  <Link href="/cart">سبد خرید</Link>
+                </span>
+              </Button>
+            ) : ("")}
 
             {/* منوی موبایل */}
             <Sheet>
@@ -192,13 +225,13 @@ export default function Header() {
                       <h3 className="font-semibold mb-4">منوی اصلی</h3>
                       <div className="space-y-3">
                         {navItems.map((item, index) => (
-                          <a
+                          <Link
                             key={index}
                             href={item.href}
                             className="block text-gray-600 hover:text-blue-600 py-2 border-b border-gray-100"
                           >
                             {item.name}
-                          </a>
+                          </Link>
                         ))}
                       </div>
                     </div>
@@ -233,13 +266,13 @@ export default function Header() {
             {/* منوی اصلی */}
             <nav className="flex items-center space-x-8">
               {navItems.map((item, index) => (
-                <a
+                <Link
                   key={index}
                   href={item.href}
                   className="text-gray-700 hover:text-blue-600 font-medium px-3 py-2 rounded-md transition-colors"
                 >
                   {item.name}
-                </a>
+                </Link>
               ))}
             </nav>
 

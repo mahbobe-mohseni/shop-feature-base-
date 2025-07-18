@@ -1,3 +1,4 @@
+import { genSalt, hash } from "bcrypt";
 import mongoose from "mongoose";
 
 const userSchema = new mongoose.Schema({
@@ -16,6 +17,13 @@ const userSchema = new mongoose.Schema({
   password: { type: String, required: true },
   orders: [{ type: mongoose.Schema.Types.ObjectId, ref: "Order" }],
   createdAt: { type: Date, default: Date.now },
+});
+
+userSchema.pre("save", async function (next) {
+  if (!this.isModified("password")) return next();
+  const salt = await genSalt(10);
+  this.password = await hash(this.password, salt);
+  next();
 });
 
 const User = mongoose.models.User || mongoose.model("User", userSchema);
