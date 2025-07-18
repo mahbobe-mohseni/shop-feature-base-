@@ -11,8 +11,7 @@ export async function middleware(req: NextRequest) {
 
   try {
     const secret = new TextEncoder().encode(process.env.JWT_SECRET!);
-    const { payload } = await jwtVerify(token, secret);
-    console.log("🚀 ~ middleware ~ payload:", payload);
+    await jwtVerify(token, secret);
     return NextResponse.next();
   } catch (error) {
     console.log(error);
@@ -24,7 +23,5 @@ export const config = {
   matcher: [
     "/dashboard/:path*",
     "/profile/:path*",
-    "/products/:path*",
-    "/products",
   ],
 };

@@ -120,7 +120,7 @@ export default function Header() {
                   placeholder="جستجو بر اساس شماره قطعه، مدل یا توضیح..."
                   className="rounded-none border-x-0 flex-1"
                 />
-                <Button className="rounded-l-none bg-blue-600 hover:bg-blue-700">
+                <Button className="rounded-r-none bg-blue-600 hover:bg-blue-700">
                   <Search className="h-4 w-4" />
                 </Button>
               </div>
