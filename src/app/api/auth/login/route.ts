@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { NextResponse } from "next/server";
 import { compare } from "bcrypt";
 import db from "@/lib/db";
@@ -13,6 +14,7 @@ export async function POST(req: Request) {
     // connect to database
     await db.connect();
 
+    // find user
     const user = await User.findOne({ phone });
     const isPasswordValid = await compare(password, user?.password);
     if (!user || !isPasswordValid) {
@@ -25,6 +27,8 @@ export async function POST(req: Request) {
         { status: 401 }
       );
     }
+
+    // generate token
     const secret = new TextEncoder().encode(process.env.JWT_SECRET!);
     const token = await new SignJWT({
       id: user._id.toString(),
@@ -35,6 +39,7 @@ export async function POST(req: Request) {
       .setExpirationTime("1d")
       .sign(secret);
 
+    // set token to cookie
     const cookieStore = await cookies();
     cookieStore.set({
       name: "accessToken",
@@ -46,14 +51,17 @@ export async function POST(req: Request) {
       maxAge: 1 * 24 * 60 * 60,
     });
 
-    await db.destroyed();
-
-    return NextResponse.json({ data: null, state: true }, { status: 200 });
-  } catch (error: unknown) {
-    console.log(error);
     return NextResponse.json(
-      { data: null, state: false, message: "عملیات ورود ناموفق بود" },
+      { data: null, state: true, message: "عملیات با موفقیت انجام شد" },
+      { status: 200 }
+    );
+  } catch (error: unknown) {
+    return NextResponse.json(
+      { data: null, state: false, message: "خطایی در سمت سرور رخ داده است" },
       { status: 500 }
     );
+  } finally {
+    // disconnect from database
+    await db.destroyed();
   }
 }

@@ -1,18 +1,20 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { NextResponse } from "next/server";
 import { cookies } from "next/headers";
 
 export async function POST() {
   try {
+    // delete token from cookie
     const cookieStore = await cookies();
     cookieStore.delete("accessToken");
+
     return NextResponse.json(
-      { data: null, message: "با موفقیت خارج شدید", state: true },
+      { data: null, state: true, message: "عملیات با موفقیت انجام شد" },
       { status: 200 }
     );
-  } catch (error) {
-    console.log(error);
+  } catch (error: unknown) {
     return NextResponse.json(
-      { data: null, message: "عملیات خروج ناموفق بود", state: false },
+      { data: null, state: false, message: "خطایی در سمت سرور رخ داده است" },
       { status: 500 }
     );
   }
