@@ -13,18 +13,11 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Separator } from "@/components/ui/separator";
-import {
-  Truck,
-  Eye,
-  EyeOff,
-  Mail,
-  Lock,
-  User,
-  Phone,
-} from "lucide-react";
+import { Truck, Eye, EyeOff, Mail, Lock, User, Phone } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { register } from "@/services";
+import { toast } from "react-toastify";
 
 export default function Register() {
   const router = useRouter();
@@ -44,10 +37,12 @@ export default function Register() {
   // create user
   async function handleCreateUser() {
     try {
-      const { state } = await register(formData);
-
+      const { state, message } = await register(formData);
       if (state) {
+        toast.success(message);
         router.push("/");
+      } else {
+        toast.error(message);
       }
     } catch (error) {
       console.log("🚀 ~ createUser ~ error:", error);
@@ -131,8 +126,9 @@ export default function Register() {
                         onChange={(e) =>
                           handleInputChange("name", e.target.value)
                         }
-                        className={`pl-10 ${errors.name ? "border-red-500" : ""
-                          }`}
+                        className={`pl-10 ${
+                          errors.name ? "border-red-500" : ""
+                        }`}
                       />
                     </div>
                     {errors.name && (
@@ -153,8 +149,9 @@ export default function Register() {
                         onChange={(e) =>
                           handleInputChange("family", e.target.value)
                         }
-                        className={`pl-10 ${errors.family ? "border-red-500" : ""
-                          }`}
+                        className={`pl-10 ${
+                          errors.family ? "border-red-500" : ""
+                        }`}
                       />
                     </div>
                     {errors.family && (
@@ -186,8 +183,9 @@ export default function Register() {
                         onChange={(e) =>
                           handleInputChange("email", e.target.value)
                         }
-                        className={`pl-10 ${errors.email ? "border-red-500" : ""
-                          }`}
+                        className={`pl-10 ${
+                          errors.email ? "border-red-500" : ""
+                        }`}
                       />
                     </div>
                     {errors.email && (
@@ -208,8 +206,9 @@ export default function Register() {
                         onChange={(e) =>
                           handleInputChange("phone", e.target.value)
                         }
-                        className={`pl-10 ${errors.phone ? "border-red-500" : ""
-                          }`}
+                        className={`pl-10 ${
+                          errors.phone ? "border-red-500" : ""
+                        }`}
                       />
                     </div>
                     {errors.phone && (
@@ -241,8 +240,9 @@ export default function Register() {
                         onChange={(e) =>
                           handleInputChange("password", e.target.value)
                         }
-                        className={`pl-10 pr-10 ${errors.password ? "border-red-500" : ""
-                          }`}
+                        className={`pl-10 pr-10 ${
+                          errors.password ? "border-red-500" : ""
+                        }`}
                       />
                       <button
                         type="button"
@@ -274,8 +274,9 @@ export default function Register() {
                         onChange={(e) =>
                           handleInputChange("confirmPassword", e.target.value)
                         }
-                        className={`pl-10 pr-10 ${errors.confirmPassword ? "border-red-500" : ""
-                          }`}
+                        className={`pl-10 pr-10 ${
+                          errors.confirmPassword ? "border-red-500" : ""
+                        }`}
                       />
                       <button
                         type="button"
