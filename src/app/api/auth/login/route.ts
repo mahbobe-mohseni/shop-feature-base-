@@ -6,7 +6,7 @@ import User from "models/User";
 import { SignJWT } from "jose";
 import { cookies } from "next/headers";
 
-export async function POST(req: Request) {
+export async function POST(req: Request) { // GET - POST - PUT - PATCH - DELETE
   const body = await req.json();
   const { phone, password } = body;
 
