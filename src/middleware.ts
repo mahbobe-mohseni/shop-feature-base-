@@ -10,8 +10,11 @@ export async function middleware(req: NextRequest) {
   }
 
   try {
+    // check verify token
     const secret = new TextEncoder().encode(process.env.JWT_SECRET!);
     await jwtVerify(token, secret);
+
+    // next to continue
     return NextResponse.next();
   } catch (error) {
     console.log(error);
@@ -20,8 +23,5 @@ export async function middleware(req: NextRequest) {
 }
 
 export const config = {
-  matcher: [
-    "/dashboard/:path*",
-    "/profile/:path*",
-  ],
+  matcher: ["/dashboard/:path*", "/profile/:path*"],
 };
