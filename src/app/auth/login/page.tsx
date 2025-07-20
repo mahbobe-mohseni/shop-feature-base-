@@ -30,13 +30,13 @@ export default function Login() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
-    const { state } = await login(formData);
+
+    const { state, message } = await login(formData);
     if (state) {
       router.push("/");
+    } else {
+      alert(message);
     }
-
-
   };
 
   const handleInputChange = (field: string, value: string | boolean) => {
@@ -57,15 +57,12 @@ export default function Login() {
               <p className="text-sm text-gray-600">لوازم یدکی نیسان</p>
             </div>
           </div>
-
         </div>
 
         {/* Login/Register Form */}
         <Card>
           <CardHeader>
-            <CardTitle className="text-center">
-              ورود
-            </CardTitle>
+            <CardTitle className="text-center">ورود</CardTitle>
             <CardDescription className="text-center">
               اطلاعات خود را وارد کنید
             </CardDescription>
@@ -83,9 +80,7 @@ export default function Login() {
                     placeholder="شماره تلفن خود را وارد کنید"
                     value={formData.phone}
                     dir="rtl"
-                    onChange={(e) =>
-                      handleInputChange("phone", e.target.value)
-                    }
+                    onChange={(e) => handleInputChange("phone", e.target.value)}
                     className="pl-10"
                     required={true}
                   />
@@ -143,7 +138,6 @@ export default function Login() {
                 </Link>
               </div>
 
-
               {/* Submit Button */}
               <Button
                 type="submit"
@@ -160,7 +154,7 @@ export default function Login() {
               <p className="text-sm text-gray-600">
                 حساب کاربری ندارید؟
                 <button
-                  onClick={() => router.push('/auth/register')}
+                  onClick={() => router.push("/auth/register")}
                   className="ml-2 text-blue-600 hover:text-blue-500 font-medium cursor-pointer"
                 >
                   ثبت نام کنید
@@ -173,11 +167,17 @@ export default function Login() {
         <div className="text-center">
           <p className="text-xs text-gray-500">
             با ورود یا ثبت نام، شما با{" "}
-            <Link href="/terms" className="text-blue-600 hover:text-blue-500 cursor-pointer">
+            <Link
+              href="/terms"
+              className="text-blue-600 hover:text-blue-500 cursor-pointer"
+            >
               قوانین و مقررات
             </Link>{" "}
             و{" "}
-            <Link href="/privacy" className="text-blue-600 hover:text-blue-500 cursor-pointer">
+            <Link
+              href="/privacy"
+              className="text-blue-600 hover:text-blue-500 cursor-pointer"
+            >
               حریم خصوصی
             </Link>{" "}
             ما موافقت می‌کنید.

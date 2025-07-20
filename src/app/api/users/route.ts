@@ -51,6 +51,7 @@ export async function POST(req: Request) {
       { status: 201 }
     );
   } catch (error: unknown) {
+    console.log("🚀 ~ POST ~ error:", error);
     return NextResponse.json(
       { data: null, state: false, message: "خطایی در سمت سرور رخ داده است" },
       { status: 500 }
