@@ -18,6 +18,7 @@ import { Truck, Eye, EyeOff, Lock, Phone } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { login } from "@/services";
+import { toast } from "react-toastify";
 
 export default function Login() {
   const [showPassword, setShowPassword] = useState(false);
@@ -33,9 +34,10 @@ export default function Login() {
 
     const { state, message } = await login(formData);
     if (state) {
+      toast.success(message);
       router.push("/");
     } else {
-      alert(message);
+      toast.error(message);
     }
   };
 
