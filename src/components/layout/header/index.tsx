@@ -184,10 +184,6 @@ export default function Header() {
                 ) : (
                   ""
                 )}
-
-                <span className="hidden sm:inline mr-2">
-                  <Link href="/cart">سبد خرید</Link>
-                </span>
               </Button>
             ) : ("")}
 
