@@ -327,7 +327,7 @@ export default function Register() {
             <div className="text-center">
               <p className="text-sm text-gray-600">
                 قبلاً ثبت نام کرده‌اید؟{" "}
-                <Link
+                <Link prefetch={true}
                   href="/auth/login"
                   className="text-blue-600 hover:text-blue-500 font-medium cursor-pointer"
                 >

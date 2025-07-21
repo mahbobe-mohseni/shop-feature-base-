@@ -132,7 +132,7 @@ export default function Login() {
                     مرا به خاطر بسپار
                   </Label>
                 </div>
-                <Link
+                <Link prefetch={true}
                   href="/forgot-password"
                   className="text-sm text-blue-600 hover:text-blue-500 cursor-pointer"
                 >
@@ -169,14 +169,14 @@ export default function Login() {
         <div className="text-center">
           <p className="text-xs text-gray-500">
             با ورود یا ثبت نام، شما با{" "}
-            <Link
+            <Link prefetch={true}
               href="/terms"
               className="text-blue-600 hover:text-blue-500 cursor-pointer"
             >
               قوانین و مقررات
             </Link>{" "}
             و{" "}
-            <Link
+            <Link prefetch={true}
               href="/privacy"
               className="text-blue-600 hover:text-blue-500 cursor-pointer"
             >

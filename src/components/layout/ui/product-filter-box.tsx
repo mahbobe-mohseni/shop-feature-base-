@@ -96,7 +96,7 @@ export default function ProductFilterBox() {
   if (!isClient) {
     return (
       <div className="w-full">
-        <Card>
+        <Card className="rounded-lg">
           <CardHeader className="pb-3">
             <CardTitle className="text-lg font-semibold">
               فیلتر محصولات

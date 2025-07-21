@@ -149,22 +149,24 @@ export default function Header() {
                   </Button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="center">
-
                   <DropdownMenuItem>
-                    <Link className="h-full w-full" href="/auth/register">
+                    <Link prefetch={true} className="h-full w-full" href="/auth/register">
                       پروفایل
                     </Link>
                   </DropdownMenuItem>
                   <DropdownMenuItem>پیگیری سفارش</DropdownMenuItem>
                   <DropdownMenuItem>تاریخچه سفارشات</DropdownMenuItem>
-                  <DropdownMenuItem variant="destructive" onClick={handleLogout}>
+                  <DropdownMenuItem
+                    variant="destructive"
+                    onClick={handleLogout}
+                  >
                     <LogOut className="h-5 w-5" />
                     خروج از حساب
                   </DropdownMenuItem>
                 </DropdownMenuContent>
               </DropdownMenu>
             ) : (
-              <Link href="/auth/login">
+              <Link prefetch={true} href="/auth/login">
                 <Button variant="ghost" size="sm" className="hidden sm:flex">
                   <LogIn className="h-5 w-5" />
                   ورود به حساب
@@ -174,18 +176,22 @@ export default function Header() {
 
             {/* سبد خرید */}
             {currentUser ? (
-              <Button variant="ghost" size="sm" className="relative">
-                <ShoppingCart className="h-5 w-5" />
+              <Link prefetch={true} href={"/cart"}>
+                <Button variant="ghost" size="sm" className="relative">
+                  <ShoppingCart className="h-5 w-5" />
 
-                {cartItems.length > 0 ? (
-                  <Badge className="absolute -top-2 -right-2 h-5 w-5 rounded-full p-0 flex items-center justify-center text-xs bg-blue-600">
-                    {cartItems.length}
-                  </Badge>
-                ) : (
-                  ""
-                )}
-              </Button>
-            ) : ("")}
+                  {cartItems.length > 0 ? (
+                    <Badge className="absolute -top-2 -right-2 h-5 w-5 rounded-full p-0 flex items-center justify-center text-xs bg-blue-600">
+                      {cartItems.length}
+                    </Badge>
+                  ) : (
+                    ""
+                  )}
+                </Button>
+              </Link>
+            ) : (
+              ""
+            )}
 
             {/* منوی موبایل */}
             <Sheet>
@@ -221,7 +227,7 @@ export default function Header() {
                       <h3 className="font-semibold mb-4">منوی اصلی</h3>
                       <div className="space-y-3">
                         {navItems.map((item, index) => (
-                          <Link
+                          <Link prefetch={true}
                             key={index}
                             href={item.href}
                             className="block text-gray-600 hover:text-blue-600 py-2 border-b border-gray-100"
@@ -262,7 +268,7 @@ export default function Header() {
             {/* منوی اصلی */}
             <nav className="flex items-center space-x-8">
               {navItems.map((item, index) => (
-                <Link
+                <Link prefetch={true}
                   key={index}
                   href={item.href}
                   className="text-gray-700 hover:text-blue-600 font-medium px-3 py-2 rounded-md transition-colors"

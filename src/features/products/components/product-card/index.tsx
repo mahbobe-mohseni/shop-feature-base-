@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -30,7 +30,7 @@ const ProductCard = ({ product }: Props) => {
   const [quantity, setQuantity] = useState(1);
   const [isAdded, setIsAdded] = useState(false);
 
-  const { handleAddToCart } = useCartStore();
+  const { handleAddToCart, cartItems } = useCartStore();
 
   const { price, discount } = product;
   const finalPrice = price - (price * discount) / 100;
@@ -48,9 +48,15 @@ const ProductCard = ({ product }: Props) => {
       }, 2000);
     }
   };
+  useEffect(() => {
+    console.log(cartItems);
+  }, [cartItems]);
 
   const incrementQuantity = () => {
     setQuantity((prev) => prev + 1);
+    const updatedProduct = {...product, quantity}
+    handleAddToCart(product)
+
   };
 
   const decrementQuantity = () => {
@@ -120,10 +126,11 @@ const ProductCard = ({ product }: Props) => {
         {/* Stock Status */}
         <div className="flex items-center justify-between">
           <Badge
-            className={`text-xs ${product.inStock
-              ? "bg-green-100 text-green-800"
-              : "bg-red-100 text-red-800"
-              }`}
+            className={`text-xs ${
+              product.inStock
+                ? "bg-green-100 text-green-800"
+                : "bg-red-100 text-red-800"
+            }`}
           >
             {product.inStock ? "موجود" : "ناموجود"}
           </Badge>
@@ -171,11 +178,12 @@ const ProductCard = ({ product }: Props) => {
             {/* Add to Cart Button */}
             <Button
               onClick={onAddToCart}
-              className={`w-full ${isAdded
-                ? "bg-green-600 hover:bg-green-700"
-                : "bg-blue-600 hover:bg-blue-700"
-                }`}
-              disabled={isAdded}
+              className={`w-full ${
+                isAdded
+                  ? "bg-green-600 hover:bg-green-700"
+                  : "bg-blue-600 hover:bg-blue-700"
+              }`}
+              disabled={isAdded || !product.inStock}
               size="lg"
             >
               {isAdded ? (

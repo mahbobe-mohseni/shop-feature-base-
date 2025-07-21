@@ -1,12 +1,11 @@
-// import ProductsList from '@/features/products/components/products-list'
-import { productsMockData } from "@/data/products";
-import ProductCard from "@/features/products/components/product-card";
 import ProductsList from "@/features/products/components/products-list";
 import React from "react";
 
 const products = () => {
   return (
-    <ProductsList />
+    <div className="p-6">
+      <ProductsList />
+    </div>
   );
 };
 
