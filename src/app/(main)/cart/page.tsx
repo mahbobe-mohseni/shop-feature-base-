@@ -18,21 +18,9 @@ import {
   ArrowRight,
 } from "lucide-react";
 import { useCartStore } from "@/store/useCartStore";
-
-interface CartItem {
-  id: string;
-  name: string;
-  partNumber: string;
-  price: number;
-  quantity: number;
-  image: string;
-  inStock: boolean;
-  category: string;
-}
+import { setOrder } from "@/services/order";
 
 export default function Cart() {
-  
-
   const { cartItems, handleAddToCart, handleRemoveOfCart } = useCartStore();
 
   const [promoCode, setPromoCode] = useState("");
@@ -55,13 +43,30 @@ export default function Cart() {
     }
   };
 
-  const subtotal = cartItems.reduce((sum:number, item:any) => sum + item.price * item.quantity, 0)
-  const discount = appliedPromo ? subtotal * 0.1 : 0
-  const shipping =subtotal > 500000 ? 0 : 50000
-  const total = subtotal - discount + shipping
+  const subtotal = cartItems.reduce(
+    (sum: number, item: any) => sum + item.price * item.quantity,
+    0
+  );
+  const discount = appliedPromo ? subtotal * 0.1 : 0;
+  const shipping = subtotal > 500000 ? 0 : 50000;
+  const total = subtotal - discount + shipping;
 
   const formatPrice = (price: number) => {
     return new Intl.NumberFormat("fa-IR").format(price) + " تومان";
+  };
+
+  const onSubmit = async () => {
+    const products = cartItems.map((item: any) => {
+      return {
+        productId: item._id,
+        quantity: item.quantity,
+      };
+    });
+    const totalPrice = cartItems.reduce((acc: number, cur: any) => {
+      return acc + cur.price * cur.quantity;
+    }, 0);
+    const payload={products,totalPrice}
+    await setOrder(payload)
   };
 
   return (
@@ -269,9 +274,12 @@ export default function Cart() {
                     <span className="text-blue-600">{formatPrice(total)}</span>
                   </div>
 
-                  <Button className="w-full bg-blue-600 hover:bg-blue-700 text-lg py-3">
+                  <Button
+                    onClick={onSubmit}
+                    className="w-full bg-blue-600 hover:bg-blue-700 text-lg py-3"
+                  >
                     <CreditCard className="h-5 w-5 mr-2" />
-                    ادامه خرید
+                    نهایی کردن سفارش
                   </Button>
                 </CardContent>
               </Card>
