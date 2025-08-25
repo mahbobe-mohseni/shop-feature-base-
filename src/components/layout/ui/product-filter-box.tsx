@@ -149,7 +149,7 @@ export default function ProductFilterBox() {
             )}
           </div>
         </CardHeader>
-        <CardContent className="space-y-4">
+        <CardContent className="space-y-4 overflow-y-auto max-h-[calc(100vh_-_300px)]">
           <div className="space-y-2">
             <Label htmlFor="search">جستجوی قطعات</Label>
             <div className="relative">

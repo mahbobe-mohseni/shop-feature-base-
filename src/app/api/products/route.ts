@@ -12,7 +12,7 @@ export async function GET() {
     // await Product.insertMany(productsMockData)
 
     // find user
-    const products = await Product.find();
+    const products = await Product.find().limit(10);
 
     return NextResponse.json(
       { data: products, state: true, message: "عملیات با موفقیت انجام شد" },
