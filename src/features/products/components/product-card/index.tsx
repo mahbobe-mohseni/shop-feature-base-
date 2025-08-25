@@ -96,7 +96,7 @@ const ProductCard = ({ product }: Props) => {
         {/* Product Image */}
         <div className="relative w-full h-40 rounded-lg">
           <Image
-            src={product.imageUrl || "/placeholder.svg"}
+            src={product.imageUrl || "/images/new.jpg"}
             alt={product.name}
             fill
             className="object-cover rounded-lg"
@@ -107,7 +107,7 @@ const ProductCard = ({ product }: Props) => {
         <div className="flex items-center gap-2 w-full bg-gray-300 p-2 rounded-lg">
           {discount > 0 ? (
             <>
-              <span className="font-bold line-through text-red-500">
+              <span className="font-bold line-through text-red-500 hidden">
                 {formatPrice(product.price)}
               </span>
               <span className="font-bold text-green-600">
@@ -118,9 +118,10 @@ const ProductCard = ({ product }: Props) => {
               </Badge>
             </>
           ) : (
-            <span className="font-bold">{formatPrice(product.price)}</span>
+            <span className="font-bold hidden">{formatPrice(product.price)}</span>
           )}
-          <span className="text-sm text-gray-600">تومان</span>
+          <span className="text-sm text-gray-600 hidden">تومان</span>
+          <span className="text-sm text-gray-600 text-center w-full">جهت استعلام قیمت تماس بگیرید</span>
         </div>
 
         {/* Stock Status */}

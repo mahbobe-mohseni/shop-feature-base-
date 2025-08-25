@@ -9,10 +9,10 @@ const Page = () => {
       <BeautifulSlider />
 
       {/* products section */}
-      <div className="flex w-full items-start md:flex-row flex-col justify-start gap-6 rtl px-4 pt-10">
-        
+      <div className="flex w-full items-start md:flex-row flex-col justify-between gap-4 rtl px-4 pt-10 bg-background sticky top-[225px]">
+
         {/* desktop filters */}
-        <div className="min-w-sm lg:block hidden">
+        <div className="min-w-sm lg:block sticky top-[225px] hidden">
           <ProductFilterBox />
         </div>
 
