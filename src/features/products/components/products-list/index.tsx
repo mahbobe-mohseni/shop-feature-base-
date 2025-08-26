@@ -3,7 +3,9 @@
 import React, { useEffect, useState } from "react";
 import { getProducts } from "@/services";
 import dynamic from "next/dynamic";
-const ProductCard = dynamic(()=> import ("../product-card"),) ;
+import { useProductStore } from "@/store/useProductStore";
+import { ProductType } from "@/types";
+const ProductCard = dynamic(() => import("../product-card"));
 
 const LoadingCard = () => {
   return (
@@ -39,20 +41,21 @@ const LoadingCard = () => {
 };
 
 const ProductsList = () => {
-  const [products, setProducts] = useState([]);
+  // get products and action set products of store
+  const { products, handleSetProducts, loading, handleSetLoading } =
+    useProductStore();
 
-  const [loading, setLoading] = useState(true);
-  
+  // get products of database and set to store
   const handlGetProducts = async () => {
     try {
-      setLoading(true);
+      handleSetLoading(true);
       const { state, data } = await getProducts();
       if (state) {
-        setProducts(data);
+        handleSetProducts(data);
       }
     } catch (error) {
     } finally {
-      setLoading(false);
+      handleSetLoading(false);
     }
   };
 
@@ -62,13 +65,13 @@ const ProductsList = () => {
 
   return loading ? (
     <div className="flex items-center justify-strat gap-6 w-full flex-wrap">
-      <LoadingCard/>
-      <LoadingCard/>
-      <LoadingCard/>
+      <LoadingCard />
+      <LoadingCard />
+      <LoadingCard />
     </div>
   ) : (
     <div className="flex items-center justify-start gap-6 flex-wrap m-auto w-full">
-      {products.map((item, index) => {
+      {products.map((item: ProductType, index) => {
         return <ProductCard key={index} product={item} />;
       })}
     </div>

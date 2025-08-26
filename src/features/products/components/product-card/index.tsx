@@ -8,22 +8,23 @@ import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { ShoppingCart, Plus, Minus, Check } from "lucide-react";
 import { useCartStore } from "@/store/useCartStore";
+import { ProductType } from "@/types";
 
-interface Product {
-  id: number;
-  name: string;
-  price: number;
-  imageUrl: string;
-  discount: number;
-  description?: string;
-  // isNew: boolean;
-  inStock: boolean;
-  partNumber?: string;
-  category?: string;
-}
+// interface Product {
+//   id: number;
+//   name: string;
+//   price: number;
+//   imageUrl: string;
+//   discount: number;
+//   description?: string;
+//   // isNew: boolean;
+//   inStock: boolean;
+//   partNumber?: string;
+//   category?: string;
+// }
 
 interface Props {
-  product: Product;
+  product: ProductType;
 }
 
 const ProductCard = ({ product }: Props) => {
@@ -67,7 +68,7 @@ const ProductCard = ({ product }: Props) => {
   };
 
   return (
-    <Card className="w-full h-[500px] max-w-sm bg-muted p-4 rounded-2xl shadow-md text-right hover:shadow-lg transition-shadow mb-8">
+    <Card className="w-full h-max max-w-sm bg-muted p-4 rounded-2xl shadow-md text-right hover:shadow-lg transition-shadow mb-8">
       <CardContent className="flex flex-col gap-4 px-0">
         {/* Product Header */}
         <div>
@@ -95,7 +96,7 @@ const ProductCard = ({ product }: Props) => {
         {/* Product Image */}
         <div className="relative w-full h-40 rounded-lg">
           <Image
-            src={product.imageUrl || "/images/new.jpg"}
+            src={product.imageUrl || "/images/slider1.jpg"}
             alt={product.name}
             fill
             className="object-cover rounded-lg"
@@ -122,9 +123,17 @@ const ProductCard = ({ product }: Props) => {
             </span>
           )}
           <span className="text-sm text-gray-600 hidden">تومان</span>
-          <span className="text-sm text-gray-600 text-center w-full">
-            جهت استعلام قیمت تماس بگیرید
-          </span>
+          <div className="flex flex-col items-center justify-center w-full space-y-1">
+            <span className="text-sm text-gray-600 text-center">
+              جهت استعلام قیمت تماس بگیرید
+            </span>
+            <a
+              href="tel:03921616821"
+              className="text-blue-600 font-bold hover:underline"
+            >
+              03921616821
+            </a>
+          </div>
         </div>
 
         {/* Stock Status */}
@@ -144,7 +153,7 @@ const ProductCard = ({ product }: Props) => {
         </div>
 
         {/* Add to Cart Button - Always Visible */}
-        <div className="mt-4 pt-4 border-t border-gray-200">
+        <div className="mt-4 pt-4 border-t border-gray-200 hidden">
           <div className="space-y-3">
             {/* Quantity Selector */}
             <div className="flex items-center justify-center gap-3">

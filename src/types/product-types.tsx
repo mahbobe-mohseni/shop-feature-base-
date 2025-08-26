@@ -1,10 +1,12 @@
-export interface ProductState {
-  categories: string[];
-  brands: string[];
-  priceRange: [number, number];
-  rating: number;
+export interface ProductType {
+  name: string;
+  description: string | null;
+  category: string,
+  price: number;
+  discount: number;
+  partNumber: number | string;
+  imageUrl: string | null;
+  isNew: boolean;
   inStock: boolean;
-  onSale: boolean;
-  colors: string[];
-  searchTerm: string;
+  createdAt: string | null;
 }

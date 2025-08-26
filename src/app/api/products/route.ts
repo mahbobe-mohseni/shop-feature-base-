@@ -4,16 +4,22 @@ import db from "@/lib/db";
 import Product from "models/Product";
 import { productsMockData } from "@/data";
 
-export async function GET() {
+export async function GET(request: Request) {
   try {
     // connect to database
     await db.connect();
 
     // await Product.insertMany(productsMockData)
 
-    // find user
-    const products = await Product.find().limit(10);
+       // گرفتن query string
+    const { searchParams } = new URL(request.url);
+    const q = searchParams.get("q") || ""; // مقدار query کاربر
 
+    // find products
+    const products = await Product.find({
+      name: { $regex: q, $options: "i" }, // جستجوی نام شامل متن وارد شده (case-insensitive)
+    }).limit(10);
+    
     return NextResponse.json(
       { data: products, state: true, message: "عملیات با موفقیت انجام شد" },
       { status: 200 }

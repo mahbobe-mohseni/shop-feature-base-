@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { FormEvent, useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
@@ -27,9 +27,10 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 import { useCartStore } from "@/store/useCartStore";
-import { getCurrentUser, logout } from "@/services";
+import { getCurrentUser, getProducts, logout } from "@/services";
 import { useCurrentUserStore } from "@/store/useCurrentUserStore";
 import { UserType } from "@/types";
+import { useProductStore } from "@/store/useProductStore";
 
 export default function Header() {
   const { currentUser, handelSetCurrentUser } = useCurrentUserStore();
@@ -59,6 +60,34 @@ export default function Header() {
   ];
 
   const { cartItems } = useCartStore();
+
+  const { handleSetProducts, handleSetLoading } = useProductStore();
+  const handlGetProducts = async (query: string) => {
+    try {
+      handleSetLoading(true);
+      const { state, data } = await getProducts(query);
+      if (state) {
+        handleSetProducts(data);
+      }
+    } catch (error) {
+    } finally {
+      handleSetLoading(false);
+    }
+  };
+
+  const [query, setquery] = useState("");
+  const handleOnChangeSearchInput = (e: FormEvent) => {
+    e.preventDefault();
+    const inputValue = e.target?.value;
+    setquery(inputValue);
+  };
+
+  useEffect(() => {
+    const debounce = setTimeout(() => {
+      handlGetProducts(query);
+    }, 500);
+    return () => clearTimeout(debounce);
+  }, [query]);
 
   return (
     <header className="bg-white shadow-lg sticky top-0 z-50">
@@ -119,6 +148,7 @@ export default function Header() {
                   type="text"
                   placeholder="جستجو بر اساس شماره قطعه، مدل یا توضیح..."
                   className="rounded-none border-x-0 flex-1"
+                  onChange={handleOnChangeSearchInput}
                 />
                 <Button className="rounded-r-none bg-blue-600 hover:bg-blue-700">
                   <Search className="h-4 w-4" />
@@ -150,7 +180,11 @@ export default function Header() {
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="center">
                   <DropdownMenuItem>
-                    <Link prefetch={true} className="h-full w-full" href="/auth/register">
+                    <Link
+                      prefetch={true}
+                      className="h-full w-full"
+                      href="/auth/register"
+                    >
                       پروفایل
                     </Link>
                   </DropdownMenuItem>
@@ -227,7 +261,8 @@ export default function Header() {
                       <h3 className="font-semibold mb-4">منوی اصلی</h3>
                       <div className="space-y-3">
                         {navItems.map((item, index) => (
-                          <Link prefetch={true}
+                          <Link
+                            prefetch={true}
                             key={index}
                             href={item.href}
                             className="block text-gray-600 hover:text-blue-600 py-2 border-b border-gray-100"
@@ -268,7 +303,8 @@ export default function Header() {
             {/* منوی اصلی */}
             <nav className="flex items-center space-x-8">
               {navItems.map((item, index) => (
-                <Link prefetch={true}
+                <Link
+                  prefetch={true}
                   key={index}
                   href={item.href}
                   className="text-gray-700 hover:text-blue-600 font-medium px-3 py-2 rounded-md transition-colors"

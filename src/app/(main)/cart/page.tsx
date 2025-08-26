@@ -66,8 +66,8 @@ export default function Cart() {
     const totalPrice = cartItems.reduce((acc: number, cur: any) => {
       return acc + cur.price * cur.quantity;
     }, 0);
-    const payload = { products, totalPrice }
-    await setOrder(payload)
+    const payload = { products, totalPrice };
+    await setOrder(payload);
   };
 
   return (
@@ -116,8 +116,9 @@ export default function Cart() {
                       <Image
                         src={item.imageUrl || "/images/new.jpg"}
                         alt={item.name}
-                        fill
-                        className="w-20 h-20 object-cover rounded-lg border"
+                        width={20}
+                        height={20}
+                        className="object-cover w-20 h-20"
                       />
                       {/* <img
                         src={item.imageUrl || "/placeholder.svg"}
