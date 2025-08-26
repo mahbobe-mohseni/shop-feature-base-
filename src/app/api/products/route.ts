@@ -19,12 +19,10 @@ export async function GET() {
       { status: 200 }
     );
   } catch (error: unknown) {
+    console.log(error);
     return NextResponse.json(
       { data: null, state: false, message: "خطایی در سمت سرور رخ داده است" },
       { status: 500 }
     );
-  } finally {
-    // disconnect from database
-    await db.destroyed();
   }
 }

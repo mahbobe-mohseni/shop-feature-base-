@@ -16,7 +16,7 @@ interface Product {
   imageUrl: string;
   discount: number;
   description?: string;
-  isNew: boolean;
+  // isNew: boolean;
   inStock: boolean;
   partNumber?: string;
   category?: string;
@@ -54,9 +54,8 @@ const ProductCard = ({ product }: Props) => {
 
   const incrementQuantity = () => {
     setQuantity((prev) => prev + 1);
-    const updatedProduct = {...product, quantity}
-    handleAddToCart(product)
-
+    const updatedProduct = { ...product, quantity };
+    handleAddToCart(updatedProduct);
   };
 
   const decrementQuantity = () => {
@@ -74,11 +73,11 @@ const ProductCard = ({ product }: Props) => {
         <div>
           <div className="flex justify-between items-start mb-2">
             <h2 className="text-xl font-bold text-nowrap">{product.name}</h2>
-            {product.isNew && (
+            {/* {product.isNew && (
               <Badge className="bg-green-100 text-green-800 text-xs">
                 جدید
               </Badge>
-            )}
+            )} */}
           </div>
           <div className="relative overflow-hidden w-full h-6">
             <p className="absolute whitespace-nowrap animate-loop text-sm text-muted-foreground">
@@ -118,10 +117,14 @@ const ProductCard = ({ product }: Props) => {
               </Badge>
             </>
           ) : (
-            <span className="font-bold hidden">{formatPrice(product.price)}</span>
+            <span className="font-bold hidden">
+              {formatPrice(product.price)}
+            </span>
           )}
           <span className="text-sm text-gray-600 hidden">تومان</span>
-          <span className="text-sm text-gray-600 text-center w-full">جهت استعلام قیمت تماس بگیرید</span>
+          <span className="text-sm text-gray-600 text-center w-full">
+            جهت استعلام قیمت تماس بگیرید
+          </span>
         </div>
 
         {/* Stock Status */}
@@ -135,9 +138,9 @@ const ProductCard = ({ product }: Props) => {
           >
             {product.inStock ? "موجود" : "ناموجود"}
           </Badge>
-          <span className="text-sm text-muted-foreground">
+          {/* <span className="text-sm text-muted-foreground">
             {product.isNew ? "محصول نو" : "محصول دست دوم"}
-          </span>
+          </span> */}
         </div>
 
         {/* Add to Cart Button - Always Visible */}

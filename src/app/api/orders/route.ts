@@ -31,8 +31,5 @@ export async function POST(req: Request) {
       { data: null, state: false, message: "خطایی در سمت سرور رخ داده است" },
       { status: 500 }
     );
-  } finally {
-    // disconnect from database
-    await db.destroyed();
   }
 }

@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { Search, X, Filter, Star } from "lucide-react";
+import { Search, X, Filter } from "lucide-react";
 
 import {
   Accordion,
@@ -58,15 +58,6 @@ export default function ProductFilterBox() {
     }));
   };
 
-  const handleColorChange = (color: string, checked: boolean) => {
-    setFilters((prev) => ({
-      ...prev,
-      colors: checked
-        ? [...prev.colors, color]
-        : prev.colors.filter((c) => c !== color),
-    }));
-  };
-
   const clearAllFilters = () => {
     setFilters({
       categories: [],
@@ -114,7 +105,7 @@ export default function ProductFilterBox() {
   }
 
   return (
-    <div className="w-full">
+    <div className="w-full pb-8">
       <div className="lg:hidden mb-4">
         <Button
           variant="outline"
@@ -333,8 +324,12 @@ export default function ProductFilterBox() {
             </AccordionItem>
           </Accordion>
 
-          <div className="pt-4">
-            <Button className="w-full" size="lg">
+          <div className="pt-4 sticky bottom-0 flex items-center gap-2 bg-white">
+            <Button className="cursor-pointer" size="lg" variant="outline">
+              پاک کردن همه
+              
+            </Button>
+            <Button className="flex-1 cursor-pointer" size="lg">
               اعمال فیلترها
               {getActiveFiltersCount > 0 && (
                 <Badge

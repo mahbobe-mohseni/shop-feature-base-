@@ -19,6 +19,7 @@ import {
 } from "lucide-react";
 import { useCartStore } from "@/store/useCartStore";
 import { setOrder } from "@/services/order";
+import Image from "next/image";
 
 export default function Cart() {
   const { cartItems, handleAddToCart, handleRemoveOfCart } = useCartStore();
@@ -65,7 +66,7 @@ export default function Cart() {
     const totalPrice = cartItems.reduce((acc: number, cur: any) => {
       return acc + cur.price * cur.quantity;
     }, 0);
-    const payload={products,totalPrice}
+    const payload = { products, totalPrice }
     await setOrder(payload)
   };
 
@@ -112,11 +113,17 @@ export default function Cart() {
                   <CardContent className="p-6">
                     <div className="flex items-center gap-4">
                       {/* Product Image */}
-                      <img
+                      <Image
+                        src={item.imageUrl || "/images/new.jpg"}
+                        alt={item.name}
+                        fill
+                        className="w-20 h-20 object-cover rounded-lg border"
+                      />
+                      {/* <img
                         src={item.imageUrl || "/placeholder.svg"}
                         alt={item.name}
                         className="w-20 h-20 object-cover rounded-lg border"
-                      />
+                      /> */}
 
                       {/* Product Info */}
                       <div className="flex-1">

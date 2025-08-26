@@ -1,12 +1,24 @@
 import mongoose from "mongoose";
 
+let isConnected = false;
+
 async function connect() {
-  await mongoose.connect("mongodb://127.0.0.1:27017/shop-feature-based");
-  console.log("connected to db.");
+  if (isConnected) {
+    return;
+  }
+
+  await mongoose.connect(process.env.MONGODB_URI!, {
+    bufferCommands: false,
+  });
+
+  isConnected = true;
+  console.log("✅ Connected to MongoDB");
 }
+
 async function destroyed() {
   await mongoose.disconnect();
-  console.log("disconnected db.");
+  isConnected = false;
+  console.log("❌ Disconnected from MongoDB");
 }
 
 const db = { connect, destroyed };
