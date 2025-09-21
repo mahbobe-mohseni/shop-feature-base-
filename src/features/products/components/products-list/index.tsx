@@ -1,10 +1,10 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { getProducts } from "@/services";
 import dynamic from "next/dynamic";
 import { useProductStore } from "@/store/useProductStore";
-import { ProductType } from "@/types";
+import { ProductType, ResponseType } from "@/types";
 const ProductCard = dynamic(() => import("../product-card"));
 
 const LoadingCard = () => {
@@ -46,21 +46,23 @@ const ProductsList = () => {
     useProductStore();
 
   // get products of database and set to store
-  const handlGetProducts = async () => {
+  const handleGetProducts = async () => {
     try {
       handleSetLoading(true);
-      const { state, data } = await getProducts();
-      if (state) {
+      const { state, data } = await getProducts({
+        page: 1,
+        q: "",
+      }) as ResponseType<ProductType[]>;
+      if (state && data) {
         handleSetProducts(data);
       }
-    } catch (error) {
     } finally {
       handleSetLoading(false);
     }
   };
 
   useEffect(() => {
-    handlGetProducts();
+    handleGetProducts();
   }, []);
 
   return loading ? (

@@ -2,7 +2,6 @@
 import { NextResponse } from "next/server";
 import db from "@/lib/db";
 import Product from "models/Product";
-import { productsMockData } from "@/data";
 
 export async function GET(request: Request) {
   try {
@@ -11,15 +10,18 @@ export async function GET(request: Request) {
 
     // await Product.insertMany(productsMockData)
 
-       // گرفتن query string
     const { searchParams } = new URL(request.url);
     const q = searchParams.get("q") || ""; // مقدار query کاربر
-
+    const page = searchParams.get("page") || 1;
+    const pageNumber = +page;
+    const limit = 20;
     // find products
     const products = await Product.find({
-      name: { $regex: q, $options: "i" }, // جستجوی نام شامل متن وارد شده (case-insensitive)
-    }).limit(10);
-    
+      name: { $regex: q, $options: "i" },
+    })
+      .limit(limit)
+      .skip((pageNumber - 1) * limit);
+
     return NextResponse.json(
       { data: products, state: true, message: "عملیات با موفقیت انجام شد" },
       { status: 200 }
