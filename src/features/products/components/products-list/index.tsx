@@ -102,14 +102,14 @@ const ProductsList = () => {
   return (
     <div className="w-full">
       {loading ? (
-        <div className="flex items-center justify-start gap-6 w-full flex-wrap">
-          <LoadingCard />
-          <LoadingCard />
-          <LoadingCard />
+        <div className="flex items-center justify-center gap-6 flex-wrap m-auto w-full">
+          {[...Array(8)].map((item, index) => {
+            return <LoadingCard key={index} />
+          })}
         </div>
       ) : (
         <>
-          <div className="flex items-center justify-start gap-6 flex-wrap m-auto w-full">
+          <div className="flex items-center justify-center gap-6 flex-wrap m-auto w-full">
             {products.map((item: ProductType, index) => {
               return <ProductCard key={index} product={item} />
             })}

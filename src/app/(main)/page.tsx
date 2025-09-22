@@ -12,15 +12,15 @@ const Page = () => {
       <div className="flex w-full items-start md:flex-row flex-col justify-between gap-4 rtl px-4 pt-10 bg-background sticky top-[225px]">
 
         {/* desktop filters */}
-        <div className="min-w-sm lg:block sticky top-[225px] hidden">
+        {/* <div className="min-w-sm lg:block sticky top-[225px] hidden">
           <ProductFilterBox />
-        </div>
+        </div> */}
 
         <div className="flex flex-col gap-5">
           {/* mobile filters */}
-          <div className="lg:hidden">
+          {/* <div className="lg:hidden">
             <ProductFilterBox />
-          </div>
+          </div> */}
 
           {/* products list */}
           <ProductsList />
