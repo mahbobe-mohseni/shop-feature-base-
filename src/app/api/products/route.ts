@@ -8,22 +8,34 @@ export async function GET(request: Request) {
     // connect to database
     await db.connect();
 
-    // await Product.insertMany(productsMockData)
-
     const { searchParams } = new URL(request.url);
     const q = searchParams.get("q") || ""; // مقدار query کاربر
-    const page = searchParams.get("page") || 1;
-    const pageNumber = +page;
+    const page = parseInt(searchParams.get("page") || "1", 10);
     const limit = 20;
-    // find products
+
+    const totalProducts = await Product.countDocuments({
+      name: { $regex: q, $options: "i" },
+    });
+
+    const totalPages = Math.ceil(totalProducts / limit);
+
     const products = await Product.find({
       name: { $regex: q, $options: "i" },
     })
       .limit(limit)
-      .skip((pageNumber - 1) * limit);
+      .skip((page - 1) * limit);
 
     return NextResponse.json(
-      { data: products, state: true, message: "عملیات با موفقیت انجام شد" },
+      {
+        data: products,
+        state: true,
+        message: "عملیات با موفقیت انجام شد",
+        pagination: {
+          currentPage: page,
+          totalPages,
+          totalProducts,
+        },
+      },
       { status: 200 }
     );
   } catch (error: unknown) {

@@ -1,11 +1,13 @@
-"use client";
+"use client"
 
-import React, { useEffect } from "react";
-import { getProducts } from "@/services";
-import dynamic from "next/dynamic";
-import { useProductStore } from "@/store/useProductStore";
-import { ProductType, ResponseType } from "@/types";
-const ProductCard = dynamic(() => import("../product-card"));
+import { useEffect, useState } from "react"
+import { getProducts } from "@/services"
+import dynamic from "next/dynamic"
+import { useProductStore } from "@/store/useProductStore"
+import type { ProductType, ResponseType } from "@/types"
+import Pagination from "./pagination"
+
+const ProductCard = dynamic(() => import("../product-card"))
 
 const LoadingCard = () => {
   return (
@@ -37,47 +39,100 @@ const LoadingCard = () => {
       </div>
       <span className="sr-only">Loading...</span>
     </div>
-  );
-};
+  )
+}
+
+type GetProductsRequestType = {
+  page: number
+  q: string
+}
 
 const ProductsList = () => {
   // get products and action set products of store
-  const { products, handleSetProducts, loading, handleSetLoading } =
-    useProductStore();
+  const { products, handleSetProducts, loading, handleSetLoading } = useProductStore()
 
-  // get products of database and set to store
-  const handleGetProducts = async () => {
+  const [currentPage, setCurrentPage] = useState(1)
+  const [totalPages, setTotalPages] = useState(1)
+  const [totalProducts, setTotalProducts] = useState(0)
+
+  const handleGetProducts = async (page = 1) => {
     try {
-      handleSetLoading(true);
-      const { state, data } = await getProducts({
-        page: 1,
+      handleSetLoading(true)
+      const response = (await getProducts({
+        page: page,
         q: "",
-      }) as ResponseType<ProductType[]>;
+      } as GetProductsRequestType) as ResponseType<ProductType[]>)
+
+      const { state, data, pagination } = response
+
       if (state && data) {
-        handleSetProducts(data);
+        handleSetProducts(data)
+
+        if (pagination) {
+          setTotalPages(pagination.totalPages)
+          setTotalProducts(pagination.totalProducts)
+          setCurrentPage(pagination.currentPage)
+        } else if (totalPages) {
+          setTotalPages(totalPages)
+          setTotalProducts(totalPages || data.length)
+          setCurrentPage(page)
+        } else {
+          // Fallback if API doesn't provide pagination info
+          setTotalPages(1)
+          setTotalProducts(data.length)
+          setCurrentPage(1)
+        }
       }
     } finally {
-      handleSetLoading(false);
+      handleSetLoading(false)
     }
-  };
+  }
+
+  const handlePageChange = (page: number = 1) => {
+    setCurrentPage(page)
+    handleGetProducts(page)
+    // Scroll to top when page changes
+    window.scrollTo({ top: 0, behavior: "smooth" })
+  }
 
   useEffect(() => {
-    handleGetProducts();
-  }, []);
+    handleGetProducts(1)
+  }, [])
 
-  return loading ? (
-    <div className="flex items-center justify-strat gap-6 w-full flex-wrap">
-      <LoadingCard />
-      <LoadingCard />
-      <LoadingCard />
-    </div>
-  ) : (
-    <div className="flex items-center justify-start gap-6 flex-wrap m-auto w-full">
-      {products.map((item: ProductType, index) => {
-        return <ProductCard key={index} product={item} />;
-      })}
-    </div>
-  );
-};
+  return (
+    <div className="w-full">
+      {loading ? (
+        <div className="flex items-center justify-start gap-6 w-full flex-wrap">
+          <LoadingCard />
+          <LoadingCard />
+          <LoadingCard />
+        </div>
+      ) : (
+        <>
+          <div className="flex items-center justify-start gap-6 flex-wrap m-auto w-full">
+            {products.map((item: ProductType, index) => {
+              return <ProductCard key={index} product={item} />
+            })}
+          </div>
 
-export default ProductsList;
+          <div className="flex flex-col gap-2 border border-gray-200 p-4 rounded-lg bg-white sticky bottom-0">
+            <Pagination
+              currentPage={currentPage}
+              totalPages={totalPages}
+              onPageChange={handlePageChange}
+              loading={loading}
+            />
+
+            {totalProducts > 0 && (
+              <div className="text-center mt-4 text-sm text-muted-foreground hidden">
+                نمایش {products.length} محصول از {totalProducts} محصول
+              </div>
+            )}
+          </div>
+        </>
+      )}
+    </div>
+  )
+}
+
+export default ProductsList
