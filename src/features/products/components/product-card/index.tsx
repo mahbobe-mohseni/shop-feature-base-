@@ -123,29 +123,28 @@ const ProductCard = ({ product }: Props) => {
             </span>
           )}
           <span className="text-sm text-gray-600 hidden">تومان</span>
-          <div className="flex flex-col items-center justify-center w-full space-y-1">
+          <div className="flex flex-col items-center justify-center gap-2 w-full space-y-1">
             <span className="text-sm text-gray-600 text-center">
               جهت استعلام قیمت تماس بگیرید
             </span>
             <a
-              href="tel:03921616821"
-              className="text-blue-600 font-bold hover:underline"
+              href={`tel:${process.env.NEXT_PUBLIC_SUPPORTER_PHONE}`}
+              className="text-blue-600 text-xl font-bold hover:underline"
             >
-              03921616821
+              {process.env.NEXT_PUBLIC_SUPPORTER_PHONE}
             </a>
           </div>
         </div>
 
         {/* Stock Status */}
-        <div className="flex items-center justify-between">
+        <div className="flex items-center justify-center">
           <Badge
-            className={`text-xs ${
-              product.inStock
-                ? "bg-green-100 text-green-800"
-                : "bg-red-100 text-red-800"
-            }`}
+            className={`text-xs ${product.inStock
+                ? "bg-green-200 text-green-800"
+                : "bg-red-200 text-red-800"
+              }`}
           >
-            {product.inStock ? "موجود" : "ناموجود"}
+            {product.inStock ? "موجود می باشد" : "ناموجود است"}
           </Badge>
           {/* <span className="text-sm text-muted-foreground">
             {product.isNew ? "محصول نو" : "محصول دست دوم"}
@@ -191,11 +190,10 @@ const ProductCard = ({ product }: Props) => {
             {/* Add to Cart Button */}
             <Button
               onClick={onAddToCart}
-              className={`w-full ${
-                isAdded
+              className={`w-full ${isAdded
                   ? "bg-green-600 hover:bg-green-700"
                   : "bg-blue-600 hover:bg-blue-700"
-              }`}
+                }`}
               disabled={isAdded || !product.inStock}
               size="lg"
             >
