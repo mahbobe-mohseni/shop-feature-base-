@@ -1,7 +1,7 @@
 export interface ProductType {
   name: string;
   description: string | null;
-  category: string,
+  category: string;
   price: number;
   discount: number;
   partNumber: number | string;
@@ -10,3 +10,8 @@ export interface ProductType {
   inStock: boolean;
   createdAt: string | null;
 }
+
+export type GetProductsRequestType = {
+  page: number;
+  q: string;
+};

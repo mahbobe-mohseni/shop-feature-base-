@@ -1,10 +1,10 @@
 "use client"
 
-import { useEffect, useState } from "react"
+import { useEffect } from "react"
 import { getProducts } from "@/services"
 import dynamic from "next/dynamic"
 import { useProductStore } from "@/store/useProductStore"
-import type { ProductType, ResponseType } from "@/types"
+import type { GetProductsRequestType, ProductType, ResponseType } from "@/types"
 import Pagination from "./pagination"
 
 const ProductCard = dynamic(() => import("../product-card"))
@@ -42,25 +42,20 @@ const LoadingCard = () => {
   )
 }
 
-type GetProductsRequestType = {
-  page: number
-  q: string
-}
+
 
 const ProductsList = () => {
   // get products and action set products of store
-  const { products, handleSetProducts, loading, handleSetLoading } = useProductStore()
+  const { products, handleSetProducts, loading, handleSetLoading, paging, handleSetPaging, searchQuery } = useProductStore()
 
-  const [currentPage, setCurrentPage] = useState(1)
-  const [totalPages, setTotalPages] = useState(1)
-  const [totalProducts, setTotalProducts] = useState(0)
+
 
   const handleGetProducts = async (page = 1) => {
     try {
       handleSetLoading(true)
       const response = (await getProducts({
         page: page,
-        q: "",
+        q: searchQuery,
       } as GetProductsRequestType) as ResponseType<ProductType[]>)
 
       const { state, data, pagination } = response
@@ -69,18 +64,21 @@ const ProductsList = () => {
         handleSetProducts(data)
 
         if (pagination) {
-          setTotalPages(pagination.totalPages)
-          setTotalProducts(pagination.totalProducts)
-          setCurrentPage(pagination.currentPage)
-        } else if (totalPages) {
-          setTotalPages(totalPages)
-          setTotalProducts(totalPages || data.length)
-          setCurrentPage(page)
+          handleSetPaging(pagination)
+
+        } else if (paging.totalPages) {
+          handleSetPaging({
+            currentPage: page,
+            totalPages: paging.totalPages,
+            totalProducts: paging.totalPages || data.length,
+          })
         } else {
           // Fallback if API doesn't provide pagination info
-          setTotalPages(1)
-          setTotalProducts(data.length)
-          setCurrentPage(1)
+          handleSetPaging({
+            currentPage: 1,
+            totalPages: 1,
+            totalProducts: data.length,
+          })
         }
       }
     } finally {
@@ -89,7 +87,11 @@ const ProductsList = () => {
   }
 
   const handlePageChange = (page: number = 1) => {
-    setCurrentPage(page)
+    handleSetPaging({
+      currentPage: page,
+      totalPages: paging.totalPages,
+      totalProducts: paging.totalProducts,
+    })
     handleGetProducts(page)
     // Scroll to top when page changes
     window.scrollTo({ top: 0, behavior: "smooth" })
@@ -117,15 +119,15 @@ const ProductsList = () => {
 
           <div className="flex flex-col gap-2 border border-gray-200 p-4 rounded-lg bg-white sticky bottom-0">
             <Pagination
-              currentPage={currentPage}
-              totalPages={totalPages}
+              currentPage={paging.currentPage}
+              totalPages={paging.totalPages}
               onPageChange={handlePageChange}
               loading={loading}
             />
 
-            {totalProducts > 0 && (
+            {paging.totalProducts > 0 && (
               <div className="text-center mt-4 text-sm text-muted-foreground hidden">
-                نمایش {products.length} محصول از {totalProducts} محصول
+                نمایش {products.length} محصول از {paging.totalProducts} محصول
               </div>
             )}
           </div>

@@ -29,12 +29,14 @@ import Link from "next/link";
 import { useCartStore } from "@/store/useCartStore";
 import { getCurrentUser, getProducts, logout } from "@/services";
 import { useCurrentUserStore } from "@/store/useCurrentUserStore";
-import { UserType } from "@/types";
+import { GetProductsRequestType, ProductType, ResponseType, UserType } from "@/types";
 import { useProductStore } from "@/store/useProductStore";
 
 export default function Header() {
-  const { currentUser, handelSetCurrentUser } = useCurrentUserStore();
+  const { cartItems } = useCartStore();
 
+  const { currentUser, handelSetCurrentUser } = useCurrentUserStore();
+  const { handleSetProducts, handleSetLoading, paging, handleSetPaging, searchQuery, handleSetSearchQuery } = useProductStore();
   useEffect(() => {
     const fetchUser = async () => {
       const user = await getCurrentUser();
@@ -59,35 +61,57 @@ export default function Header() {
     { name: "تماس با ما", href: "/contact-us" },
   ];
 
-  const { cartItems } = useCartStore();
 
-  const { handleSetProducts, handleSetLoading } = useProductStore();
-  const handlGetProducts = async (query: string) => {
+  const handleGetProducts = async (q: string) => {
     try {
-      handleSetLoading(true);
-      const { state, data } = await getProducts(query);
-      if (state) {
-        handleSetProducts(data);
-      }
-    } catch (error) {
-    } finally {
-      handleSetLoading(false);
-    }
-  };
+      handleSetLoading(true)
+      const response = (await getProducts({
+        page: 1,
+        q: searchQuery,
+      } as GetProductsRequestType) as ResponseType<ProductType[]>)
 
-  const [query, setquery] = useState("");
+      const { state, data, pagination } = response
+
+      if (state && data) {
+        handleSetProducts(data)
+
+        if (pagination) {
+          handleSetPaging(pagination)
+
+        } else if (paging.totalPages) {
+          handleSetSearchQuery(q)
+          handleSetPaging({
+            currentPage: 1,
+            totalPages: paging.totalPages,
+            totalProducts: paging.totalPages || data.length,
+          })
+        } else {
+          // Fallback if API doesn't provide pagination info
+          handleSetSearchQuery(q)
+          handleSetPaging({
+            currentPage: 1,
+            totalPages: 1,
+            totalProducts: data.length,
+          })
+        }
+      }
+    } finally {
+      handleSetLoading(false)
+    }
+  }
+
   const handleOnChangeSearchInput = (e: FormEvent) => {
     e.preventDefault();
-    const inputValue = e.target?.value;
-    setquery(inputValue);
+    const inputValue = (e.target as HTMLInputElement).value;
+    handleSetSearchQuery(inputValue);
   };
 
   useEffect(() => {
     const debounce = setTimeout(() => {
-      handlGetProducts(query);
+      handleGetProducts(searchQuery);
     }, 500);
     return () => clearTimeout(debounce);
-  }, [query]);
+  }, [searchQuery]);
 
   return (
     <header className="bg-white shadow-lg sticky top-0 z-50">
@@ -248,6 +272,7 @@ export default function Header() {
                         type="text"
                         placeholder="جستجو قطعات..."
                         className="flex-1"
+                        onChange={handleOnChangeSearchInput}
                       />
                       <Button size="sm" className="bg-blue-600">
                         <Search className="h-4 w-4" />
@@ -287,6 +312,7 @@ export default function Header() {
                 type="text"
                 placeholder="جستجو قطعات..."
                 className="flex-1"
+                onChange={handleOnChangeSearchInput}
               />
               <Button className="bg-blue-600 hover:bg-blue-700">
                 <Search className="h-4 w-4" />

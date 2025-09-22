@@ -1,6 +1,6 @@
 import React from "react";
 import BeautifulSlider from "@/components/layout/ui/BeautifulSlider";
-import ProductFilterBox from "@/components/layout/ui/product-filter-box";
+// import ProductFilterBox from "@/components/layout/ui/product-filter-box";
 import ProductsList from "@/features/products/components/products-list";
 const Page = () => {
   return (
