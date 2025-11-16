@@ -38,7 +38,7 @@ export default function AboutUs() {
   ];
 
   const stats = [
-    { number: "10+", label: "سال سابقه" },
+    { number: "15+", label: "سال سابقه" },
     { number: "5000+", label: "قطعه موجود" },
     { number: "2000+", label: "مشتری راضی" },
     { number: "24/7", label: "پشتیبانی فعال" },
@@ -70,7 +70,7 @@ export default function AboutUs() {
               </h2>
               <div className="space-y-4 text-gray-600">
                 <p>
-                  بیش از ۱۰ سال است که ما منبع اعتماد شما برای خرید لوازم یدکی
+                  بیش از 15 سال است که ما منبع اعتماد شما برای خرید لوازم یدکی
                   وانت‌های نیسان هستیم. می‌دانیم که وانت شما چقدر برای کسب و
                   کارتان مهم است و ما اینجا هستیم تا آن را بدون وقفه نگه داریم.
                 </p>
@@ -232,10 +232,10 @@ export default function AboutUs() {
               </CardHeader>
               <CardContent className="space-y-3">
                 <p className="text-gray-600">
-                  <strong>تلفن:</strong> +1 (555) 123-4567
+                  <strong>تلفن:</strong> 09901130496
                 </p>
                 <p className="text-gray-600">
-                  <strong>واتساپ:</strong> +1 (555) 123-4567
+                  <strong>واتساپ:</strong> 09901130496
                 </p>
                 <p className="text-gray-600">
                   <strong>ایمیل:</strong> parts@nissantruckparts.com
@@ -254,12 +254,9 @@ export default function AboutUs() {
               </CardHeader>
               <CardContent className="space-y-3">
                 <p className="text-gray-600">
-                  خیابان قطعات خودرو، شماره 123
-                  <br />
-                  منطقه صنعتی
-                  <br />
-                  شهر شما، استان 12345
-                </p>
+                  امیرکبیر پاساژ کاشانی خیابان    <br />
+ذ                  <br />
+                 </p>
                 <p className="text-gray-600">
                   <strong>پارکینگ:</strong> پارکینگ رایگان وجود دارد
                 </p>

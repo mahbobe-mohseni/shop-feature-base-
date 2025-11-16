@@ -75,11 +75,11 @@ export default function Footer() {
             <div className="space-y-2">
               <div className="flex items-center gap-2 text-sm">
                 <Phone className="h-4 w-4 text-blue-400" />
-                <span>+1 (555) 123-4567</span>
+                <span>09901130496</span>
               </div>
               <div className="flex items-center gap-2 text-sm">
                 <MessageCircle className="h-4 w-4 text-green-400" />
-                <span>واتساپ: +1 (555) 123-4567</span>
+                <span>واتساپ: 09901130496</span>
               </div>
               <div className="flex items-center gap-2 text-sm">
                 <Mail className="h-4 w-4 text-blue-400" />
@@ -87,7 +87,7 @@ export default function Footer() {
               </div>
               <div className="flex items-center gap-2 text-sm">
                 <MapPin className="h-4 w-4 text-red-400" />
-                <span>خیابان قطعات خودرو، شماره 123</span>
+                <span>خیابان  امیر کبیر پاساژ کاشانی  </span>
               </div>
               <div className="flex items-center gap-2 text-sm">
                 <Clock className="h-4 w-4 text-yellow-400" />
@@ -206,7 +206,7 @@ export default function Footer() {
         {/* پاورقی پایینی */}
         <div className="flex flex-col md:flex-row justify-between items-center gap-4">
           <div className="flex flex-col md:flex-row items-center gap-4 text-sm text-gray-400">
-            <p>&copy; 1403 لوازم یدکی نیسان. تمامی حقوق محفوظ است.</p>
+            <p>&copy; 1403  جهان سایپا. تمامی حقوق محفوظ است.</p>
             <div className="flex gap-4">
               <a href="#" className="hover:text-white transition-colors">
                 حریم خصوصی
@@ -263,7 +263,7 @@ export default function Footer() {
             <div className="flex items-center gap-2">
               <Phone className="h-4 w-4" />
               <span className="text-sm font-medium">
-                خط تماس اضطراری: +1 (555) 911-PART
+                0خط تماس اضطراری:9901130496   
               </span>
             </div>
             <div className="text-xs opacity-90">

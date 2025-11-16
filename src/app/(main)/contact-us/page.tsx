@@ -72,7 +72,7 @@ export default function ContactUs() {
                 </CardHeader>
                 <CardContent>
                   <p className="text-gray-600">
-                    تهران، خیابان شوش
+                    تهران، خیابان امیرکبیر
                     <br />
                     بازار لوازم یدکی
                     <br />
@@ -90,11 +90,11 @@ export default function ContactUs() {
                 </CardHeader>
                 <CardContent>
                   <p className="text-gray-600">
-                    <strong>فروش:</strong> ۰۲۱-۱۲۳۴۵۶۷۸
+                    <strong>فروش:</strong> 09901130496
                     <br />
-                    <strong>پشتیبانی:</strong> ۰۲۱-۱۲۳۴۵۶۷۹
+                    <strong>پشتیبانی:</strong> 09901130496
                     <br />
-                    <strong>مرجوعی:</strong> ۰۲۱-۱۲۳۴۵۶۸۰
+                    <strong>مرجوعی:</strong> 0990130496
                   </p>
                 </CardContent>
               </Card>

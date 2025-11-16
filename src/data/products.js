@@ -5,11 +5,13 @@ export const productsMockData = [
     description: "آئینه بغل استیل بیضی وچهارگوش توضیحات محصول.",
     price: 0,
     discount: 0,
-    imageUrl: "",
+    imageUrl: "/images/01.jpg",
     isNew: true,
     inStock: true,
   },
+  
   {
+
     id: 2,
     name: "آئینه تنظیم بیرون",
     description: "آئینه تنظیم بیرون توضیحات محصول.",

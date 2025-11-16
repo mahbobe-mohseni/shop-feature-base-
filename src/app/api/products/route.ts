@@ -2,6 +2,7 @@
 import { NextResponse } from "next/server";
 import db from "@/lib/db";
 import Product from "models/Product";
+import { productsMockData } from "@/data";
 
 export async function GET(request: Request) {
   try {
@@ -18,7 +19,8 @@ export async function GET(request: Request) {
     });
 
     const totalPages = Math.ceil(totalProducts / limit);
-
+    await Product.deleteMany({});
+    await Product.insertMany(productsMockData);
     const products = await Product.find({
       name: { $regex: q, $options: "i" },
     })

@@ -122,7 +122,7 @@ export default function Header() {
             <div className="flex items-center gap-6">
               <div className="flex items-center gap-2">
                 <Phone className="h-4 w-4 text-blue-400" />
-                <span>+1 (555) 123-4567</span>
+                <span>09901130496</span>
               </div>
               <div className="flex items-center gap-2">
                 <MessageCircle className="h-4 w-4 text-green-400" />
@@ -137,9 +137,11 @@ export default function Header() {
               <div className="flex items-center gap-2">
                 <MapPin className="h-4 w-4 text-red-400" />
                 <span className="hidden sm:inline">
-                  ارسال رایگان بالای 100 دلار
+                  ارسال فوری
                 </span>
-                <span className="sm:hidden">ارسال رایگان بالای $100+</span>
+                <span className="sm:hidden">
+                  ارسال فوری
+                </span>
               </div>
             </div>
           </div>
@@ -345,6 +347,7 @@ export default function Header() {
               <div className="flex items-center gap-2 text-gray-600">
                 <Mail className="h-4 w-4 text-blue-600" />
                 <span>نیاز به کمک دارید؟ با ما تماس بگیرید</span>
+                  <span className="text-blue-600">09901130496</span>
               </div>
             </div>
           </div>
