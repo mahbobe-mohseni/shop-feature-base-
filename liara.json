@@ -1,0 +1,8 @@
+{
+  "app": "car-price-estimate",
+  "port": 3000,
+  "build": {
+    "location": "iran"
+  },
+  "disks": []
+}
