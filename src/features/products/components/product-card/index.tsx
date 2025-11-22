@@ -152,7 +152,7 @@ const ProductCard = ({ product }: Props) => {
         </div>
 
         {/* Add to Cart Button - Always Visible */}
-        <div className="mt-4 pt-4 border-t border-gray-200 hidden">
+        <div className="mt-4 pt-4 border-t border-gray-200">
           <div className="space-y-3">
             {/* Quantity Selector */}
             <div className="flex items-center justify-center gap-3">

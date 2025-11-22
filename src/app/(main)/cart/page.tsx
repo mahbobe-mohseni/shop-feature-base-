@@ -6,6 +6,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
 import { Badge } from "@/components/ui/badge";
+import Invoice from "@/components/invoice/Invoice";
 import {
   Truck,
   Minus,
@@ -22,7 +23,7 @@ import { setOrder } from "@/services/order";
 import Image from "next/image";
 
 export default function Cart() {
-  const { cartItems, handleAddToCart, handleRemoveOfCart } = useCartStore();
+  const { cartItems, handleAddToCart, handleRemoveOfCart, handleResetCart } = useCartStore();
 
   const [promoCode, setPromoCode] = useState("");
   const [appliedPromo, setAppliedPromo] = useState("");
@@ -56,19 +57,68 @@ export default function Cart() {
     return new Intl.NumberFormat("fa-IR").format(price) + " تومان";
   };
 
+  const mockFactorData = {
+    "_id": "69218d1308338479a0775ad3",
+    "userId": {
+      "_id": "69217b0308338479a075e6cb",
+      "phone": "03951616821",
+      "name": "محبوبه",
+      "family": "محسنی"
+    },
+    "products": [
+      {
+        "productId": {
+          "_id": "69218d0a08338479a0774c93",
+          "name": "آئینه بغل استیل بیضی وچهارگوش",
+          "price": 0
+        },
+        "quantity": 1,
+        "_id": "69218d1308338479a0775ad4"
+      },
+      {
+        "productId": {
+          "_id": "69218d0a08338479a0774c94",
+          "name": "آئینه تنظیم بیرون",
+          "price": 0
+        },
+        "quantity": 1,
+        "_id": "69218d1308338479a0775ad5"
+      }
+    ],
+    "totalPrice": 0,
+    "createdAt": "2025-11-22T10:14:43.440Z",
+  }
+
+  const [factorData, setFactorData] = useState<any>(null)
+  const [loading, setLoading] = useState<any>(null)
   const onSubmit = async () => {
-    const products = cartItems.map((item: any) => {
-      return {
-        productId: item._id,
-        quantity: item.quantity,
-      };
-    });
-    const totalPrice = cartItems.reduce((acc: number, cur: any) => {
-      return acc + cur.price * cur.quantity;
-    }, 0);
-    const payload = { products, totalPrice };
-    await setOrder(payload);
+    try {
+      setLoading(true)
+      const products = cartItems.map((item: any) => {
+        return {
+          productId: item._id,
+          quantity: item.quantity,
+        };
+      });
+      const totalPrice = cartItems.reduce((acc: number, cur: any) => {
+        return acc + cur.price * cur.quantity;
+      }, 0);
+      const payload = { products, totalPrice };
+      const data = await setOrder(payload);
+      setFactorData(data)
+      handleResetCart()
+    } catch (error) {
+      console.log("🚀 ~ onSubmit ~ error:", error)
+    }
+    finally {
+      setLoading(false)
+
+    }
   };
+  if (factorData) {
+    return <Invoice data={factorData} />
+
+  }
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -283,11 +333,14 @@ export default function Cart() {
                   </div>
 
                   <Button
+                    isLoading={loading}
                     onClick={onSubmit}
                     className="w-full bg-blue-600 hover:bg-blue-700 text-lg py-3"
                   >
-                    <CreditCard className="h-5 w-5 mr-2" />
-                    نهایی کردن سفارش
+                    {!loading && <CreditCard className="h-5 w-5 mr-2" />}
+                    {
+                      loading ? 'در حال  نهایی کردن سفارش' : ' نهایی کردن سفارش'
+                    }
                   </Button>
                 </CardContent>
               </Card>

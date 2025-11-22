@@ -5,6 +5,7 @@ interface CartStore {
   cartItems: unknown[];
   handleAddToCart: (item: unknown) => void;
   handleRemoveOfCart: (id: number | string) => void;
+  handleResetCart: () => void;
 }
 
 export const useCartStore = create<CartStore>()(
@@ -19,7 +20,8 @@ export const useCartStore = create<CartStore>()(
 
         const itemIndex = cartItems.findIndex(
           (cartItem: unknown) =>
-            (cartItem as { _id: unknown })._id === (item as { _id: unknown })._id
+            (cartItem as { _id: unknown })._id ===
+            (item as { _id: unknown })._id
         );
 
         if (itemIndex !== -1) {
@@ -49,6 +51,11 @@ export const useCartStore = create<CartStore>()(
         );
 
         set({ cartItems: clonedCartItems });
+      },
+      handleResetCart: () => {
+        const { cartItems } = get();
+
+        set({ cartItems: [] });
       },
     }),
     {
