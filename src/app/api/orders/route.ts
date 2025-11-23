@@ -11,7 +11,7 @@ export async function POST(req: Request) {
     // connect to database
     await db.connect();
 
-    const userId = "69217b0308338479a075e6cb";
+    const userId = "6922c45fbd6deabdf55ee481";
 
     // insert order to database
     const order = new Order({
@@ -41,46 +41,47 @@ export async function POST(req: Request) {
     );
   }
 }
-export async function GET(
-  request: Request,
-  { params }: { params: { id: string } }
-) {
+export async function GET(request: Request) {
   try {
-    // Connect to DB
+    const userId = "6922c45fbd6deabdf55ee481";
+
+    // connect to database
     await db.connect();
 
-    const { id } = params;
+    const { searchParams } = new URL(request.url);
+    const page = parseInt(searchParams.get("page") || "1", 10);
+    const limit = 20;
 
-    // Find one order by id
-    const order = await Order.findById(id);
+    const queryCondition = { userId };
 
-    if (!order) {
-      return NextResponse.json(
-        {
-          data: null,
-          state: false,
-          message: "سفارش مورد نظر یافت نشد",
-        },
-        { status: 404 }
-      );
-    }
+    const totalOrders = await Order.countDocuments(queryCondition);
+
+    const totalPages = Math.ceil(totalOrders / limit);
+    const orders = await Order.find(queryCondition)
+      .populate([
+        { path: "userId", select: "name family phone" },
+        { path: "products.productId", select: "name price" },
+      ])
+      .limit(limit)
+      .skip((page - 1) * limit);
 
     return NextResponse.json(
       {
-        data: order,
+        data: orders,
         state: true,
         message: "عملیات با موفقیت انجام شد",
+        pagination: {
+          currentPage: page,
+          totalPages,
+          totalOrders,
+        },
       },
       { status: 200 }
     );
-  } catch (error) {
+  } catch (error: unknown) {
     console.log(error);
     return NextResponse.json(
-      {
-        data: null,
-        state: false,
-        message: "خطایی در سمت سرور رخ داده است",
-      },
+      { data: null, state: false, message: "خطایی در سمت سرور رخ داده است" },
       { status: 500 }
     );
   }

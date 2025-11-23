@@ -1,3 +1,5 @@
+import { ResponseType } from "@/types";
+
 type OrderProduct = {
   productId: string;
   quantitiy: number;
@@ -18,5 +20,15 @@ export const setOrder = async (payload: any): Promise<OrderFormat | null> => {
     body: JSON.stringify(payload),
   });
   const { data } = await res.json();
+  return data;
+};
+export const getOrders = async (params: {
+  page: number;
+  q: string;
+}): Promise<ResponseType<any[]> | null> => {
+  const { page} = params;
+  if (!page) return null;
+  const res = await fetch(`/api/orders?page=${page}`);
+  const data = await res.json();
   return data;
 };

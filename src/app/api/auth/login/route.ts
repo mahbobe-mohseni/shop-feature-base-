@@ -6,18 +6,29 @@ import User from "models/User";
 import { SignJWT } from "jose";
 import { cookies } from "next/headers";
 
-export async function POST(req: Request) { // GET - POST - PUT - PATCH - DELETE
+export async function POST(req: Request) {
+  // GET - POST - PUT - PATCH - DELETE
   const body = await req.json();
   const { phone, password } = body;
 
   try {
     // connect to database
     await db.connect();
-
+ 
     // find user
     const user = await User.findOne({ phone });
+    if (!user) {
+      return NextResponse.json(
+        {
+          data: null,
+          state: false,
+          message: "خطایی در دریافت اطلاعات رخ داده است.",
+        },
+        { status: 400 }
+      );
+    }
     const isPasswordValid = await compare(password, user?.password);
-    if (!user || !isPasswordValid) {
+    if (!isPasswordValid) {
       return NextResponse.json(
         {
           data: null,
@@ -56,6 +67,7 @@ export async function POST(req: Request) { // GET - POST - PUT - PATCH - DELETE
       { status: 200 }
     );
   } catch (error: unknown) {
+    console.log("🚀 ~ POST ~ error:", error);
     return NextResponse.json(
       { data: null, state: false, message: "خطایی در سمت سرور رخ داده است" },
       { status: 500 }

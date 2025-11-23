@@ -214,8 +214,14 @@ export default function Header() {
                       پروفایل
                     </Link>
                   </DropdownMenuItem>
-                  <DropdownMenuItem>پیگیری سفارش</DropdownMenuItem>
-                  <DropdownMenuItem>تاریخچه سفارشات</DropdownMenuItem>
+                  <DropdownMenuItem>
+                    <Link
+                      prefetch={true}
+                      className="h-full w-full"
+                      href="/orders"
+                    >
+                      تاریخچه سفارشات
+                    </Link></DropdownMenuItem>
                   <DropdownMenuItem
                     variant="destructive"
                     onClick={handleLogout}
@@ -347,7 +353,7 @@ export default function Header() {
               <div className="flex items-center gap-2 text-gray-600">
                 <Mail className="h-4 w-4 text-blue-600" />
                 <span>نیاز به کمک دارید؟ با ما تماس بگیرید</span>
-                  <span className="text-blue-600">09901130496</span>
+                <span className="text-blue-600">09901130496</span>
               </div>
             </div>
           </div>
