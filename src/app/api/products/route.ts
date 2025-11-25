@@ -19,8 +19,8 @@ export async function GET(request: Request) {
     });
 
     const totalPages = Math.ceil(totalProducts / limit);
-    await Product.deleteMany({});
-    await Product.insertMany(productsMockData);
+    // await Product.deleteMany({});
+    // await Product.insertMany(productsMockData);
     const products = await Product.find({
       name: { $regex: q, $options: "i" },
     })

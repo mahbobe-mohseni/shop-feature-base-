@@ -1,4 +1,5 @@
 import { ResponseType } from "@/types";
+import { pathOr } from "ramda";
 
 type OrderProduct = {
   productId: string;
@@ -26,7 +27,7 @@ export const getOrders = async (params: {
   page: number;
   q: string;
 }): Promise<ResponseType<any[]> | null> => {
-  const { page} = params;
+  const { page } = params;
   if (!page) return null;
   const res = await fetch(`/api/orders?page=${page}`);
   const data = await res.json();

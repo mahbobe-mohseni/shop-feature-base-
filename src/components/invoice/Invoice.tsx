@@ -38,19 +38,23 @@ export default function Invoice({ data = mockFactorData }:any) {
   const formattedDate = new Date(data.createdAt).toLocaleDateString("fa-IR");
 
   // Build rows to visually match the long empty table in the mock (20 rows)
-  const tableRows = Array.from({ length: 20 }).map((_, i) => {
-    const product = data.products[i];
-    return (
-      <tr key={i} className="h-8">
-        <td className="border px-2 text-center align-middle">{i + 1}</td>
-        <td className="border px-2 align-middle">{product ? product.productId.name : ""}</td>
-        <td className="border px-2 text-center align-middle">{product ? product.quantity : ""}</td>
-        <td className="border px-2 text-center align-middle">{product ? product.productId.price.toLocaleString() : ""}</td>
-        <td className="border px-2 text-center align-middle">{product ? (product.productId.price * product.quantity).toLocaleString() : ""}</td>
-      </tr>
-    );
-  });
+ const tableRows = Array.from({ length: 20 }).map((_, i) => {
+  const product = data.products[i];
 
+  return (
+    <tr key={i} className="h-8">
+      <td className="border px-2 text-center align-middle">{i + 1}</td>
+      <td className="border px-2 align-middle">{product?.productId?.name ?? ""}</td>
+      <td className="border px-2 text-center align-middle">{product?.quantity ?? ""}</td>
+      <td className="border px-2 text-center align-middle">
+        {product?.productId?.price?.toLocaleString() ?? ""}
+      </td>
+      <td className="border px-2 text-center align-middle">
+        {product ? (product.productId?.price * product.quantity).toLocaleString() : ""}
+      </td>
+    </tr>
+  );
+});
   return (
     <div className="p-4 bg-gray-100 min-h-screen flex justify-center" dir="rtl">
       <div className="w-[820px] bg-white shadow-lg print:shadow-none print:bg-white" style={{ fontFamily: '"Vazir", "Tahoma", sans-serif' }}>

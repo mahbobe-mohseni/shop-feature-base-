@@ -63,7 +63,8 @@ export async function GET(request: Request) {
         { path: "products.productId", select: "name price" },
       ])
       .limit(limit)
-      .skip((page - 1) * limit);
+      .skip((page - 1) * limit)
+      .lean();
 
     return NextResponse.json(
       {
