@@ -5,6 +5,7 @@ import type { ResponseType } from "@/types"
 import Pagination from "@/features/products/components/products-list/pagination"
 import OrdersList from "@/components/ui/orders-list"
 import { getOrders } from "@/services/order"
+import { Breadcrumb } from "@/components/global/breadcrumb"
 
 
 const LoadingCard = () => {
@@ -100,38 +101,44 @@ const orderList = () => {
     useEffect(() => {
         handleGetOrders(1)
     }, [])
-
+    const items = [
+        { label: 'صفحه اصلی', href: '/' },
+        { label: 'سفارشات' }
+    ]
     return (
-        <div className="w-full">
-            {loading ? (
-                <div className="flex items-center justify-center gap-6 flex-wrap m-auto w-full">
-                    {[...Array(8)].map((item, index) => {
-                        return <LoadingCard key={index} />
-                    })}
-                </div>
-            ) : (
-                <>
-                    <div className="flex items-center justify-center gap-6 flex-wrap m-auto w-full py-10">
-                        <OrdersList orders={orders} />
+        <>
+            <Breadcrumb items={items} title="سفارشات " />
+            <div className="w-full">
+                {loading ? (
+                    <div className="flex items-center justify-center gap-6 flex-wrap m-auto w-full">
+                        {[...Array(8)].map((item, index) => {
+                            return <LoadingCard key={index} />
+                        })}
                     </div>
+                ) : (
+                    <>
+                        <div className="flex items-center justify-center gap-6 flex-wrap m-auto w-full py-10">
+                            <OrdersList orders={orders} />
+                        </div>
 
-                    <div className="flex flex-col gap-2 border border-gray-200 p-4 rounded-lg bg-white sticky bottom-0">
-                        <Pagination
-                            currentPage={paging.currentPage}
-                            totalPages={paging.totalPages}
-                            onPageChange={handlePageChange}
-                            loading={loading}
-                        />
+                        <div className="flex flex-col gap-2 border border-gray-200 p-4 rounded-lg bg-white sticky bottom-0">
+                            <Pagination
+                                currentPage={paging.currentPage}
+                                totalPages={paging.totalPages}
+                                onPageChange={handlePageChange}
+                                loading={loading}
+                            />
 
-                        {paging.totalProducts > 0 && (
-                            <div className="text-center mt-4 text-sm text-muted-foreground hidden">
-                                نمایش {orders.length} محصول از {paging.totalProducts} محصول
-                            </div>
-                        )}
-                    </div>
-                </>
-            )}
-        </div>
+                            {paging.totalProducts > 0 && (
+                                <div className="text-center mt-4 text-sm text-muted-foreground hidden">
+                                    نمایش {orders.length} محصول از {paging.totalProducts} محصول
+                                </div>
+                            )}
+                        </div>
+                    </>
+                )}
+            </div>
+        </>
     )
 }
 

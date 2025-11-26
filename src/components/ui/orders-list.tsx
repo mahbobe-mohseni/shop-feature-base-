@@ -48,7 +48,7 @@ export default function OrdersList({ orders }: OrdersListProps) {
   }
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-4">      
       {orders.map((order) => {
         const status = getOrderStatus(order.createdAt)
         const totalItems = order.products.reduce((sum, p) => sum + p.quantity, 0)

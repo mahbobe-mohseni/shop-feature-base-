@@ -17,6 +17,7 @@ import {
   CreditCard,
   Headphones,
 } from "lucide-react";
+import Link from "next/link";
 
 export default function Footer() {
   const partCategories = [
@@ -259,15 +260,15 @@ export default function Footer() {
       {/* خط تماس اضطراری */}
       <div className="bg-blue-600">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3">
-          <div className="flex flex-col sm:flex-row justify-center items-center gap-4 text-center">
+          <div className="flex flex-col sm:flex-row justify-center items-center gap-1 text-center">
             <div className="flex items-center gap-2">
               <Phone className="h-4 w-4" />
               <span className="text-sm font-medium">
-                0خط تماس اضطراری:9901130496   
+                خط تماس اضطراری: <Link href="tel:09901130496">09901130496</Link>
               </span>
-            </div>
+            </div>|
             <div className="text-xs opacity-90">
-              در دسترس 24 ساعته برای وانت‌های در حال خرابی
+              در دسترس 24 ساعته و 7 روز هفته
             </div>
           </div>
         </div>

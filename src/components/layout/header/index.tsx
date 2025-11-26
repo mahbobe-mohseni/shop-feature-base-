@@ -194,7 +194,7 @@ export default function Header() {
             >
               <Search className="h-5 w-5" />
             </Button>
-
+            {currentUser?.role === 'ADMIN' ? 'شما مدیر هستید': 'شما کاربر هستید'}
             {/* حساب کاربری */}
             {currentUser ? (
               <DropdownMenu dir="rtl">
@@ -209,7 +209,7 @@ export default function Header() {
                     <Link
                       prefetch={true}
                       className="h-full w-full"
-                      href="/auth/register"
+                      href="/profile"
                     >
                       پروفایل
                     </Link>
@@ -233,7 +233,7 @@ export default function Header() {
               </DropdownMenu>
             ) : (
               <Link prefetch={true} href="/auth/login">
-                <Button variant="ghost" size="sm" className="hidden sm:flex">
+                <Button variant="secondary" size="sm" className="hidden sm:flex cursor-pointer">
                   <LogIn className="h-5 w-5" />
                   ورود به حساب
                 </Button>
@@ -241,23 +241,21 @@ export default function Header() {
             )}
 
             {/* سبد خرید */}
-            {currentUser ? (
-              <Link prefetch={true} href={"/cart"}>
-                <Button variant="ghost" size="sm" className="relative">
-                  <ShoppingCart className="h-5 w-5" />
+            <Link prefetch={true} href={"/cart"}>
+              <Button variant="secondary" size="sm" className="relative cursor-pointer">
+                <ShoppingCart className="h-5 w-5" />
+                <span className="lg:block hidden">سبد خرید</span>
 
-                  {cartItems.length > 0 ? (
-                    <Badge className="absolute -top-2 -right-2 h-5 w-5 rounded-full p-0 flex items-center justify-center text-xs bg-blue-600">
-                      {cartItems.length}
-                    </Badge>
-                  ) : (
-                    ""
-                  )}
-                </Button>
-              </Link>
-            ) : (
-              ""
-            )}
+                {cartItems.length > 0 ? (
+                  <Badge className="absolute -top-2 -right-2 h-5 w-5 rounded-full p-0 flex items-center justify-center text-xs bg-blue-600">
+                    {cartItems.length}
+                  </Badge>
+                ) : (
+                  ""
+                )}
+              </Button>
+            </Link>
+
 
             {/* منوی موبایل */}
             <Sheet>

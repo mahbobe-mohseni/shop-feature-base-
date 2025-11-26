@@ -21,12 +21,19 @@ import {
 import { useCartStore } from "@/store/useCartStore";
 import { setOrder } from "@/services/order";
 import Image from "next/image";
+import { useCurrentUserStore } from "@/store/useCurrentUserStore";
+import { toast } from "react-toastify";
+import { useRouter } from "next/navigation";
+import { Breadcrumb } from "@/components/global/breadcrumb";
 
 export default function Cart() {
   const { cartItems, handleAddToCart, handleRemoveOfCart, handleResetCart } = useCartStore();
 
   const [promoCode, setPromoCode] = useState("");
   const [appliedPromo, setAppliedPromo] = useState("");
+  const { currentUser } = useCurrentUserStore();
+  const router = useRouter()
+
 
   const updateQuantity = (item: any, newQuantity: number) => {
     if (newQuantity < 1) return;
@@ -92,6 +99,11 @@ export default function Cart() {
   const [factorData, setFactorData] = useState<any>(null)
   const [loading, setLoading] = useState<any>(null)
   const onSubmit = async () => {
+    if (!currentUser) {
+      toast.error('برای نهایی سازی سفارش خود ابتدا وارد حساب کاربری خود شوید')
+      router.push("/auth/login")
+      return;
+    }
     try {
       setLoading(true)
       const products = cartItems.map((item: any) => {
@@ -120,22 +132,17 @@ export default function Cart() {
 
   }
 
+  const items = [
+    { label: 'صفحه اصلی', href: '/' },
+    { label: 'سبد خرید' }
+  ]
+
   return (
     <div className="min-h-screen bg-gray-50">
-      {/* Header */}
-      <div className="bg-white border-b">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-          <div className="flex items-center gap-3">
-            <Truck className="h-8 w-8 text-blue-600" />
-            <div>
-              <h1 className="text-2xl font-bold text-gray-900">سبد خرید</h1>
-              <p className="text-sm text-gray-600">
-                {cartItems.length} قلم در سبد شما
-              </p>
-            </div>
-          </div>
-        </div>
-      </div>
+
+
+
+      <Breadcrumb items={items} title="سبد خرید" />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {cartItems.length === 0 ? (

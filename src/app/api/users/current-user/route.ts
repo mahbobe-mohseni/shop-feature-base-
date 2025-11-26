@@ -24,7 +24,7 @@ export async function GET() {
     await db.connect();
 
     // find user
-    const user = await User.findById(id).select("name family phone email");
+    const user = await User.findById(id).select("name family phone email role");
 
     return NextResponse.json(
       { data: user, state: true, message: "عملیات با موفقیت انجام شد" },
