@@ -64,38 +64,6 @@ export default function Cart() {
     return new Intl.NumberFormat("fa-IR").format(price) + " تومان";
   };
 
-  const mockFactorData = {
-    "_id": "69218d1308338479a0775ad3",
-    "userId": {
-      "_id": "69217b0308338479a075e6cb",
-      "phone": "03951616821",
-      "name": "محبوبه",
-      "family": "محسنی"
-    },
-    "products": [
-      {
-        "productId": {
-          "_id": "69218d0a08338479a0774c93",
-          "name": "آئینه بغل استیل بیضی وچهارگوش",
-          "price": 0
-        },
-        "quantity": 1,
-        "_id": "69218d1308338479a0775ad4"
-      },
-      {
-        "productId": {
-          "_id": "69218d0a08338479a0774c94",
-          "name": "آئینه تنظیم بیرون",
-          "price": 0
-        },
-        "quantity": 1,
-        "_id": "69218d1308338479a0775ad5"
-      }
-    ],
-    "totalPrice": 0,
-    "createdAt": "2025-11-22T10:14:43.440Z",
-  }
-
   const [factorData, setFactorData] = useState<any>(null)
   const [loading, setLoading] = useState<any>(null)
   const onSubmit = async () => {
@@ -128,7 +96,9 @@ export default function Cart() {
     }
   };
   if (factorData) {
-    return <Invoice data={factorData} />
+    return <div className="bg-gray-100 mx-auto w-full flex items-start justify-center py-10">
+      <Invoice data={factorData} className="rounded-lg" />
+    </div>
 
   }
 

@@ -1,6 +1,11 @@
 import { Card, CardContent, CardHeader } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Package, Calendar, DollarSign, ChevronRight } from "lucide-react"
+import { Button } from "./button"
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "./dialog"
+import { useState } from "react"
+import Invoice from "../invoice/Invoice"
+import { formatDate } from "@/lib/utils"
 
 interface Product {
   productId: {
@@ -25,35 +30,29 @@ interface OrdersListProps {
 }
 
 export default function OrdersList({ orders }: OrdersListProps) {
-  const formatDate = (dateString: string) => {
-    const date = new Date(dateString)
-    return date.toLocaleDateString("fa-IR", {
-      year: "numeric",
-      month: "long",
-      day: "numeric",
-      hour: "2-digit",
-      minute: "2-digit",
-    })
-  }
+
 
   const formatPrice = (price: number) => {
     return price.toLocaleString("fa-IR")
   }
 
-  const getOrderStatus = (createdAt: string) => {
-    const daysOld = Math.floor((Date.now() - new Date(createdAt).getTime()) / (1000 * 60 * 60 * 24))
-    if (daysOld === 0) return { label: "جدید", color: "bg-blue-500" }
-    if (daysOld <= 7) return { label: "درحال پردازش", color: "bg-amber-500" }
-    return { label: "تکمیل شده", color: "bg-emerald-500" }
+  const [isfactorModal, setIsFactorMobile] = useState(false)
+  const [currentOrder, setCurrentOrder] = useState(null)
+  const handleOpenFactorModal = (order: any) => {
+    setCurrentOrder(order)
+    setIsFactorMobile(true)
   }
 
   return (
-    <div className="space-y-4">      
+    <div className="space-y-4">
       {orders.map((order) => {
-        const status = getOrderStatus(order.createdAt)
+        // TODO: get realy order status of database // change of order managment admin page
+        const status = 'جدید'
+
         const totalItems = order.products.reduce((sum, p) => sum + p.quantity, 0)
 
         return (
+
           <Card
             key={order._id}
             className="overflow-hidden hover:shadow-lg dark:hover:shadow-xl transition-all duration-300 border-slate-200 dark:border-slate-700 hover:border-blue-300 dark:hover:border-blue-700"
@@ -70,7 +69,19 @@ export default function OrdersList({ orders }: OrdersListProps) {
                     </p>
                   </div>
                 </div>
-                <Badge className={`${status.color} text-white px-3 py-1`}>{status.label}</Badge>
+                <Badge className={` bg-blue-500 text-white px-3 py-1`}>{status}</Badge>
+
+                {/* show factor button */}
+                <Button
+                  variant="outline"
+                  size="sm"
+                  className="cursor-pointer"
+                  onClick={() => handleOpenFactorModal(order)}
+                >
+                  نمایش فاکتور
+                </Button>
+
+
               </div>
             </CardHeader>
 
@@ -143,6 +154,14 @@ export default function OrdersList({ orders }: OrdersListProps) {
           </Card>
         )
       })}
+      <Dialog open={isfactorModal} onOpenChange={setIsFactorMobile}>
+        <DialogTitle className="sr-only">
+          نمایش فاکتور
+        </DialogTitle>
+        <DialogContent className="w-full max-w-4xl min-w-4xl overflow-y-auto max-h-screen">
+          <Invoice data={currentOrder} />
+        </DialogContent>
+      </Dialog>
     </div>
   )
 }

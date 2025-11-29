@@ -1,5 +1,4 @@
 import { ResponseType } from "@/types";
-import { pathOr } from "ramda";
 
 type OrderProduct = {
   productId: string;

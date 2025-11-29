@@ -2,20 +2,25 @@
 import { NextResponse } from "next/server";
 import db from "@/lib/db";
 import Order from "models/Order";
+import { cookies } from "next/headers";
+import { jwtVerify } from "jose";
 
 export async function POST(req: Request) {
   const body = await req.json();
   const { totalPrice, products } = body;
 
   try {
+    const cookieStore = await cookies();
+    const token: any = cookieStore.get("accessToken")?.value;
+    const secret = new TextEncoder().encode(process.env.JWT_SECRET!);
+    const { payload } = await jwtVerify(token, secret);
+
     // connect to database
     await db.connect();
 
-    const userId = "6922c45fbd6deabdf55ee481";
-
     // insert order to database
     const order = new Order({
-      userId,
+      userId: payload?.id,
       totalPrice,
       products,
     });
@@ -43,7 +48,10 @@ export async function POST(req: Request) {
 }
 export async function GET(request: Request) {
   try {
-    const userId = "6922c45fbd6deabdf55ee481";
+    const cookieStore = await cookies();
+    const token: any = cookieStore.get("accessToken")?.value;
+    const secret = new TextEncoder().encode(process.env.JWT_SECRET!);
+    const { payload } = await jwtVerify(token, secret);
 
     // connect to database
     await db.connect();
@@ -52,7 +60,7 @@ export async function GET(request: Request) {
     const page = parseInt(searchParams.get("page") || "1", 10);
     const limit = 20;
 
-    const queryCondition = { userId };
+    const queryCondition = { userId: payload.id };
 
     const totalOrders = await Order.countDocuments(queryCondition);
 

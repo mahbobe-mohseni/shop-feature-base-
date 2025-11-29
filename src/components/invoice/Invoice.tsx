@@ -1,63 +1,44 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import dayjs from "dayjs";
+import jalaliday from "jalaliday";
 
-const mockFactorData = {
-  _id: "69218d1308338479a0775ad3",
-  userId: {
-    _id: "69217b0308338479a075e6cb",
-    phone: "03951616821",
-    name: "محبوبه",
-    family: "محسنی",
-  },
-  products: [
-    {
-      productId: {
-        _id: "69218d0a08338479a0774c93",
-        name: "آئینه بغل استیل بیضی وچهارگوش",
-        price: 0,
-      },
-      quantity: 1,
-      _id: "69218d1308338479a0775ad4",
-    },
-    {
-      productId: {
-        _id: "69218d0a08338479a0774c94",
-        name: "آئینه تنظیم بیرون",
-        price: 0,
-      },
-      quantity: 1,
-      _id: "69218d1308338479a0775ad5",
-    },
-  ],
-  totalPrice: 0,
-  createdAt: "2025-11-22T10:14:43.440Z",
-};
+dayjs.extend(jalaliday);
 
-export default function Invoice({ data = mockFactorData }:any) {
+export default function Invoice({ data, className }: { data: any, className?: string }) {
   const imageUrl = "/mnt/data/2034893d-1032-4a39-86c1-bb0442386ae6.png"; // local image path provided
 
-  const formattedDate = new Date(data.createdAt).toLocaleDateString("fa-IR");
-
   // Build rows to visually match the long empty table in the mock (20 rows)
- const tableRows = Array.from({ length: 20 }).map((_, i) => {
-  const product = data.products[i];
+  const tableRows = Array.from({ length: 20 }).map((_, i) => {
+    const product = data.products[i];
+
+    return (
+      <tr key={i} className="h-8">
+        <td className="border px-2 text-center align-middle">{i + 1}</td>
+        <td className="border px-2 align-middle">{product?.productId?.name ?? ""}</td>
+        <td className="border px-2 text-center align-middle">{product?.quantity ?? ""}</td>
+        <td className="border px-2 text-center align-middle">
+          {product?.productId?.price?.toLocaleString() ?? ""}
+        </td>
+        <td className="border px-2 text-center align-middle">
+          {product ? (product.productId?.price * product.quantity).toLocaleString() : ""}
+        </td>
+      </tr>
+    );
+  });
+
+
+  const [factorDate, setFactorDate] = useState("")
+  useEffect(() => {
+    console.log(data)
+    const orderData = new Date(data?.createdAt);
+    const lastDate: any = dayjs(orderData).calendar("jalali").locale("fa").format("YYYY/MM/DD");
+
+    setFactorDate(lastDate)
+  }, [data])
 
   return (
-    <tr key={i} className="h-8">
-      <td className="border px-2 text-center align-middle">{i + 1}</td>
-      <td className="border px-2 align-middle">{product?.productId?.name ?? ""}</td>
-      <td className="border px-2 text-center align-middle">{product?.quantity ?? ""}</td>
-      <td className="border px-2 text-center align-middle">
-        {product?.productId?.price?.toLocaleString() ?? ""}
-      </td>
-      <td className="border px-2 text-center align-middle">
-        {product ? (product.productId?.price * product.quantity).toLocaleString() : ""}
-      </td>
-    </tr>
-  );
-});
-  return (
-    <div className="p-4 bg-gray-100 min-h-screen flex justify-center" dir="rtl">
-      <div className="w-[820px] bg-white shadow-lg print:shadow-none print:bg-white" style={{ fontFamily: '"Vazir", "Tahoma", sans-serif' }}>
+    <div className="" dir="rtl">
+      <div className={`min-w-lg max-w-6xl w-full bg-white shadow-lg print:shadow-none print:bg-white ${className}`}>
         {/* Header with background image on the right like the mock */}
         <div className="relative">
           <img src={imageUrl} alt="mock" className="w-full object-cover opacity-0 pointer-events-none select-none" />
@@ -65,7 +46,7 @@ export default function Invoice({ data = mockFactorData }:any) {
             <div className="flex justify-between items-start">
               <div className="text-sm">
                 <div>شماره: <span className="font-medium">65</span></div>
-                <div>تاریخ: <span className="font-medium">{formattedDate}</span></div>
+                <div>تاریخ: <span className="font-medium">{factorDate}</span></div>
               </div>
 
               <div className="text-center">
@@ -74,8 +55,8 @@ export default function Invoice({ data = mockFactorData }:any) {
               </div>
 
               <div className="text-sm text-right">
-                <div>خریدار: <span className="font-medium">{data.userId.name} {data.userId.family}</span></div>
-                <div>تلفن: <span className="font-medium">{data.userId.phone}</span></div>
+                <div>خریدار: <span className="font-medium">{data.userId?.name} {data.userId?.family}</span></div>
+                <div>تلفن: <span className="font-medium">{data.userId?.phone}</span></div>
               </div>
             </div>
           </div>
@@ -166,16 +147,16 @@ export default function Invoice({ data = mockFactorData }:any) {
 }
 
 // Helper: convert number to Persian words (very small/simple implementation)
-function toPersianWords(num:any) {
+function toPersianWords(num: any) {
   if (!num) return "صفر ریال";
   try {
     const parts = num.toString().split(":");
-  } catch (e) {}
+  } catch (e) { }
   // For this mock we'll return a placeholder in Persian
   return `${numberWithCommas(num)} ریال`;
 }
 
-function numberWithCommas(x:any) {
+function numberWithCommas(x: any) {
   if (typeof x !== "number") return x;
   return x.toLocaleString("fa-IR");
 }

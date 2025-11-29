@@ -6,6 +6,7 @@ import Pagination from "@/features/products/components/products-list/pagination"
 import OrdersList from "@/components/ui/orders-list"
 import { getOrders } from "@/services/order"
 import { Breadcrumb } from "@/components/global/breadcrumb"
+import { OrderSkeleton } from "@/components/ui/order-skeleton"
 
 
 const LoadingCard = () => {
@@ -111,8 +112,8 @@ const orderList = () => {
             <div className="w-full">
                 {loading ? (
                     <div className="flex items-center justify-center gap-6 flex-wrap m-auto w-full">
-                        {[...Array(8)].map((item, index) => {
-                            return <LoadingCard key={index} />
+                        {[...Array(3)].map((item, index) => {
+                            return <OrderSkeleton key={index} />
                         })}
                     </div>
                 ) : (
