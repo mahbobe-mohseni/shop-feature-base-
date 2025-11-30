@@ -43,7 +43,7 @@ const LoadingCard = () => {
 }
 
 const orderList = () => {
-    const [loading, setLoading] = useState<Boolean>(false)
+    const [loading, setLoading] = useState<boolean>(false)
     const [orders, setOrders] = useState<any[]>([])
     const [paging, setPaging] = useState<any>({
         currentPage: 1,
@@ -51,7 +51,6 @@ const orderList = () => {
         totalProducts: 0,
     })
     // get orders and action set orders of store
-
     const handleGetOrders = async (page = 1) => {
         try {
             setLoading(true)

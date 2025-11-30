@@ -1,0 +1,147 @@
+"use client";
+
+import { useEffect, useState } from "react";
+import { Eye, Pencil } from "lucide-react";
+import { Card } from "@/components/ui/card";
+import { getOrders } from "@/services/panel/order";
+import { ResponseType } from "@/types";
+import { formatDate } from "@/lib/utils";
+import Pagination from "@/features/products/components/products-list/pagination";
+
+const Orders = () => {
+    const [loading, setLoading] = useState<boolean>(false);
+    const [orders, setOrders] = useState<any[]>([]);
+    const [paging, setPaging] = useState<any>({
+        currentPage: 1,
+        totalPages: 1,
+        totalProducts: 0,
+    });
+
+    const handlePageChange = (page: number = 1) => {
+        setPaging({
+            currentPage: page,
+            totalPages: paging.totalPages,
+            totalProducts: paging.totalProducts,
+        });
+        handleGetOrders(page);
+    };
+    // get orders and action set orders of store
+    const handleGetOrders = async (page = 1) => {
+        try {
+            setLoading(true);
+            const response = (await getOrders({
+                page: page,
+            } as any)) as ResponseType<any[]>;
+
+            const { state, data, pagination } = response;
+            console.log("🚀 ~ handleGetOrders ~ pagination:", pagination)
+            if (state && data) {
+                setOrders(data);
+
+                if (pagination) {
+                    setPaging(pagination);
+                } else if (paging.totalPages) {
+                    setPaging({
+                        currentPage: page,
+                        totalPages: paging.totalPages,
+                        totalProducts: paging.totalPages || data.length,
+                    });
+                } else {
+                    // Fallback if API doesn't provide pagination info
+                    setPaging({
+                        currentPage: 1,
+                        totalPages: 1,
+                        totalProducts: data.length,
+                    });
+                }
+            }
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    useEffect(() => {
+        handleGetOrders();
+    }, []);
+
+    return (
+        <div className="space-y-6">
+            <div>
+                <h1 className="text-3xl font-bold text-foreground">سفارشات</h1>
+                <p className="text-muted-foreground mt-2">مدیریت سفارشات و پیگیری</p>
+            </div>
+
+            <Card className="p-6">
+                <div className="overflow-x-auto">
+                    <table className="w-full mb-4">
+                        <thead className="bg-gray-50 rounded-t-lg">
+                            <tr className="border-b border-border rounded-t-lg">
+                                <th className="text-right py-3 px-4 text-muted-foreground font-semibold bg-gray-50">
+                                    ردیف
+                                </th>
+                                <th className="text-right py-3 px-4 text-muted-foreground font-semibold">
+                                    شماره سفارش
+                                </th>
+                                <th className="text-right py-3 px-4 text-muted-foreground font-semibold">
+                                    مشتری
+                                </th>
+                                <th className="text-right py-3 px-4 text-muted-foreground font-semibold">
+                                    مبلغ
+                                </th>
+                                <th className="text-right py-3 px-4 text-muted-foreground font-semibold">
+                                    تاریخ
+                                </th>
+                                <th className="text-right py-3 px-4 text-muted-foreground font-semibold">
+                                    وضعیت
+                                </th>
+                                <th className="text-center py-3 px-4 text-muted-foreground font-semibold">
+                                    عملیات
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {orders.map((order, index) => (
+                                <tr
+                                    key={order.id}
+                                    className="border-b border-border hover:bg-muted/30 transition-colors"
+                                >
+                                    <td className="py-3 px-4 text-foreground font-medium bg-gray-50">
+                                        {index + 1}
+                                    </td>
+                                    <td className="py-3 px-4 text-foreground font-medium">
+                                        {order.orderCode}
+                                    </td>
+                                    <td className="py-3 px-4 text-foreground">{`${order.userId.name} ${order.userId.family} (${order.userId.phone})`}</td>
+                                    <td className="py-3 px-4 text-foreground">
+                                        {order.totalPrice}
+                                    </td>
+                                    <td className="py-3 px-4 text-foreground">
+                                        {formatDate(order.createdAt)}
+                                    </td>
+                                    <td className="py-3 px-4"></td>
+                                    <td className="py-3 px-4 flex items-center justify-center gap-2">
+                                        <span className="cursor-pointer p-2 hover:bg-muted rounded-lg transition-colors">
+                                            <Eye size={20} className="text-primary" />
+                                        </span>
+                                        <span className="cursor-pointer p-2 hover:bg-muted rounded-lg transition-colors">
+                                            <Pencil size={20} className="text-primary" />
+                                        </span>
+                                    </td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+
+                    <Pagination
+                        currentPage={paging.currentPage}
+                        totalPages={paging.totalPages}
+                        onPageChange={handlePageChange}
+                        loading={loading}
+                    />
+                </div>
+            </Card>
+        </div>
+    );
+};
+
+export default Orders;

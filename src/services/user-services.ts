@@ -1,4 +1,4 @@
-import { UserType } from "@/types";
+import { ResponseType, UserType } from "@/types";
 
 export const getCurrentUser = async (): Promise<UserType | null> => {
   try {
@@ -19,5 +19,18 @@ export const updateCurrentUser = async (payload: any): Promise<UserType | null> 
     body: JSON.stringify(payload),
   });
   const { data } = await res.json();
+  return data;
+};
+export const getUsers = async (params: {
+  page: number;
+  perPage?: number;
+  q?: string;
+}): Promise<ResponseType<UserType[]> | null> => {
+  const { page, perPage = 20, q = "" } = params;
+  if (!page) return null;
+  const res = await fetch(
+    `/api/users?page=${page}&perPage=${perPage}&q=${q}`
+  );
+  const data = await res.json();
   return data;
 };

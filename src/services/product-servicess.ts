@@ -2,11 +2,14 @@ import { ProductType, ResponseType } from "@/types";
 
 export const getProducts = async (params: {
   page: number;
-  q: string;
+  perPage?: number;
+  q?: string;
 }): Promise<ResponseType<ProductType[]> | null> => {
-  const { page, q } = params;
+  const { page, perPage = 20, q = "" } = params;
   if (!page) return null;
-  const res = await fetch(`/api/products?page=${page}&q=${q}`);
+  const res = await fetch(
+    `/api/products?page=${page}&perPage=${perPage}&q=${q}`
+  );
   const data = await res.json();
   return data;
 };
