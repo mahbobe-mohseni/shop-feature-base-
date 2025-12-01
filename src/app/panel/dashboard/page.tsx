@@ -2,6 +2,8 @@
 
 import { DollarSign, ShoppingCart, Users, TrendingUp } from "lucide-react"
 import { Card } from "@/components/ui/card"
+import { getDashboardWidgets } from "@/services/panel/dashboard"
+import { useEffect, useState } from "react"
 
 const Dashboard = () => {
   // Sample data
@@ -23,12 +25,36 @@ const Dashboard = () => {
 
   const COLORS = ["#6B5BFF", "#00BCD4", "#FF9800", "#4CAF50"]
 
+  const [totalOrders, setTotalOrders] = useState<number>(0)
   const stats = [
     { label: "درآمد کل", value: "۲,۴۵۰,۰۰۰ تومان", icon: DollarSign, color: "text-blue-500" },
-    { label: "تعداد سفارشات", value: "۲۸۵", icon: ShoppingCart, color: "text-green-500" },
+    { label: "تعداد سفارشات", value: totalOrders, icon: ShoppingCart, color: "text-green-500" },
     { label: "تعداد مشتریان", value: "۱,۲۵۰", icon: Users, color: "text-purple-500" },
     { label: "رشد فروش", value: "+۳۲%", icon: TrendingUp, color: "text-orange-500" },
   ]
+
+
+
+  const fetchData = async () => {
+    try {
+      const { data }: any = await getDashboardWidgets()
+      setTotalOrders(data.totalOrders)
+      console.log("🚀 ~ fetchData ~ data:", data)
+    } catch (error) {
+      console.log("🚀 ~ fetchData ~ error:", error)
+
+    }
+  }
+
+  // فراخوانی سرویس
+  useEffect(() => {
+    fetchData()
+  }, [])
+
+
+
+
+
 
   return (
     <div className="space-y-6">
