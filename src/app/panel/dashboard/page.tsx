@@ -4,6 +4,7 @@ import { DollarSign, ShoppingCart, Users, TrendingUp, Boxes } from "lucide-react
 import { Card } from "@/components/ui/card"
 import { getDashboardWidgets } from "@/services/panel/dashboard"
 import { useEffect, useState } from "react"
+import { Label } from "@radix-ui/react-dropdown-menu"
 
 const Dashboard = () => {
   const [totalOrders, setTotalOrders] = useState<number>(0)
@@ -77,9 +78,11 @@ const Dashboard = () => {
                 <div>
                   <p className="text-muted-foreground text-sm">{stat.label}</p>
                   <p className="text-2xl font-bold text-foreground mt-2">{stat.value}</p>
-                  <p className="text-muted-foreground text-sm">{stat.secondLabel}</p>
+
+                  {stat.secondLabel && <p className="text-muted-foreground text-sm">{stat.secondLabel}</p>}
                   {stat?.secondValue && <p className="text-2xl font-bold text-foreground mt-2">{stat.secondValue.toLocaleString()}</p>}
-                  <p className="text-muted-foreground text-sm">{stat.thirdLabel}</p>
+                  
+                  {stat.thirdLabel && <p className="text-muted-foreground text-sm">{stat.thirdLabel}</p>}
                   {stat?.thirdValue && <p className="text-2xl font-bold text-foreground mt-2">{stat.thirdValue.toLocaleString()}</p>}
                 </div>
                 <Icon className={`${stat.color} w-8 h-8`} />
