@@ -6,4 +6,4 @@ export const getDashboardWidgets = async (): Promise<ResponseType<
   const res = await fetch("/api/panel/dashboard");
   const data = await res.json();
   return data;
-};  
+};

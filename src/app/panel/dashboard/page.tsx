@@ -1,45 +1,48 @@
 "use client"
 
-import { DollarSign, ShoppingCart, Users, TrendingUp } from "lucide-react"
+import { DollarSign, ShoppingCart, Users, TrendingUp, Boxes } from "lucide-react"
 import { Card } from "@/components/ui/card"
 import { getDashboardWidgets } from "@/services/panel/dashboard"
 import { useEffect, useState } from "react"
 
 const Dashboard = () => {
-  // Sample data
-  const salesData = [
-    { month: "فروردین", sales: 4000 },
-    { month: "اردیبهشت", sales: 3000 },
-    { month: "خرداد", sales: 2000 },
-    { month: "تیر", sales: 2780 },
-    { month: "مرداد", sales: 1890 },
-    { month: "شهریور", sales: 2390 },
-  ]
-
-  const categoryData = [
-    { name: "الکترونیکی", value: 35 },
-    { name: "پوشاک", value: 25 },
-    { name: "کتاب", value: 20 },
-    { name: "سایر", value: 20 },
-  ]
-
-  const COLORS = ["#6B5BFF", "#00BCD4", "#FF9800", "#4CAF50"]
-
   const [totalOrders, setTotalOrders] = useState<number>(0)
+  const [totalUsers, setTotalUsers] = useState<number>(0)
+  const [totalIncome, setTotalIncome] = useState<number>(0)
+  const [totalProducts, setTotalProducts] = useState<number>(0)
+  const [grouthData, setGrouthData] = useState<{
+    growthPercentage: number,
+    previous: number,
+    current: number
+  }>({ growthPercentage: 0, previous: 0, current: 0 })
   const stats = [
-    { label: "درآمد کل", value: "۲,۴۵۰,۰۰۰ تومان", icon: DollarSign, color: "text-blue-500" },
+    { label: "درآمد کل", value: `${totalIncome.toLocaleString()} تومان`, icon: DollarSign, color: "text-blue-500" },
     { label: "تعداد سفارشات", value: totalOrders, icon: ShoppingCart, color: "text-green-500" },
-    { label: "تعداد مشتریان", value: "۱,۲۵۰", icon: Users, color: "text-purple-500" },
-    { label: "رشد فروش", value: "+۳۲%", icon: TrendingUp, color: "text-orange-500" },
+    { label: "تعداد مشتریان", value: totalUsers, icon: Users, color: "text-purple-500" },
+    { label: "تعداد محصولات", value: totalProducts.toLocaleString(), icon: Boxes, color: "text-red-500" },
+    {
+      label: "رشد فروش",
+      secondLabel: "فروش ماه قبل",
+      thirdLabel: "فروش ماه جاری",
+      value: `%${grouthData?.growthPercentage}`,
+      secondValue: grouthData?.previous,
+      thirdValue: grouthData?.current,
+      icon: TrendingUp,
+      color: "text-orange-500",
+    }
   ]
 
 
 
   const fetchData = async () => {
     try {
-      const { data }: any = await getDashboardWidgets()
-      setTotalOrders(data.totalOrders)
-      console.log("🚀 ~ fetchData ~ data:", data)
+      const { data: { totalOrders: ordersCount, totalUsers: usersCount, totalIncome, totalProducts, grouthData } }: any = await getDashboardWidgets()
+      setTotalOrders(ordersCount)
+      setTotalUsers(usersCount)
+      setTotalIncome(totalIncome)
+      setTotalProducts(totalProducts)
+      setGrouthData(grouthData)
+      console.log("in khroji component ast:=======>", totalUsers)
     } catch (error) {
       console.log("🚀 ~ fetchData ~ error:", error)
 
@@ -74,6 +77,10 @@ const Dashboard = () => {
                 <div>
                   <p className="text-muted-foreground text-sm">{stat.label}</p>
                   <p className="text-2xl font-bold text-foreground mt-2">{stat.value}</p>
+                  <p className="text-muted-foreground text-sm">{stat.secondLabel}</p>
+                  {stat?.secondValue && <p className="text-2xl font-bold text-foreground mt-2">{stat.secondValue.toLocaleString()}</p>}
+                  <p className="text-muted-foreground text-sm">{stat.thirdLabel}</p>
+                  {stat?.thirdValue && <p className="text-2xl font-bold text-foreground mt-2">{stat.thirdValue.toLocaleString()}</p>}
                 </div>
                 <Icon className={`${stat.color} w-8 h-8`} />
               </div>
