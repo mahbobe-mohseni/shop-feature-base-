@@ -1,12 +1,14 @@
 "use client"
 
 import { useEffect, useState } from "react"
-import { Plus, Edit, Trash2, Search } from "lucide-react"
+import { Plus, Edit, Trash2, Search, LoaderCircle } from "lucide-react"
 import { Card } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import Pagination from "@/features/products/components/products-list/pagination"
 import { getProducts } from "@/services"
 import { ResponseType } from "@/types"
+import { Input } from "@/components/ui/input"
+import { deleteProduct, updateProduct } from "@/services/panel/product"
 
 const Products = () => {
     const [loading, setLoading] = useState<boolean>(false);
@@ -25,6 +27,7 @@ const Products = () => {
         });
         fetchData(page);
     };
+
     // get orders and action set orders of store
     const fetchData = async (page = 1) => {
         try {
@@ -35,7 +38,6 @@ const Products = () => {
             } as any)) as ResponseType<any[]>;
 
             const { state, data, pagination } = response;
-            console.log("🚀 ~ fetchData ~ data:", data)
             if (state && data) {
                 setProducts(data);
 
@@ -68,6 +70,50 @@ const Products = () => {
     const [searchTerm, setSearchTerm] = useState("")
 
     const filteredProducts = products.filter((product) => product.name.includes(searchTerm))
+
+    const [editableRow, setEditableRow] = useState<any>(null)
+    const [isUpdateLoading, setIsUpdateLoading] = useState(false)
+    const handleUpdateProduct = async () => {
+        try {
+            setIsUpdateLoading(true)
+            const payload = {
+                productId: editableRow._id,
+                name: editableRow.name,
+                price: editableRow.price,
+                discount: editableRow.discount
+            }
+            const { name, price, discount } = await updateProduct(payload)
+            setProducts((prev) => {
+                return prev.map((product) => {
+                    if (product._id === editableRow._id) {
+                        return { ...product, name, price, discount }
+                    } else {
+                        return product;
+                    }
+                })
+            })
+            setEditableRow(null)
+        } catch (error) {
+            console.log("🚀 ~ handleUpdateProduct ~ error:", error)
+
+        }
+        finally {
+            setIsUpdateLoading(false)
+        }
+    }
+    //delete products
+    const [isDeleteLoadingId, setIsDeleteLoadingId] = useState(null)
+    const handleDeleteProducts = async (productId: any) => {
+        if (!confirm('Are you sure to delete this product?')) return;
+        try {
+            setIsDeleteLoadingId(productId)
+            await deleteProduct({ productId })
+            setProducts((prev) => prev.filter((product) => product._id !== productId))
+        } catch (error) { }
+        finally {
+            setIsDeleteLoadingId(null)
+        }
+    }
 
     return (
         <div className="space-y-6">
@@ -112,26 +158,57 @@ const Products = () => {
                                 </thead>
                                 <tbody>
                                     {filteredProducts.map((product) => {
-                                        return <tr key={product.id} className="border-b border-border hover:bg-muted/30 transition-colors">
-                                            <td className="py-3 px-4 text-foreground">{product.name}</td>
-                                            {/* <td className="py-3 px-4 text-foreground">{product.category}</td> */}
-                                            <td className="py-3 px-4 text-foreground">{product.price}</td>
-                                            <td className="py-3 px-4 text-foreground">{product.discount}</td>
+                                        return <tr key={product._id} className="border-b border-border hover:bg-muted/30 transition-colors">
+                                            <td className="py-3 px-4 text-foreground">
+                                                {
+                                                    editableRow?._id === product._id ?
+                                                        <Input type="text" value={editableRow?.name} onChange={(e) => setEditableRow((prev: any) => ({ ...prev, name: e.target.value }))} />
+                                                        :
+                                                        product.name
+                                                }
+                                            </td>
+                                            <td className="py-3 px-4 text-foreground">
+                                                {
+                                                    editableRow?._id === product._id ?
+                                                        <Input type="number" className="max-w-20" value={editableRow?.price} onChange={(e) => setEditableRow((prev: any) => ({ ...prev, price: e.target.value }))} />
+                                                        :
+                                                        product.price
+                                                }
+                                            </td>
+                                            <td className="py-3 px-4 text-foreground">
+                                                {
+                                                    editableRow?._id === product._id ?
+                                                        <Input type="number" className="max-w-20" value={editableRow?.discount} onChange={(e) => setEditableRow((prev: any) => ({ ...prev, discount: e.target.value }))} />
+                                                        :
+                                                        product.discount
+                                                }
+                                            </td>
+
                                             <td className="py-3 px-4">
                                                 <span
-                                                    className={`px-3 py-1 rounded-full text-sm font-medium ${product.discount>0 ? "bg-green-100 text-green-700" : "bg-red-100 text-red-700"
+                                                    className={`px-3 py-1 rounded-full text-sm font-medium ${product.discount > 0 ? "bg-green-100 text-green-700" : "bg-red-100 text-red-700"
                                                         }`}
                                                 >
-                                                    {product.discount>0?'موجود':'ناموجود'}
+                                                    {product.discount > 0 ? 'موجود' : 'ناموجود'}
                                                 </span>
                                             </td>
                                             <td className="py-3 px-4 flex items-center justify-center gap-2">
-                                                <button className="p-2 hover:bg-muted rounded-lg transition-colors">
-                                                    <Edit size={18} className="text-primary" />
-                                                </button>
-                                                <button className="p-2 hover:bg-muted rounded-lg transition-colors">
-                                                    <Trash2 size={18} className="text-destructive" />
-                                                </button>
+                                                {editableRow?._id === product._id ?
+                                                    <>
+                                                        <Button variant={'destructive'} size={'sm'} onClick={() => setEditableRow(null)}>لغو</Button>
+                                                        <Button onClick={handleUpdateProduct} isLoading={isUpdateLoading} size={'sm'}>ذخیره تغییرات</Button>
+                                                    </>
+                                                    :
+                                                    <>
+                                                        <button onClick={() => setEditableRow(product)} className="p-2 hover:bg-muted rounded-lg transition-colors cursor-pointer">
+                                                            <Edit size={18} className="text-primary" />
+                                                        </button>
+                                                        <button onClick={() => handleDeleteProducts(product._id)} className="p-2 cursor-pointer hover:bg-muted rounded-lg transition-colors">
+                                                            {isDeleteLoadingId === product._id ? <LoaderCircle size={18} /> : <Trash2 size={18} className="text-destructive" />
+                                                            }
+                                                        </button>
+                                                    </>
+                                                }
                                             </td>
                                         </tr>;
                                     })}

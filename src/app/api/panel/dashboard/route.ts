@@ -70,11 +70,7 @@ export async function GET(request: Request) {
             $cond: [
               { $eq: ["$previous", 0] },
               {
-                $cond: [
-                  { $eq: ["$current", 0] },
-                  0,
-                  100,
-                ],
+                $cond: [{ $eq: ["$current", 0] }, 0, 100],
               },
               {
                 $multiply: [
