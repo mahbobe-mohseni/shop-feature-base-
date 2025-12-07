@@ -1,16 +1,22 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Eye, Pencil } from "lucide-react";
+import { Eye, LoaderCircle, Pencil, Trash2 } from "lucide-react";
 import { Card } from "@/components/ui/card";
-import { getOrders } from "@/services/panel/order";
+import { deleteOrder, getOrders } from "@/services/panel/order";
 import { ResponseType } from "@/types";
 import { formatDate } from "@/lib/utils";
 import Pagination from "@/features/products/components/products-list/pagination";
+import Invoice from "@/components/invoice/Invoice";
+import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
+import { deleteProduct } from "@/services/panel/product";
 
 const Orders = () => {
     const [loading, setLoading] = useState<boolean>(false);
     const [orders, setOrders] = useState<any[]>([]);
+    const [isfactorModal, setIsFactorMobile] = useState(false);
+    const [currentOrder, setCurrentOrder] = useState(null);
+
     const [paging, setPaging] = useState<any>({
         currentPage: 1,
         totalPages: 1,
@@ -59,6 +65,25 @@ const Orders = () => {
             setLoading(false);
         }
     };
+    //delete orders
+    const [isDeleteLoadingId, setIsDeleteLoadingId] = useState(null)
+    const handleDeleteOrders = async (orderId: any) => {
+        if (!confirm('Are you sure to delete this order?')) return;
+        try {
+            setIsDeleteLoadingId(orderId)
+            await deleteOrder({ orderId })
+            setOrders((prev) => prev.filter((order) => order._id !== orderId))
+        } catch (error) { }
+        finally {
+            setIsDeleteLoadingId(null)
+        }
+    }
+
+
+    const handleOpenFactorModal = (order: any) => {
+        setCurrentOrder(order)
+        setIsFactorMobile(true)
+    }
 
     useEffect(() => {
         handleGetOrders();
@@ -102,7 +127,8 @@ const Orders = () => {
                         <tbody>
                             {orders.map((order, index) => (
                                 <tr
-                                    key={order.id}
+                                    key={order._id}
+
                                     className="border-b border-border hover:bg-muted/30 transition-colors"
                                 >
                                     <td className="py-3 px-4 text-foreground font-medium bg-gray-50">
@@ -120,12 +146,15 @@ const Orders = () => {
                                     </td>
                                     <td className="py-3 px-4"></td>
                                     <td className="py-3 px-4 flex items-center justify-center gap-2">
-                                        <span className="cursor-pointer p-2 hover:bg-muted rounded-lg transition-colors">
+                                        <span
+                                            onClick={() => handleOpenFactorModal(order)}
+                                            className="cursor-pointer p-2 hover:bg-muted rounded-lg transition-colors">
                                             <Eye size={20} className="text-primary" />
                                         </span>
-                                        <span className="cursor-pointer p-2 hover:bg-muted rounded-lg transition-colors">
-                                            <Pencil size={20} className="text-primary" />
-                                        </span>
+                                        <button onClick={() => handleDeleteOrders(order._id)} className="p-2 cursor-pointer hover:bg-muted rounded-lg transition-colors">
+                                            {isDeleteLoadingId === order._id ? <LoaderCircle size={18} /> : <Trash2 size={18} className="text-destructive" />
+                                            }
+                                        </button>
                                     </td>
                                 </tr>
                             ))}
@@ -140,6 +169,20 @@ const Orders = () => {
                     />
                 </div>
             </Card>
+
+
+            <Dialog open={isfactorModal} onOpenChange={setIsFactorMobile}>
+                <DialogTitle className="sr-only">
+                    نمایش فاکتور
+                </DialogTitle>
+                <DialogContent className="w-full max-w-4xl min-w-4xl overflow-y-auto max-h-screen">
+                    <Invoice data={currentOrder} />
+                </DialogContent>
+            </Dialog>
+
+
+
+
         </div>
     );
 };

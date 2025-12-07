@@ -4,59 +4,93 @@ import jalaliday from "jalaliday";
 
 dayjs.extend(jalaliday);
 
-export default function Invoice({ data, className }: { data: any, className?: string }) {
+export default function Invoice({
+  data,
+  className,
+}: {
+  data: any;
+  className?: string;
+}) {
   const imageUrl = "/mnt/data/2034893d-1032-4a39-86c1-bb0442386ae6.png"; // local image path provided
 
   // Build rows to visually match the long empty table in the mock (20 rows)
   const tableRows = Array.from({ length: 20 }).map((_, i) => {
-    const product = data.products[i];
+    const product = data?.products?.[i];
 
     return (
       <tr key={i} className="h-8">
         <td className="border px-2 text-center align-middle">{i + 1}</td>
-        <td className="border px-2 align-middle">{product?.productId?.name ?? ""}</td>
-        <td className="border px-2 text-center align-middle">{product?.quantity ?? ""}</td>
+        <td className="border px-2 align-middle">
+          {product?.productId?.name ?? ""}
+        </td>
+        <td className="border px-2 text-center align-middle">
+          {product?.quantity ?? ""}
+        </td>
         <td className="border px-2 text-center align-middle">
           {product?.productId?.price?.toLocaleString() ?? ""}
         </td>
         <td className="border px-2 text-center align-middle">
-          {product ? (product.productId?.price * product.quantity).toLocaleString() : ""}
+          {product
+            ? (product.productId?.price * product.quantity).toLocaleString()
+            : ""}
         </td>
       </tr>
     );
   });
 
-
-  const [factorDate, setFactorDate] = useState("")
+  const [factorDate, setFactorDate] = useState("");
   useEffect(() => {
-    console.log(data)
+    console.log(data);
     const orderData = new Date(data?.createdAt);
-    const lastDate: any = dayjs(orderData).calendar("jalali").locale("fa").format("YYYY/MM/DD");
+    const lastDate: any = dayjs(orderData)
+      .calendar("jalali")
+      .locale("fa")
+      .format("YYYY/MM/DD");
 
-    setFactorDate(lastDate)
-  }, [data])
+    setFactorDate(lastDate);
+  }, [data]);
 
   return (
     <div className="" dir="rtl">
-      <div className={`min-w-lg max-w-6xl w-full bg-white shadow-lg print:shadow-none print:bg-white ${className}`}>
+      <div
+        className={`min-w-lg max-w-6xl w-full bg-white shadow-lg print:shadow-none print:bg-white ${className}`}
+      >
         {/* Header with background image on the right like the mock */}
         <div className="relative">
-          <img src={imageUrl} alt="mock" className="w-full object-cover opacity-0 pointer-events-none select-none" />
+          <img
+            src={imageUrl}
+            alt="mock"
+            className="w-full object-cover opacity-0 pointer-events-none select-none"
+          />
           <div className="p-6">
             <div className="flex justify-between items-start">
               <div className="text-sm">
-                <div>شماره: <span className="font-medium">65</span></div>
-                <div>تاریخ: <span className="font-medium">{factorDate}</span></div>
+                <div>
+                  شماره: <span className="font-medium">65</span>
+                </div>
+                <div>
+                  تاریخ: <span className="font-medium">{factorDate}</span>
+                </div>
               </div>
 
               <div className="text-center">
                 <div className="text-2xl font-black">فاکتور خرید</div>
                 <div className="text-2xl text-gray-600 mt-1"> جهان سایپا</div>
               </div>
-
               <div className="text-sm text-right">
-                <div>خریدار: <span className="font-medium">{data.userId?.name} {data.userId?.family}</span></div>
-                <div>تلفن: <span className="font-medium">{data.userId?.phone}</span></div>
+                <div>
+                  خریدار:
+                  <span className="font-medium">
+                    {data?.userId?.name ?? ""} {data?.userId?.family ?? ""}
+                  </span>
+                </div>
+
+                <div>
+                  تلفن:
+                  <span className="font-medium">
+                    {data?.userId?.phone ?? ""}
+                  </span>
+                </div>
               </div>
             </div>
           </div>
@@ -77,9 +111,7 @@ export default function Invoice({ data, className }: { data: any, className?: st
                 <th className="w-40 border p-2">قیمت کل</th>
               </tr>
             </thead>
-            <tbody>
-              {tableRows}
-            </tbody>
+            <tbody>{tableRows}</tbody>
           </table>
 
           {/* Summary & payment area */}
@@ -88,7 +120,9 @@ export default function Invoice({ data, className }: { data: any, className?: st
               <div className="border p-3">
                 <div className="flex justify-between">
                   <div className="text-xs">نحوه تسویه:</div>
-                  <div className="text-xs">نقد ☐ &nbsp; چک ☐ &nbsp; نسیه ☐ &nbsp; کارتیخوان ☐</div>
+                  <div className="text-xs">
+                    نقد ☐ &nbsp; چک ☐ &nbsp; نسیه ☐ &nbsp; کارتیخوان ☐
+                  </div>
                 </div>
 
                 <div className="mt-3 grid grid-cols-3 gap-2 text-sm">
@@ -107,11 +141,18 @@ export default function Invoice({ data, className }: { data: any, className?: st
             <div className="w-1/2 text-left">
               <div className="border p-3">
                 <div className="flex justify-between mb-2">
-                  <div className="text-sm">مبلغ کل فاکتور</div>
-                  <div className="text-lg font-bold">{data.totalPrice.toLocaleString()} ریال</div>
+                  <div className="text-sm">
+                    به حروف: {toPersianWords(data?.totalPrice ?? 0)}
+                  </div>
                 </div>
 
-                <div className="text-sm">به حروف: {toPersianWords(data.totalPrice)}</div>
+                <div className="text-sm">
+                  به حروف: {toPersianWords(data?.totalPrice ?? 0)}
+                </div>
+
+                <div className="text-sm">
+                  به حروف: {toPersianWords(data?.totalPrice)}
+                </div>
               </div>
             </div>
           </div>
@@ -137,9 +178,15 @@ export default function Invoice({ data, className }: { data: any, className?: st
       {/* Print styles inline so they are included when component is copied */}
       <style jsx>{`
         @media print {
-          body { -webkit-print-color-adjust: exact; }
-          .print\\:hidden { display: none !important; }
-          .print\\:shadow-none { box-shadow: none !important; }
+          body {
+            -webkit-print-color-adjust: exact;
+          }
+          .print\\:hidden {
+            display: none !important;
+          }
+          .print\\:shadow-none {
+            box-shadow: none !important;
+          }
         }
       `}</style>
     </div>
@@ -151,7 +198,7 @@ function toPersianWords(num: any) {
   if (!num) return "صفر ریال";
   try {
     const parts = num.toString().split(":");
-  } catch (e) { }
+  } catch (e) {}
   // For this mock we'll return a placeholder in Persian
   return `${numberWithCommas(num)} ریال`;
 }

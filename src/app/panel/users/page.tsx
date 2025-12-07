@@ -1,13 +1,15 @@
 "use client"
 
 import { useEffect, useState } from "react"
-import { Plus, Edit, Trash2, Search } from "lucide-react"
+import { Plus, Edit, Trash2, Search, LoaderCircle } from "lucide-react"
 import { Card } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import Pagination from "@/features/products/components/products-list/pagination"
 import { getProducts } from "@/services"
 import { ResponseType } from "@/types"
 import { getUsers } from "@/services/user-services"
+import { deleteUser, updateUser } from "@/services/panel/user"
+import { Input } from "@/components/ui/input"
 
 const Users = () => {
     const [loading, setLoading] = useState<boolean>(false);
@@ -70,6 +72,56 @@ const Users = () => {
 
     const filteredUsers = users.filter((user) => user.name.includes(searchTerm))
 
+
+    //EDIT USERS
+    const [editableRow, setEditableRow] = useState<any>(null)
+    const [isUpdateLoading, setIsUpdateLoading] = useState(false)
+    const handleUpdateUser = async () => {
+        try {
+            setIsUpdateLoading(true)
+            const payload = {
+                userId: editableRow._id,
+                name: editableRow.name,
+                family: editableRow.family,
+                phone: editableRow.phone,
+                email: editableRow.email
+            }
+            const { name, family, phone, email } = await updateUser(payload)
+            setUsers((prev) => {
+                return prev.map((user) => {
+                    if (user._id === editableRow._id) {
+                        return { ...user, name, family, phone, email }
+                    } else {
+                        return user;
+                    }
+                })
+            })
+            setEditableRow(null)
+        } catch (error) {
+            console.log("🚀 ~ handleUpdateProduct ~ error:", error)
+
+        }
+        finally {
+            setIsUpdateLoading(false)
+        }
+    }
+
+
+    //delete products
+    const [isDeleteLoadingId, setIsDeleteLoadingId] = useState(null)
+    const handleDeleteUser = async (userId: any) => {
+        if (!confirm('Are you sure to delete this product?')) return;
+        try {
+            setIsDeleteLoadingId(userId)
+            await deleteUser({ userId })
+            setUsers((prev) => prev.filter((user) => user._id !== userId))
+        } catch (error) { }
+        finally {
+            setIsDeleteLoadingId(null)
+        }
+    }
+
+
     return (
         <div className="space-y-6">
             <div className="flex items-center justify-between">
@@ -105,8 +157,8 @@ const Users = () => {
                                     <tr className="border-b border-border">
                                         <th className="text-right py-3 px-4 text-muted-foreground font-semibold">نام</th>
                                         <th className="text-right py-3 px-4 text-muted-foreground font-semibold">نام خانوادگی</th>
-                                        <th className="text-right py-3 px-4 text-muted-foreground font-semibold">ایمیل</th>
                                         <th className="text-right py-3 px-4 text-muted-foreground font-semibold">تلفن</th>
+                                        <th className="text-right py-3 px-4 text-muted-foreground font-semibold">ایمیل</th>
                                         <th className="text-right py-3 px-4 text-muted-foreground font-semibold">نقش کاربری</th>
                                         <th className="text-center py-3 px-4 text-muted-foreground font-semibold">عملیات</th>
                                     </tr>
@@ -115,10 +167,39 @@ const Users = () => {
                                     {filteredUsers.map((user) => {
                                         return <tr key={user._id
                                         } className="border-b border-border hover:bg-muted/30 transition-colors">
-                                            <td className="py-3 px-4 text-foreground">{user.name}</td>
-                                            <td className="py-3 px-4 text-foreground">{user.family}</td>
-                                            <td className="py-3 px-4 text-foreground">{user.phone}</td>
-                                            <td className="py-3 px-4 text-foreground">{user.email}</td>
+                                            <td className="py-3 px-4 text-foreground">
+                                                {
+                                                    editableRow?._id === user._id ?
+                                                        <Input type="text" value={editableRow?.name} onChange={(e) => setEditableRow((prev: any) => ({ ...prev, name: e.target.value }))} />
+                                                        :
+                                                        user.name
+                                                }
+                                            </td>
+                                            <td className="py-3 px-4 text-foreground">
+                                                {
+                                                    editableRow?._id === user._id ?
+                                                        <Input type="text" value={editableRow?.family} onChange={(e) => setEditableRow((prev: any) => ({ ...prev, family: e.target.value }))} />
+                                                        :
+                                                        user.family
+                                                }
+                                            </td>
+                                            <td className="py-3 px-4 text-foreground">
+                                                {
+                                                    editableRow?._id === user._id ?
+                                                        <Input type="number" value={editableRow?.phone} onChange={(e) => setEditableRow((prev: any) => ({ ...prev, phone: e.target.value }))} />
+                                                        :
+                                                        user.phone
+                                                }
+                                            </td>
+                                            <td className="py-3 px-4 text-foreground">
+                                                {
+                                                    editableRow?._id === user._id ?
+                                                        <Input type="email" value={editableRow?.email} onChange={(e) => setEditableRow((prev: any) => ({ ...prev, email: e.target.value }))} />
+                                                        :
+                                                        user.email
+                                                }
+                                            </td>
+
                                             <td className="py-3 px-4">
                                                 <span
                                                     className={`px-3 py-1 rounded-full text-sm font-medium ${user.discount > 0 ? "bg-green-100 text-green-700" : "bg-red-100 text-red-700"
@@ -128,12 +209,21 @@ const Users = () => {
                                                 </span>
                                             </td>
                                             <td className="py-3 px-4 flex items-center justify-center gap-2">
-                                                <button className="p-2 hover:bg-muted rounded-lg transition-colors">
-                                                    <Edit size={18} className="text-primary" />
-                                                </button>
-                                                <button className="p-2 hover:bg-muted rounded-lg transition-colors">
-                                                    <Trash2 size={18} className="text-destructive" />
-                                                </button>
+                                                {editableRow?._id === user._id ?
+                                                    <>
+                                                        <Button variant={'destructive'} size={'sm'} onClick={() => setEditableRow(null)}>لغو</Button>
+                                                        <Button onClick={handleUpdateUser} isLoading={isUpdateLoading} size={'sm'}>ذخیره تغییرات</Button>
+                                                    </>
+                                                    :
+                                                    <>
+                                                        <button onClick={() => setEditableRow(user)} className="p-2 hover:bg-muted rounded-lg transition-colors cursor-pointer">
+                                                            <Edit size={18} className="text-primary" />
+                                                        </button>
+                                                        <button onClick={() => handleDeleteUser(user._id)} className="p-2 cursor-pointer hover:bg-muted rounded-lg transition-colors">
+                                                            {isDeleteLoadingId === user._id ? <LoaderCircle size={18} /> : <Trash2 size={18} className="text-destructive" />
+                                                            }
+                                                        </button>
+                                                    </>}
                                             </td>
                                         </tr>;
                                     })}
