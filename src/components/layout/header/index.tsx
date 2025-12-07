@@ -194,7 +194,6 @@ export default function Header() {
             >
               <Search className="h-5 w-5" />
             </Button>
-            {currentUser?.role === 'ADMIN' ? 'شما مدیر هستید': 'شما کاربر هستید'}
             {/* حساب کاربری */}
             {currentUser ? (
               <DropdownMenu dir="rtl">
@@ -221,7 +220,19 @@ export default function Header() {
                       href="/orders"
                     >
                       تاریخچه سفارشات
-                    </Link></DropdownMenuItem>
+                    </Link>
+                  </DropdownMenuItem>
+                  {
+                    currentUser?.role === 'ADMIN' && <DropdownMenuItem>
+                      <Link
+                        prefetch={true}
+                        className="h-full w-full"
+                        href="/panel/dashboard"
+                      >
+                        پنل مدیریتی
+                      </Link>
+                    </DropdownMenuItem>
+                  }
                   <DropdownMenuItem
                     variant="destructive"
                     onClick={handleLogout}

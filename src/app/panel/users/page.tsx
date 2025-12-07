@@ -202,7 +202,7 @@ const Users = () => {
 
                                             <td className="py-3 px-4">
                                                 <span
-                                                    className={`px-3 py-1 rounded-full text-sm font-medium ${user.discount > 0 ? "bg-green-100 text-green-700" : "bg-red-100 text-red-700"
+                                                    className={`px-3 py-1 rounded-full text-sm font-medium ${user.role === 'ADMIN' ? "bg-blue-100 text-blue-700" : "bg-orange-100 text-orange-700"
                                                         }`}
                                                 >
                                                     {user.role === 'ADMIN' ? 'مدیر' : 'کاربر'}

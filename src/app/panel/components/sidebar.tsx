@@ -1,15 +1,19 @@
 "use client"
 
-import { LayoutDashboard, Package, ShoppingCart, Users, Settings, LogOut } from "lucide-react"
+import { LayoutDashboard, Package, ShoppingCart, Users, Settings, Store } from "lucide-react"
+import Link from "next/link"
+import { usePathname } from "next/navigation"
 
-export default function Sidebar({ activePage, setActivePage }:any) {
+export default function Sidebar() {
   const menuItems = [
-    { id: "dashboard", label: "داشبورد", icon: LayoutDashboard },
-    { id: "products", label: "محصولات", icon: Package },
-    { id: "orders", label: "سفارشات", icon: ShoppingCart },
-    { id: "users", label: "مشتریان", icon: Users },
+    { id: "dashboard", link: "/panel/dashboard", label: "داشبورد", icon: LayoutDashboard },
+    { id: "products", link: "/panel/products", label: "محصولات", icon: Package },
+    { id: "orders", link: "/panel/orders", label: "سفارشات", icon: ShoppingCart },
+    { id: "users", link: "/panel/users", label: "مشتریان", icon: Users },
     // { id: "settings", label: "تنظیمات", icon: Settings },
   ]
+
+  const currentPath = usePathname()
 
   return (
     <aside className="w-64 bg-sidebar border-r border-sidebar-border flex flex-col">
@@ -23,30 +27,32 @@ export default function Sidebar({ activePage, setActivePage }:any) {
       <nav className="flex-1 p-4 space-y-2">
         {menuItems.map((item) => {
           const Icon = item.icon
-          const isActive = activePage === item.id
+          const isActive = currentPath === item.link
           return (
-            <button
+            <Link
               key={item.id}
-              onClick={() => setActivePage(item.id)}
-              className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-colors ${
-                isActive
+
+              href={item.link} >
+              <div
+                className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-colors ${isActive
                   ? "bg-sidebar-primary text-sidebar-primary-foreground"
-                  : "text-sidebar-foreground hover:bg-sidebar-accent/10"
-              }`}
-            >
-              <Icon size={20} />
-              <span>{item.label}</span>
-            </button>
+                  : "text-sidebar-foreground hover:bg-sidebar-accent"
+                  }`}
+              >
+                <Icon size={20} />
+                <span>{item.label}</span>
+              </div>
+            </Link>
           )
         })}
       </nav>
 
       {/* Footer */}
       <div className="p-4 border-t border-sidebar-border">
-        <button className="w-full flex items-center gap-3 px-4 py-3 text-sidebar-foreground hover:bg-sidebar-accent/10 rounded-lg transition-colors">
-          <LogOut size={20} />
-          <span>خروج</span>
-        </button>
+        <Link href={'/'} className="w-full flex items-center gap-3 px-4 py-3 text-sidebar-foreground hover:bg-sidebar-accent/10 rounded-lg transition-colors">
+          <Store size={20} />
+          <span>بازگشت به فروشگاه</span>
+        </Link>
       </div>
     </aside>
   )
