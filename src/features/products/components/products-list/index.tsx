@@ -111,13 +111,13 @@ const ProductsList = () => {
         </div>
       ) : (
         <>
-          <div className="flex items-center justify-center gap-6 flex-wrap m-auto w-full">
+          <div className="flex items-center justify-center md:flex-row flex-col gap-6 flex-wrap md:m-auto w-full">
             {products.map((item: ProductType, index) => {
               return <ProductCard key={index} product={item} />
             })}
           </div>
 
-          <div className="flex flex-col gap-2 border border-gray-200 p-4 rounded-lg bg-white sticky bottom-0">
+          <div className="flex flex-col gap-2 border border-gray-200 p-4 rounded-lg bg-white sticky bottom-0 w-full">
             <Pagination
               currentPage={paging.currentPage}
               totalPages={paging.totalPages}

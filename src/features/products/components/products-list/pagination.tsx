@@ -52,7 +52,7 @@ const Pagination: React.FC<PaginationProps> = ({ currentPage, totalPages, onPage
                 className={`flex items-center gap-1 cursor-pointer ${currentPage === 1 ? "cursor-not-allowed" : ""}`}
             >
                 <ChevronRight className="h-4 w-4" />
-                صفحه قبل
+                <span className="lg:block hidden">صفحه قبل</span>
             </Button>
             <div className="flex items-center gap-1">
                 {visiblePages.map((page, index) => (
@@ -80,7 +80,7 @@ const Pagination: React.FC<PaginationProps> = ({ currentPage, totalPages, onPage
                 disabled={currentPage === totalPages || loading}
                 className={`flex items-center gap-1 cursor-pointer ${currentPage === totalPages ? "cursor-not-allowed" : ""}`}
             >
-                صفحه بعد
+                <span className="lg:block hidden">صفحه بعد</span>
                 <ChevronLeft className="h-4 w-4" />
             </Button>
         </div>

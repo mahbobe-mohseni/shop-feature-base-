@@ -40,15 +40,17 @@ const ProductCard = ({ product }: Props) => {
   }
 
   return (
-    <Card className="w-full h-max max-w-sm bg-muted p-4 rounded-2xl shadow-md text-right hover:shadow-lg transition-shadow mb-8">
+    <Card
+      className="w-full lg:w-sm max-w-sm min-w-sm p-4 border border-gray-200 rounded-lg shadow-sm animate-pulse md:p-6 dark:border-gray-700"
+    >
       <CardContent className="flex flex-col gap-4 px-0">
         {/* Product Header */}
         <div>
           <div className="flex justify-between items-start mb-2">
-            <h2 className="text-xl font-bold text-nowrap">{product.name}</h2>
+            <h2 className="text-base sm:text-lg md:text-xl font-bold text-nowrap">{product.name}</h2>
           </div>
           <div className="relative overflow-hidden w-full h-6">
-            <p className="absolute whitespace-nowrap animate-loop text-sm text-muted-foreground">
+            <p className="absolute whitespace-nowrap animate-loop text-xs sm:text-sm text-muted-foreground">
               {product.description || "توضیحات محصول در دسترس نیست."}
             </p>
           </div>
@@ -58,7 +60,7 @@ const ProductCard = ({ product }: Props) => {
 
         {/* Product Image - Click to open modal */}
         <div
-          className="relative w-full h-40 rounded-lg overflow-hidden cursor-pointer hover:opacity-80 transition-opacity"
+          className="relative w-full h-32 sm:h-36 md:h-40 rounded-lg overflow-hidden cursor-pointer hover:opacity-80 transition-opacity"
           onClick={() => setIsModalOpen(true)}
         >
           <Image
@@ -70,22 +72,22 @@ const ProductCard = ({ product }: Props) => {
         </div>
 
         {/* Price Section */}
-        <div className="flex items-center gap-2 w-full bg-gray-300 p-2 rounded-lg">
+        <div className="flex flex-col sm:flex-row items-center gap-2 w-full bg-gray-300 p-2 md:p-3 rounded-lg">
           {discount > 0 ? (
             <>
               <span className="font-bold line-through text-red-500 hidden">{formatPrice(product.price)}</span>
-              <span className="font-bold text-green-600">{formatPrice(finalPrice)}</span>
-              <Badge className="bg-red-100 text-red-800 text-xs mr-2">{discount}% تخفیف</Badge>
+              <span className="font-bold text-green-600 text-sm md:text-base">{formatPrice(finalPrice)}</span>
+              <Badge className="bg-red-100 text-red-800 text-xs">{discount}% تخفیف</Badge>
             </>
           ) : (
             <span className="font-bold hidden">{formatPrice(product.price)}</span>
           )}
           <span className="text-sm text-gray-600 hidden">تومان</span>
           <div className="flex flex-col items-center justify-center gap-2 w-full space-y-1">
-            <span className="text-sm text-gray-600 text-center">جهت استعلام قیمت تماس بگیرید</span>
+            <span className="text-xs sm:text-sm text-gray-600 text-center">جهت استعلام قیمت تماس بگیرید</span>
             <a
               href={`tel:${process.env.NEXT_PUBLIC_SUPPORTER_PHONE}`}
-              className="text-blue-600 text-xl font-bold hover:underline"
+              className="text-blue-600 text-lg md:text-xl font-bold hover:underline"
             >
               {process.env.NEXT_PUBLIC_SUPPORTER_PHONE}
             </a>
@@ -103,7 +105,7 @@ const ProductCard = ({ product }: Props) => {
         <div className="mt-4 pt-4 border-t border-gray-200">
           <div className="space-y-3">
             {/* Quantity Selector */}
-            <div className="flex items-center justify-center gap-3">
+            <div className="flex items-center justify-center gap-2 sm:gap-3">
               <Button
                 variant="outline"
                 size="sm"
@@ -121,7 +123,7 @@ const ProductCard = ({ product }: Props) => {
                   const val = Number.parseInt(e.target.value) || 1
                   setQuantity(val > 0 ? val : 1)
                 }}
-                className="w-16 text-center h-8"
+                className="w-14 sm:w-16 text-center h-8 text-sm"
                 min="1"
               />
 
@@ -141,18 +143,18 @@ const ProductCard = ({ product }: Props) => {
                   }, 2000)
                 }
               }}
-              className={`w-full ${isAdded ? "bg-green-600 hover:bg-green-700" : "bg-blue-600 hover:bg-blue-700"}`}
+              className={`w-full text-sm sm:text-base ${isAdded ? "bg-green-600 hover:bg-green-700" : "bg-blue-600 hover:bg-blue-700"}`}
               disabled={isAdded || !product.inStock}
               size="lg"
             >
               {isAdded ? (
                 <>
-                  <Check className="h-5 w-5 mr-2" />
+                  <Check className="h-4 sm:h-5 w-4 sm:w-5 mr-2" />
                   اضافه شد به سبد
                 </>
               ) : (
                 <>
-                  <ShoppingCart className="h-5 w-5 mr-2" />
+                  <ShoppingCart className="h-4 sm:h-5 w-4 sm:w-5 mr-2" />
                   افزودن به سبد خرید
                 </>
               )}

@@ -275,7 +275,7 @@ export default function Header() {
                   <Menu className="h-5 w-5" />
                 </Button>
               </SheetTrigger>
-              <SheetContent side="right" className="w-80">
+              <SheetContent side="right" className="w-80 px-3">
                 <div className="py-4">
                   <div className="flex items-center gap-2 mb-6">
                     <Truck className="h-6 w-6 text-blue-600" />
