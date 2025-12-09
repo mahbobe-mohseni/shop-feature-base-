@@ -53,7 +53,7 @@ export default function Invoice({
   return (
     <div className="" dir="rtl">
       <div
-        className={`min-w-lg max-w-6xl w-full bg-white shadow-lg print:shadow-none print:bg-white ${className}`}
+        className={`min-w-lg max-w-6xl overflow-x-auto w-full bg-white shadow-lg print:shadow-none print:bg-white ${className}`}
       >
         {/* Header with background image on the right like the mock */}
         <div className="relative">
@@ -105,7 +105,7 @@ export default function Invoice({
             <thead>
               <tr>
                 <th className="w-12 border p-2">ردیف</th>
-                <th className="border p-2">شرح کالا</th>
+                <th className="border w-[200px]">شرح کالا</th>
                 <th className="w-24 border p-2">تعداد</th>
                 <th className="w-32 border p-2">قیمت واحد</th>
                 <th className="w-40 border p-2">قیمت کل</th>
@@ -198,7 +198,7 @@ function toPersianWords(num: any) {
   if (!num) return "صفر ریال";
   try {
     const parts = num.toString().split(":");
-  } catch (e) {}
+  } catch (e) { }
   // For this mock we'll return a placeholder in Persian
   return `${numberWithCommas(num)} ریال`;
 }

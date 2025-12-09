@@ -1,16 +1,11 @@
-"use client";
+"use client"
 
-import { FormEvent, useEffect, useState } from "react";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Badge } from "@/components/ui/badge";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import { type FormEvent, useEffect, useState } from "react"
+import { Button } from "@/components/ui/button"
+import { Input } from "@/components/ui/input"
+import { Badge } from "@/components/ui/badge"
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
+import { Sheet, SheetTrigger, SheetContent, SheetTitle, SheetClose } from "@/components/ui/sheet"
 import {
   Truck,
   Search,
@@ -24,43 +19,45 @@ import {
   Mail,
   LogIn,
   LogOut,
-} from "lucide-react";
-import Link from "next/link";
-import { useCartStore } from "@/store/useCartStore";
-import { getCurrentUser, getProducts, logout } from "@/services";
-import { useCurrentUserStore } from "@/store/useCurrentUserStore";
-import { GetProductsRequestType, ProductType, ResponseType, UserType } from "@/types";
-import { useProductStore } from "@/store/useProductStore";
+  ChevronDown,
+  ChevronUp,
+} from "lucide-react"
+import Link from "next/link"
+import { useCartStore } from "@/store/useCartStore"
+import { getCurrentUser, getProducts, logout } from "@/services"
+import { useCurrentUserStore } from "@/store/useCurrentUserStore"
+import type { GetProductsRequestType, ProductType, ResponseType, UserType } from "@/types"
+import { useProductStore } from "@/store/useProductStore"
 
 export default function Header() {
-  const { cartItems } = useCartStore();
+  const { cartItems } = useCartStore()
 
-  const { currentUser, handelSetCurrentUser } = useCurrentUserStore();
-  const { handleSetProducts, handleSetLoading, paging, handleSetPaging, searchQuery, handleSetSearchQuery } = useProductStore();
+  const { currentUser, handelSetCurrentUser } = useCurrentUserStore()
+  const { handleSetProducts, handleSetLoading, paging, handleSetPaging, searchQuery, handleSetSearchQuery } =
+    useProductStore()
   useEffect(() => {
     const fetchUser = async () => {
-      const user = await getCurrentUser();
-      handelSetCurrentUser(user as UserType);
-    };
-    fetchUser();
-  }, [handelSetCurrentUser]);
+      const user = await getCurrentUser()
+      handelSetCurrentUser(user as UserType)
+    }
+    fetchUser()
+  }, [handelSetCurrentUser])
 
   const handleLogout = async () => {
-    const { state } = await logout();
+    const { state } = await logout()
     if (state) {
-      handelSetCurrentUser(null);
+      handelSetCurrentUser(null)
     }
-  };
+  }
 
-  const [isSearchOpen, setIsSearchOpen] = useState(false);
+  const [isSearchOpen, setIsSearchOpen] = useState(false)
 
   const navItems = [
     { name: "صفحه اصلی", href: "/" },
     { name: "محصولات", href: "/products" },
     { name: "درباره ما", href: "/about-us" },
     { name: "تماس با ما", href: "/contact-us" },
-  ];
-
+  ]
 
   const handleGetProducts = async (q: string) => {
     try {
@@ -68,7 +65,7 @@ export default function Header() {
       const response = (await getProducts({
         page: 1,
         q: searchQuery,
-      } as GetProductsRequestType) as ResponseType<ProductType[]>)
+      } as GetProductsRequestType)) as ResponseType<ProductType[]>
 
       const { state, data, pagination } = response
 
@@ -77,7 +74,6 @@ export default function Header() {
 
         if (pagination) {
           handleSetPaging(pagination)
-
         } else if (paging.totalPages) {
           handleSetSearchQuery(q)
           handleSetPaging({
@@ -101,24 +97,24 @@ export default function Header() {
   }
 
   const handleOnChangeSearchInput = (e: FormEvent) => {
-    e.preventDefault();
-    const inputValue = (e.target as HTMLInputElement).value;
-    handleSetSearchQuery(inputValue);
-  };
+    e.preventDefault()
+    const inputValue = (e.target as HTMLInputElement).value
+    handleSetSearchQuery(inputValue)
+  }
 
   useEffect(() => {
     const debounce = setTimeout(() => {
-      handleGetProducts(searchQuery);
-    }, 500);
-    return () => clearTimeout(debounce);
-  }, [searchQuery]);
+      handleGetProducts(searchQuery)
+    }, 500)
+    return () => clearTimeout(debounce)
+  }, [searchQuery])
 
   return (
     <header className="bg-white shadow-lg sticky top-0 z-50">
       {/* نوار بالایی */}
       <div className="bg-gray-900 text-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex flex-col sm:flex-row justify-between items-center py-2 text-sm">
+          <div className="flex justify-between items-center py-2 text-sm">
             <div className="flex items-center gap-6">
               <div className="flex items-center gap-2">
                 <Phone className="h-4 w-4 text-blue-400" />
@@ -136,12 +132,8 @@ export default function Header() {
             <div className="flex items-center gap-4 mt-2 sm:mt-0">
               <div className="flex items-center gap-2">
                 <MapPin className="h-4 w-4 text-red-400" />
-                <span className="hidden sm:inline">
-                  ارسال فوری
-                </span>
-                <span className="sm:hidden">
-                  ارسال فوری
-                </span>
+                <span className="hidden sm:inline">ارسال فوری</span>
+                <span className="sm:hidden">ارسال فوری</span>
               </div>
             </div>
           </div>
@@ -158,9 +150,7 @@ export default function Header() {
                 <Truck className="h-8 w-8 text-white" />
               </div>
               <div>
-                <h1 className="text-2xl font-bold text-gray-900">
-                  لوازم یدکی نیسان
-                </h1>
+                <h1 className="text-2xl font-bold text-gray-900">لوازم یدکی نیسان</h1>
                 <p className="text-sm text-gray-600">Nissan Spare Parts</p>
               </div>
             </div>
@@ -186,12 +176,7 @@ export default function Header() {
           {/* آیکون‌های سمت راست */}
           <div className="flex items-center gap-4">
             {/* دکمه جستجو - موبایل */}
-            <Button
-              variant="ghost"
-              size="sm"
-              className="lg:hidden"
-              onClick={() => setIsSearchOpen(!isSearchOpen)}
-            >
+            <Button variant="ghost" size="sm" className="lg:hidden" onClick={() => setIsSearchOpen(!isSearchOpen)}>
               <Search className="h-5 w-5" />
             </Button>
             {/* حساب کاربری */}
@@ -205,38 +190,23 @@ export default function Header() {
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="center">
                   <DropdownMenuItem>
-                    <Link
-                      prefetch={true}
-                      className="h-full w-full"
-                      href="/profile"
-                    >
+                    <Link prefetch={true} className="h-full w-full" href="/profile">
                       پروفایل
                     </Link>
                   </DropdownMenuItem>
                   <DropdownMenuItem>
-                    <Link
-                      prefetch={true}
-                      className="h-full w-full"
-                      href="/orders"
-                    >
+                    <Link prefetch={true} className="h-full w-full" href="/orders">
                       تاریخچه سفارشات
                     </Link>
                   </DropdownMenuItem>
-                  {
-                    currentUser?.role === 'ADMIN' && <DropdownMenuItem>
-                      <Link
-                        prefetch={true}
-                        className="h-full w-full"
-                        href="/panel/dashboard"
-                      >
+                  {currentUser?.role === "ADMIN" && (
+                    <DropdownMenuItem>
+                      <Link prefetch={true} className="h-full w-full" href="/panel/dashboard">
                         پنل مدیریتی
                       </Link>
                     </DropdownMenuItem>
-                  }
-                  <DropdownMenuItem
-                    variant="destructive"
-                    onClick={handleLogout}
-                  >
+                  )}
+                  <DropdownMenuItem variant="destructive" onClick={handleLogout}>
                     <LogOut className="h-5 w-5" />
                     خروج از حساب
                   </DropdownMenuItem>
@@ -267,57 +237,105 @@ export default function Header() {
               </Button>
             </Link>
 
-
             {/* منوی موبایل */}
-            <Sheet>
-              <SheetTrigger asChild>
-                <Button variant="ghost" size="sm" className="lg:hidden">
-                  <Menu className="h-5 w-5" />
-                </Button>
-              </SheetTrigger>
-              <SheetContent side="right" className="w-80 px-3">
-                <div className="py-4">
-                  <div className="flex items-center gap-2 mb-6">
-                    <Truck className="h-6 w-6 text-blue-600" />
-                    <span className="font-bold text-lg">نیسان لوازم یدکی</span>
-                  </div>
+            <div className="lg:hidden">
+              <Sheet>
+                <SheetTrigger asChild>
+                  <Button variant="ghost" size="sm">
+                    <Menu className="h-5 w-5" />
+                  </Button>
+                </SheetTrigger>
 
-                  {/* جستجو در موبایل */}
-                  <div className="mb-6">
-                    <div className="flex gap-2">
-                      <Input
-                        type="text"
-                        placeholder="جستجو قطعات..."
-                        className="flex-1"
-                        onChange={handleOnChangeSearchInput}
-                      />
-                      <Button size="sm" className="bg-blue-600">
-                        <Search className="h-4 w-4" />
-                      </Button>
+                <SheetContent side="right" className="w-80 px-6">
+                  <SheetTitle className="sr-only">منوی موبایل</SheetTitle>
+
+                  <div className="py-4 h-full">
+                    {/* لوگو */}
+                    <div className="flex items-center gap-2 mb-6">
+                      <Truck className="h-6 w-6 text-blue-600" />
+                      <span className="font-bold text-lg">نیسان لوازم یدکی</span>
                     </div>
-                  </div>
 
-                  {/* منوی موبایل */}
-                  <div className="space-y-4">
-                    <div>
-                      <h3 className="font-semibold mb-4">منوی اصلی</h3>
-                      <div className="space-y-3">
-                        {navItems.map((item, index) => (
-                          <Link
-                            prefetch={true}
-                            key={index}
-                            href={item.href}
-                            className="block text-gray-600 hover:text-blue-600 py-2 border-b border-gray-100"
-                          >
-                            {item.name}
-                          </Link>
-                        ))}
+                    {/* جستجو */}
+                    <div className="mb-6">
+                      <div className="flex gap-2">
+                        <Input
+                          type="text"
+                          placeholder="جستجو قطعات..."
+                          className="flex-1"
+                          onChange={handleOnChangeSearchInput}
+                        />
+                        <Button size="sm" className="bg-blue-600">
+                          <Search className="h-4 w-4" />
+                        </Button>
+                      </div>
+                    </div>
+
+                    {/* منوی اصلی */}
+                    <div className="space-y-4">
+                      <div>
+                        <div className="space-y-3">
+                          {navItems.map((item, index) => (
+                            <SheetClose asChild key={index}>
+                              <Link
+                                href={item.href}
+                                prefetch={true}
+                                className="block text-gray-600 hover:text-blue-600 py-2 border-b border-gray-100"
+                              >
+                                {item.name}
+                              </Link>
+                            </SheetClose>
+                          ))}
+                        </div>
                       </div>
                     </div>
                   </div>
-                </div>
-              </SheetContent>
-            </Sheet>
+                  {currentUser ? (
+                    <DropdownMenu dir="rtl">
+                      <DropdownMenuTrigger asChild>
+                        <Button variant="ghost" size="sm" className="w-full border rounded-lg p-4 flex itecems-center justify-between">
+                          <div className="flex gap-2">
+                            <User className="h-5 w-5" />
+                            {currentUser.phone}
+                          </div>
+                          <ChevronUp />
+                        </Button>
+                      </DropdownMenuTrigger>
+                      <DropdownMenuContent align="center">
+                        <DropdownMenuItem>
+                          <Link prefetch={true} className="h-full w-full" href="/profile">
+                            پروفایل
+                          </Link>
+                        </DropdownMenuItem>
+                        <DropdownMenuItem>
+                          <Link prefetch={true} className="h-full w-full" href="/orders">
+                            تاریخچه سفارشات
+                          </Link>
+                        </DropdownMenuItem>
+                        {currentUser?.role === "ADMIN" && (
+                          <DropdownMenuItem>
+                            <Link prefetch={true} className="h-full w-full" href="/panel/dashboard">
+                              پنل مدیریتی
+                            </Link>
+                          </DropdownMenuItem>
+                        )}
+                        <DropdownMenuItem variant="destructive" onClick={handleLogout}>
+                          <LogOut className="h-5 w-5" />
+                          خروج از حساب
+                        </DropdownMenuItem>
+                      </DropdownMenuContent>
+                    </DropdownMenu>
+                  ) : (
+                    <Link prefetch={true} href="/auth/login">
+                      <Button variant="secondary" size="sm" className="hidden sm:flex cursor-pointer">
+                        <LogIn className="h-5 w-5" />
+                        ورود به حساب
+                      </Button>
+                    </Link>
+                  )}
+                </SheetContent>
+              </Sheet>
+            </div>
           </div>
         </div>
 
@@ -325,12 +343,7 @@ export default function Header() {
         {isSearchOpen && (
           <div className="lg:hidden pb-4">
             <div className="flex gap-2">
-              <Input
-                type="text"
-                placeholder="جستجو قطعات..."
-                className="flex-1"
-                onChange={handleOnChangeSearchInput}
-              />
+              <Input type="text" placeholder="جستجو قطعات..." className="flex-1" onChange={handleOnChangeSearchInput} />
               <Button className="bg-blue-600 hover:bg-blue-700">
                 <Search className="h-4 w-4" />
               </Button>
@@ -369,5 +382,5 @@ export default function Header() {
         </div>
       </div>
     </header>
-  );
+  )
 }

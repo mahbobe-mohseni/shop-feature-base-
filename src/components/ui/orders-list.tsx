@@ -6,6 +6,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from "./dialog"
 import { useState } from "react"
 import Invoice from "../invoice/Invoice"
 import { formatDate } from "@/lib/utils"
+import InvoiceModal from "../invoice/InvoiceModal"
 
 interface Product {
   productId: {
@@ -154,14 +155,7 @@ export default function OrdersList({ orders }: OrdersListProps) {
           </Card>
         )
       })}
-      <Dialog open={isfactorModal} onOpenChange={setIsFactorMobile}>
-        <DialogTitle className="sr-only">
-          نمایش فاکتور
-        </DialogTitle>
-        <DialogContent className="w-full max-w-4xl min-w-4xl overflow-y-auto max-h-screen">
-          <Invoice data={currentOrder} />
-        </DialogContent>
-      </Dialog>
+      <InvoiceModal data={currentOrder} visible={isfactorModal} setVisible={setIsFactorMobile} />
     </div>
   )
 }

@@ -25,6 +25,7 @@ import { useCurrentUserStore } from "@/store/useCurrentUserStore";
 import { toast } from "react-toastify";
 import { useRouter } from "next/navigation";
 import { Breadcrumb } from "@/components/global/breadcrumb";
+import Link from "next/link";
 
 export default function Cart() {
   const { cartItems, handleAddToCart, handleRemoveOfCart, handleResetCart } = useCartStore();
@@ -126,9 +127,11 @@ export default function Cart() {
               <p className="text-gray-600 mb-6">
                 قطعات مورد نیاز خود را انتخاب کنید
               </p>
-              <Button className="bg-blue-600 hover:bg-blue-700">
-                مشاهده محصولات
-              </Button>
+              <Link href={'/products'}>
+                <Button className="bg-blue-600 hover:bg-blue-700">
+                  مشاهده محصولات
+                </Button>
+              </Link>
             </CardContent>
           </Card>
         ) : (

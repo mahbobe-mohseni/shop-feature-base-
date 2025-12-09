@@ -8,8 +8,7 @@ import { ResponseType } from "@/types";
 import { formatDate } from "@/lib/utils";
 import Pagination from "@/features/products/components/products-list/pagination";
 import Invoice from "@/components/invoice/Invoice";
-import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
-import { deleteProduct } from "@/services/panel/product";
+import InvoiceModal from "@/components/invoice/InvoiceModal";
 
 const Orders = () => {
     const [loading, setLoading] = useState<boolean>(false);
@@ -169,20 +168,7 @@ const Orders = () => {
                     />
                 </div>
             </Card>
-
-
-            <Dialog open={isfactorModal} onOpenChange={setIsFactorMobile}>
-                <DialogTitle className="sr-only">
-                    نمایش فاکتور
-                </DialogTitle>
-                <DialogContent className="w-full max-w-4xl min-w-4xl overflow-y-auto max-h-screen">
-                    <Invoice data={currentOrder} />
-                </DialogContent>
-            </Dialog>
-
-
-
-
+            <InvoiceModal data={currentOrder} visible={isfactorModal} setVisible={setIsFactorMobile} />
         </div>
     );
 };

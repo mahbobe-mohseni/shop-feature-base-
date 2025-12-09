@@ -14,7 +14,7 @@ interface BreadcrumbProps {
 
 export function Breadcrumb({ items, title, className = "" }: BreadcrumbProps) {
   return (
-    <div className="space-y-3 bg-card border border-border p-4 sticky top-[185px] z-10">
+    <div className="space-y-3 bg-card border border-border p-4 sticky top-[128px] lg:top-[185px] z-10 ">
       <h2 className="text-lg font-semibold">{title}</h2>
       <nav aria-label="Breadcrumb" className={`flex items-center gap-2 text-sm ${className}`}>
         <ol className="flex items-center gap-2">
