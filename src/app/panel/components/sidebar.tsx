@@ -1,6 +1,6 @@
 "use client"
 
-import { LayoutDashboard, Package, ShoppingCart, Users, Settings, Store } from "lucide-react"
+import { LayoutDashboard, Package, ShoppingCart, Users, Store } from "lucide-react"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 

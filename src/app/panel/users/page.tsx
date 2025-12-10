@@ -5,7 +5,6 @@ import { Plus, Edit, Trash2, Search, LoaderCircle } from "lucide-react"
 import { Card } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import Pagination from "@/features/products/components/products-list/pagination"
-import { getProducts } from "@/services"
 import { ResponseType } from "@/types"
 import { getUsers } from "@/services/user-services"
 import { deleteUser, updateUser } from "@/services/panel/user"
@@ -38,7 +37,6 @@ const Users = () => {
             } as any)) as ResponseType<any[]>;
 
             const { state, data, pagination } = response;
-            console.log("🚀 ~ fetchData ~ data:", data)
             if (state && data) {
                 setUsers(data);
 
@@ -66,7 +64,7 @@ const Users = () => {
 
     useEffect(() => {
         fetchData();
-    }, []);
+    }, [fetchData]);
 
     const [searchTerm, setSearchTerm] = useState("")
 

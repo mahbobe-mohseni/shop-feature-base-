@@ -1,11 +1,11 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
+
 import { NextResponse } from "next/server";
 import db from "@/lib/db";
 import Product from "models/Product";
 import { productsMockData } from "@/data";
 import Order from "models/Order";
 
-export async function GET(request: Request) {
+export async function GET() {
   try {
     // connect to database
     await db.connect();

@@ -5,7 +5,7 @@ import User from "models/User";
 import { NextResponse } from "next/server";
 import { pathOr } from "ramda";
 
-export async function GET(request: Request) {
+export async function GET() {
   try {
     // connect to database
     await db.connect();
@@ -100,8 +100,7 @@ export async function GET(request: Request) {
       { data, state: true, message: "عملیات با موفقیت انجام شد" },
       { status: 200 }
     );
-  } catch (error) {
-    console.log(error);
+  } catch {
     return NextResponse.json(
       { data: null, state: false, message: "خطایی در سمت سرور رخ داده است" },
       { status: 500 }

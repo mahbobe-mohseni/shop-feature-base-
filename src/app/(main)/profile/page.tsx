@@ -20,7 +20,7 @@ export default function EditProfilePage() {
   })
 
 
-  const { currentUser, handelSetCurrentUser } = useCurrentUserStore();
+  const { currentUser } = useCurrentUserStore();
 
   useEffect(() => {
     if (currentUser) {
@@ -39,9 +39,7 @@ export default function EditProfilePage() {
       const pyload = {
         ...formData, userId: currentUser?._id,
       }
-      const response = await updateCurrentUser(pyload)
-
-      // handelSetCurrentUser({ ...currentUser, ...response })
+      await updateCurrentUser(pyload)
     } catch (error) {
       console.log("🚀 ~ handleSubmit ~ error:", error)
     } finally {

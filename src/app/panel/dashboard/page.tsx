@@ -4,7 +4,6 @@ import { DollarSign, ShoppingCart, Users, TrendingUp, Boxes } from "lucide-react
 import { Card } from "@/components/ui/card"
 import { getDashboardWidgets } from "@/services/panel/dashboard"
 import { useEffect, useState } from "react"
-import { Label } from "@radix-ui/react-dropdown-menu"
 
 const Dashboard = () => {
   const [totalOrders, setTotalOrders] = useState<number>(0)
@@ -33,8 +32,6 @@ const Dashboard = () => {
     }
   ]
 
-
-
   const fetchData = async () => {
     try {
       const { data: { totalOrders: ordersCount, totalUsers: usersCount, totalIncome, totalProducts, grouthData } }: any = await getDashboardWidgets()
@@ -43,22 +40,13 @@ const Dashboard = () => {
       setTotalIncome(totalIncome)
       setTotalProducts(totalProducts)
       setGrouthData(grouthData)
-      console.log("in khroji component ast:=======>", totalUsers)
-    } catch (error) {
-      console.log("🚀 ~ fetchData ~ error:", error)
-
-    }
+    } catch { }
   }
 
   // فراخوانی سرویس
   useEffect(() => {
     fetchData()
   }, [])
-
-
-
-
-
 
   return (
     <div className="space-y-6">
@@ -81,7 +69,7 @@ const Dashboard = () => {
 
                   {stat.secondLabel && <p className="text-muted-foreground text-sm">{stat.secondLabel}</p>}
                   {stat?.secondValue && <p className="text-2xl font-bold text-foreground mt-2">{stat.secondValue.toLocaleString()}</p>}
-                  
+
                   {stat.thirdLabel && <p className="text-muted-foreground text-sm">{stat.thirdLabel}</p>}
                   {stat?.thirdValue && <p className="text-2xl font-bold text-foreground mt-2">{stat.thirdValue.toLocaleString()}</p>}
                 </div>

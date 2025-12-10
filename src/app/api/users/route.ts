@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
+
 import { NextResponse } from "next/server";
 import db from "@/lib/db";
 import User from "models/User";
@@ -73,8 +73,6 @@ export async function GET(request: Request) {
     });
 
     const totalPages = Math.ceil(totalUsers / limit);
-    // await Product.deleteMany({});
-    // await Product.insertMany(productsMockData);
     const users = await User.find({
       name: { $regex: q, $options: "i" },
     })

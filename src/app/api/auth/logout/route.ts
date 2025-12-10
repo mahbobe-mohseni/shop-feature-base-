@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
+
 import { NextResponse } from "next/server";
 import { cookies } from "next/headers";
 
@@ -12,7 +12,7 @@ export async function POST() {
       { data: null, state: true, message: "عملیات با موفقیت انجام شد" },
       { status: 200 }
     );
-  } catch (error: unknown) {
+  } catch {
     return NextResponse.json(
       { data: null, state: false, message: "خطایی در سمت سرور رخ داده است" },
       { status: 500 }

@@ -14,7 +14,11 @@ export type payloadType = {
   email: string;
   phone: string;
 };
+type product = {
+  productId: string;
+  quantity: number;
+};
 export type setOrderpayloadType = {
-  products: any[];
+  products: product[];
   totalPrice: number;
 };

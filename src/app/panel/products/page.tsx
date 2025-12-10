@@ -93,8 +93,7 @@ const Products = () => {
                 })
             })
             setEditableRow(null)
-        } catch (error) {
-            console.log("🚀 ~ handleUpdateProduct ~ error:", error)
+        } catch {
 
         }
         finally {
@@ -109,7 +108,7 @@ const Products = () => {
             setIsDeleteLoadingId(productId)
             await deleteProduct({ productId })
             setProducts((prev) => prev.filter((product) => product._id !== productId))
-        } catch (error) { }
+        } catch { }
         finally {
             setIsDeleteLoadingId(null)
         }

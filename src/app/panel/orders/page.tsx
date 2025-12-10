@@ -1,13 +1,12 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Eye, LoaderCircle, Pencil, Trash2 } from "lucide-react";
+import { Eye, LoaderCircle, Trash2 } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { deleteOrder, getOrders } from "@/services/panel/order";
 import { ResponseType } from "@/types";
 import { formatDate } from "@/lib/utils";
 import Pagination from "@/features/products/components/products-list/pagination";
-import Invoice from "@/components/invoice/Invoice";
 import InvoiceModal from "@/components/invoice/InvoiceModal";
 
 const Orders = () => {
@@ -72,7 +71,7 @@ const Orders = () => {
             setIsDeleteLoadingId(orderId)
             await deleteOrder({ orderId })
             setOrders((prev) => prev.filter((order) => order._id !== orderId))
-        } catch (error) { }
+        } catch { }
         finally {
             setIsDeleteLoadingId(null)
         }
@@ -86,7 +85,7 @@ const Orders = () => {
 
     useEffect(() => {
         handleGetOrders();
-    }, []);
+    }, [handleGetOrders]);
 
     return (
         <div className="space-y-6">

@@ -1,8 +1,6 @@
 import db from "@/lib/db";
 import Order from "models/Order";
-import Product from "models/Product";
 import { NextResponse } from "next/server";
-
  
 export async function DELETE(req: Request) {
   const body = await req.json();
