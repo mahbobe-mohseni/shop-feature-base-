@@ -26,6 +26,7 @@ import { toast } from "react-toastify";
 import { useRouter } from "next/navigation";
 import { Breadcrumb } from "@/components/global/breadcrumb";
 import Link from "next/link";
+import { setOrderpayloadType } from "@/types/user-types";
 
 export default function Cart() {
   const { cartItems, handleAddToCart, handleRemoveOfCart, handleResetCart } = useCartStore();
@@ -84,7 +85,7 @@ export default function Cart() {
       const totalPrice = cartItems.reduce((acc: number, cur: any) => {
         return acc + cur.price * cur.quantity;
       }, 0);
-      const payload = { products, totalPrice };
+      const payload: setOrderpayloadType = { products, totalPrice };
       const data = await setOrder(payload);
       setFactorData(data)
       handleResetCart()

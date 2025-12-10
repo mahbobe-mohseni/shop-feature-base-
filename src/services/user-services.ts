@@ -1,4 +1,5 @@
 import { ResponseType, UserType } from "@/types";
+import { payloadType } from "@/types/user-types";
 
 export const getCurrentUser = async (): Promise<UserType | null> => {
   try {
@@ -10,7 +11,9 @@ export const getCurrentUser = async (): Promise<UserType | null> => {
   }
 };
 
-export const updateCurrentUser = async (payload: any): Promise<UserType | null> => {
+export const updateCurrentUser = async (
+  payload: payloadType
+): Promise<UserType | null> => {
   const res = await fetch("/api/users/current-user/edit", {
     method: "PUT",
     headers: {
@@ -28,9 +31,7 @@ export const getUsers = async (params: {
 }): Promise<ResponseType<UserType[]> | null> => {
   const { page, perPage = 20, q = "" } = params;
   if (!page) return null;
-  const res = await fetch(
-    `/api/users?page=${page}&perPage=${perPage}&q=${q}`
-  );
+  const res = await fetch(`/api/users?page=${page}&perPage=${perPage}&q=${q}`);
   const data = await res.json();
   return data;
 };

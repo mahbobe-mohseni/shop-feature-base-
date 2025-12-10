@@ -53,8 +53,6 @@ export const useCartStore = create<CartStore>()(
         set({ cartItems: clonedCartItems });
       },
       handleResetCart: () => {
-        const { cartItems } = get();
-
         set({ cartItems: [] });
       },
     }),

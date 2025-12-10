@@ -1,4 +1,5 @@
 import { ResponseType } from "@/types";
+import { setOrderpayloadType } from "@/types/user-types";
 
 type OrderProduct = {
   productId: string;
@@ -11,7 +12,7 @@ export interface OrderFormat {
   createdAt: Date;
 }
 
-export const setOrder = async (payload: any): Promise<OrderFormat | null> => {
+export const setOrder = async (payload: setOrderpayloadType ): Promise<OrderFormat | null> => {
   const res = await fetch("/api/orders", {
     method: "POST",
     headers: {

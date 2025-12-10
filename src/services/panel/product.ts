@@ -9,7 +9,7 @@ export const updateProduct = async (payload: any): Promise<any | null> => {
   const { data } = await res.json();
   return data;
 };
-export const deleteProduct = async (payload: any): Promise<any | null> => {
+export const deleteProduct = async (payload: {productId:string}): Promise<any | null> => {
   const res = await fetch("/api/panel/products", {
     method: "DELETE",
     headers: {

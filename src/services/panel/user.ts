@@ -9,7 +9,10 @@ export const updateUser = async (payload: any): Promise<any | null> => {
   const { data } = await res.json();
   return data;
 };
-export const deleteUser = async (payload: any): Promise<any | null> => {
+type payloadType = {
+  userId: string;
+};
+export const deleteUser = async (payload: payloadType): Promise<any | null> => {
   const res = await fetch("/api/panel/user", {
     method: "DELETE",
     headers: {
