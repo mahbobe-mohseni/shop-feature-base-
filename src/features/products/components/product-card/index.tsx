@@ -41,7 +41,7 @@ const ProductCard = ({ product }: Props) => {
 
   return (
     <Card
-      className="w-full lg:w-sm max-w-sm min-w-sm p-4 border border-gray-200 rounded-lg shadow-sm animate-pulse md:p-6 dark:border-gray-700"
+      className="w-full lg:w-sm max-w-sm min-w-sm p-4 border border-gray-200 rounded-lg shadow-sm md:p-6 dark:border-gray-700"
     >
       <CardContent className="flex flex-col gap-4 px-0">
         {/* Product Header */}
@@ -60,7 +60,7 @@ const ProductCard = ({ product }: Props) => {
 
         {/* Product Image - Click to open modal */}
         <div
-          className="relative w-full h-32 sm:h-36 md:h-40 rounded-lg overflow-hidden cursor-pointer hover:opacity-80 transition-opacity"
+          className="relative w-full h-32 sm:h-36 md:h-40 rounded-lg overflow-hidden cursor-pointer"
           onClick={() => setIsModalOpen(true)}
         >
           <Image

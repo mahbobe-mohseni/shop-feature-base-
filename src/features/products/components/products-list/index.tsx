@@ -13,7 +13,7 @@ const LoadingCard = () => {
   return (
     <div
       role="status"
-      className="w-full lg:w-sm max-w-sm min-w-sm p-4 border border-gray-200 rounded-lg shadow-sm animate-pulse md:p-6 dark:border-gray-700"
+      className="w-full lg:w-sm max-w-sm min-w-sm p-4 border border-gray-200 rounded-lg shadow-sm md:p-6 dark:border-gray-700"
     >
       <div className="flex items-center justify-center h-48 mb-4 bg-gray-300 rounded-sm dark:bg-gray-700">
         <svg

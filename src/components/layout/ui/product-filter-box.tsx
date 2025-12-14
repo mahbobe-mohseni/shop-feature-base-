@@ -150,6 +150,7 @@ export default function ProductFilterBox() {
                 type="text"
                 placeholder="مثلاً لنت جلو..."
                 value={filters.searchTerm}
+                autoFocus={false}
                 onChange={(e) =>
                   setFilters((prev) => ({
                     ...prev,

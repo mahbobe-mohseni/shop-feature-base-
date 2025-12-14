@@ -18,7 +18,7 @@ export default function BeautifulSlider() {
   const prevSlide = () => setIndex((index - 1 + slides.length) % slides.length)
 
   return (
-<div className="sticky top-[185px] w-full mx-auto overflow-hidden rounded-2xl aspect-[16/9] max-h-[400px] z-0">
+<div className="sticky top-[185px] lg:block hidden w-full mx-auto overflow-hidden rounded-2xl aspect-[16/9] max-h-[400px] z-0">
       <div className="relative h-full">
         <AnimatePresence initial={false}>
           <motion.img
