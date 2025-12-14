@@ -20,7 +20,7 @@ const ProductCard = ({ product }: Props) => {
   const [isAdded, setIsAdded] = useState(false)
   const [isModalOpen, setIsModalOpen] = useState(false)
 
-  const { handleAddToCart, cartItems } = useCartStore()
+  const { handleAddToCart} = useCartStore()
 
   const { price, discount } = product
   const finalPrice = price - (price * discount) / 100

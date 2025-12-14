@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { Eye, LoaderCircle, Trash2 } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { deleteOrder, getOrders } from "@/services/panel/order";
@@ -30,7 +30,7 @@ const Orders = () => {
         handleGetOrders(page);
     };
     // get orders and action set orders of store
-    const handleGetOrders = async (page = 1) => {
+    const handleGetOrders = useCallback(async (page = 1) => {
         try {
             setLoading(true);
             const response = (await getOrders({
@@ -38,7 +38,6 @@ const Orders = () => {
             } as any)) as ResponseType<any[]>;
 
             const { state, data, pagination } = response;
-            console.log("🚀 ~ handleGetOrders ~ pagination:", pagination)
             if (state && data) {
                 setOrders(data);
 
@@ -62,7 +61,7 @@ const Orders = () => {
         } finally {
             setLoading(false);
         }
-    };
+    }, [paging.totalPages])
     //delete orders
     const [isDeleteLoadingId, setIsDeleteLoadingId] = useState(null)
     const handleDeleteOrders = async (orderId: any) => {

@@ -19,7 +19,6 @@ import {
   Mail,
   LogIn,
   LogOut,
-  ChevronDown,
   ChevronUp,
 } from "lucide-react"
 import Link from "next/link"

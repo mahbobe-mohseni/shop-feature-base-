@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect, useState } from "react"
+import { useCallback, useEffect, useState } from "react"
 import type { ResponseType } from "@/types"
 import Pagination from "@/features/products/components/products-list/pagination"
 import OrdersList from "@/components/ui/orders-list"
@@ -8,7 +8,7 @@ import { getOrders } from "@/services/order"
 import { Breadcrumb } from "@/components/global/breadcrumb"
 import { OrderSkeleton } from "@/components/ui/order-skeleton"
 
-const orderList = () => {
+const Orders = () => {
     const [loading, setLoading] = useState<boolean>(false)
     const [orders, setOrders] = useState<any[]>([])
     const [paging, setPaging] = useState<any>({
@@ -17,7 +17,7 @@ const orderList = () => {
         totalProducts: 0,
     })
     // get orders and action set orders of store
-    const handleGetOrders = async (page = 1) => {
+    const handleGetOrders = useCallback(async (page = 1) => {
         try {
             setLoading(true)
             const response = (await getOrders
@@ -51,13 +51,16 @@ const orderList = () => {
         } finally {
             setLoading(false)
         }
-    }
+
+
+    }, [paging.totalPages])
+
 
     const handlePageChange = (page: number = 1) => {
         setPaging({
             currentPage: page,
-            totalPages: paging.totalPages,
-            totalProducts: paging.totalProducts,
+            totalPages: paging?.totalPages,
+            totalProducts: paging?.totalProducts,
         })
         handleGetOrders(page)
         // Scroll to top when page changes
@@ -66,7 +69,7 @@ const orderList = () => {
 
     useEffect(() => {
         handleGetOrders(1)
-    }, [])
+    }, [handleGetOrders])
     const items = [
         { label: 'صفحه اصلی', href: '/' },
         { label: 'سفارشات' }
@@ -108,4 +111,4 @@ const orderList = () => {
     )
 }
 
-export default orderList
+export default Orders

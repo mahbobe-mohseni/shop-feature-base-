@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import dayjs from "dayjs";
 import jalaliday from "jalaliday";
-
+ 
 dayjs.extend(jalaliday);
 
 export default function Invoice({
@@ -11,7 +11,6 @@ export default function Invoice({
   data: any;
   className?: string;
 }) {
-  const imageUrl = "/mnt/data/2034893d-1032-4a39-86c1-bb0442386ae6.png"; // local image path provided
 
   // Build rows to visually match the long empty table in the mock (20 rows)
   const tableRows = Array.from({ length: 20 }).map((_, i) => {
@@ -40,7 +39,6 @@ export default function Invoice({
 
   const [factorDate, setFactorDate] = useState("");
   useEffect(() => {
-    console.log(data);
     const orderData = new Date(data?.createdAt);
     const lastDate: any = dayjs(orderData)
       .calendar("jalali")
@@ -57,11 +55,6 @@ export default function Invoice({
       >
         {/* Header with background image on the right like the mock */}
         <div className="relative">
-          <img
-            src={imageUrl}
-            alt="mock"
-            className="w-full object-cover opacity-0 pointer-events-none select-none"
-          />
           <div className="p-6">
             <div className="flex justify-between items-start">
               <div className="text-sm">
@@ -196,9 +189,6 @@ export default function Invoice({
 // Helper: convert number to Persian words (very small/simple implementation)
 function toPersianWords(num: any) {
   if (!num) return "صفر ریال";
-  try {
-    const parts = num.toString().split(":");
-  } catch (e) { }
   // For this mock we'll return a placeholder in Persian
   return `${numberWithCommas(num)} ریال`;
 }

@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect, useState } from "react"
+import { useCallback, useEffect, useState } from "react"
 import { Plus, Edit, Trash2, Search, LoaderCircle } from "lucide-react"
 import { Card } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
@@ -28,7 +28,7 @@ const Users = () => {
         fetchData(page);
     };
     // get orders and action set orders of store
-    const fetchData = async (page = 1) => {
+    const fetchData = useCallback(async (page = 1) => {
         try {
             setLoading(true);
             const response = (await getUsers({
@@ -60,8 +60,8 @@ const Users = () => {
         } finally {
             setLoading(false);
         }
-    };
-
+    }, [paging.totalPages])
+    
     useEffect(() => {
         fetchData();
     }, [fetchData]);
@@ -113,7 +113,10 @@ const Users = () => {
             setIsDeleteLoadingId(userId)
             await deleteUser({ userId })
             setUsers((prev) => prev.filter((user) => user._id !== userId))
-        } catch (error) { }
+        } catch (error) { 
+            console.log("🚀 ~ handleDeleteUser ~ error:", error)
+            
+        }
         finally {
             setIsDeleteLoadingId(null)
         }

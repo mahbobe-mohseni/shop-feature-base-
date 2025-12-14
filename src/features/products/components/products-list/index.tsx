@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect } from "react"
+import { useCallback, useEffect } from "react"
 import { getProducts } from "@/services"
 import dynamic from "next/dynamic"
 import { useProductStore } from "@/store/useProductStore"
@@ -50,7 +50,7 @@ const ProductsList = () => {
 
 
 
-  const handleGetProducts = async (page = 1) => {
+  const handleGetProducts = useCallback(async (page = 1) => {
     try {
       handleSetLoading(true)
       const response = (await getProducts({
@@ -85,7 +85,7 @@ const ProductsList = () => {
       handleSetLoading(false)
     }
   }
-
+,[paging.totalPages])
   const handlePageChange = (page: number = 1) => {
     handleSetPaging({
       currentPage: page,
@@ -99,7 +99,7 @@ const ProductsList = () => {
 
   useEffect(() => {
     handleGetProducts(1)
-  }, [])
+  }, [handleGetProducts])
 
   return (
     <div className="w-full">

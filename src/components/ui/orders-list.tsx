@@ -3,7 +3,6 @@ import { Badge } from "@/components/ui/badge"
 import { Package, Calendar, DollarSign, ChevronRight } from "lucide-react"
 import { Button } from "./button"
  import { useState } from "react"
-import Invoice from "../invoice/Invoice"
 import { formatDate } from "@/lib/utils"
 import InvoiceModal from "../invoice/InvoiceModal"
 
