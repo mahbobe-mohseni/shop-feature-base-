@@ -117,11 +117,20 @@ export default function Header() {
             <div className="flex items-center gap-6">
               <div className="flex items-center gap-2">
                 <Phone className="h-4 w-4 text-blue-400" />
-                <span>09901130496</span>
+                <Link
+                  href={`tell:${process.env.NEXT_PUBLIC_SUPPORTER_PHONE}`}
+                >
+                  <span>{process.env.NEXT_PUBLIC_SUPPORTER_PHONE}</span>
+                </Link>
               </div>
               <div className="flex items-center gap-2">
                 <MessageCircle className="h-4 w-4 text-green-400" />
-                <span>پشتیبانی واتساپ</span>
+                <Link
+                  href={`https://wa.me/${process.env.NEXT_PUBLIC_SUPPORTER_PHONE}?text=${process.env.NEXT_PUBLIC_WHATSAPP_MEESSAGE}`}
+                  target="_blank"
+                >
+                  <span>پشتیبانی واتساپ</span>
+                </Link>
               </div>
               <div className="hidden md:flex items-center gap-2">
                 <Clock className="h-4 w-4 text-yellow-400" />

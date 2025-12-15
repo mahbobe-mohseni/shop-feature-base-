@@ -10,6 +10,7 @@ import { ShoppingCart, Plus, Minus, Check } from "lucide-react"
 import { useCartStore } from "@/store/useCartStore"
 import type { ProductType } from "@/types"
 import { ImageZoomModal } from "@/components/global/image-zoom-modal"
+import Link from "next/link"
 
 interface Props {
   product: ProductType
@@ -85,12 +86,12 @@ const ProductCard = ({ product }: Props) => {
           <span className="text-sm text-gray-600 hidden">تومان</span>
           <div className="flex flex-col items-center justify-center gap-2 w-full space-y-1">
             <span className="text-xs sm:text-sm text-gray-600 text-center">جهت استعلام قیمت تماس بگیرید</span>
-            <a
+            <Link
               href={`tel:${process.env.NEXT_PUBLIC_SUPPORTER_PHONE}`}
               className="text-blue-600 text-lg md:text-xl font-bold hover:underline"
             >
               {process.env.NEXT_PUBLIC_SUPPORTER_PHONE}
-            </a>
+            </Link>
           </div>
         </div>
 

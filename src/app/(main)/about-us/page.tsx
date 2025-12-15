@@ -12,6 +12,7 @@ import {
   CheckCircle,
 } from "lucide-react";
 import Image from "next/image";
+import Link from "next/link";
 
 export default function AboutUs() {
   const features = [
@@ -230,16 +231,47 @@ export default function AboutUs() {
                   با ما تماس بگیرید
                 </CardTitle>
               </CardHeader>
-              <CardContent className="space-y-3">
-                <p className="text-gray-600">
-                  <strong>تلفن:</strong> 09901130496
-                </p>
-                <p className="text-gray-600">
-                  <strong>واتساپ:</strong> 09901130496
-                </p>
-                <p className="text-gray-600">
-                  <strong>ایمیل:</strong> parts@nissantruckparts.com
-                </p>
+              <CardContent className="space-y-3 flex flex-col gap-2">
+
+                <div className="flex items-center gap-2">
+                  <strong>واتساپ:</strong>
+                  <Link
+                    className="text-blue-500 underline hover:text-blue-700"
+                    href={`https://wa.me/${process.env.NEXT_PUBLIC_SUPPORTER_PHONE}?text=${process.env.NEXT_PUBLIC_WHATSAPP_MEESSAGE}`}
+                    target="_blank"
+                  >
+                    {process.env.NEXT_PUBLIC_SUPPORTER_PHONE}
+                  </Link>
+                </div>
+                <div className="flex items-center gap-2">
+                  <strong>تلفن:</strong>
+                  <Link
+                    className="text-blue-500 underline hover:text-blue-700"
+                    href={`tell:${process.env.NEXT_PUBLIC_SUPPORTER_PHONE}`}
+                  >
+                    {process.env.NEXT_PUBLIC_SUPPORTER_PHONE}
+                  </Link>
+                </div>
+                <div className="flex items-center gap-2">
+                  <strong>پیامک:</strong>
+                  <Link
+                    className="text-blue-500 underline hover:text-blue-700"
+                    href={`sms:${process.env.NEXT_PUBLIC_SUPPORTER_PHONE}`}
+                  >
+                    {process.env.NEXT_PUBLIC_SUPPORTER_PHONE}
+                  </Link>
+                </div>
+                <div className="flex items-center gap-2">
+                  <strong>ایمیل:</strong>
+
+                  <Link
+                    className="text-blue-500 underline hover:text-blue-700"
+                    href={`tell:${process.env.NEXT_PUBLIC_SUPPORTER_PHONE}`}
+                    target="_blank"
+                  >
+                    {process.env.NEXT_PUBLIC_SUPPORTER_EMAIL}
+                  </Link>
+                </div>
                 <p className="text-gray-600">
                   <strong>ساعات کاری:</strong> شنبه تا پنجشنبه 8 صبح - 6 عصر
                 </p>
@@ -255,8 +287,8 @@ export default function AboutUs() {
               <CardContent className="space-y-3">
                 <p className="text-gray-600">
                   امیرکبیر پاساژ کاشانی خیابان    <br />
-ذ                  <br />
-                 </p>
+                  <br />
+                </p>
                 <p className="text-gray-600">
                   <strong>پارکینگ:</strong> پارکینگ رایگان وجود دارد
                 </p>

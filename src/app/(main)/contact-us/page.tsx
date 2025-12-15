@@ -22,6 +22,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { MapPin, Phone, Mail, Clock, Send } from "lucide-react";
+import Link from "next/link";
 
 export default function ContactUs() {
   const [formData, setFormData] = useState({
@@ -89,13 +90,44 @@ export default function ContactUs() {
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <p className="text-gray-600">
-                    <strong>فروش:</strong> 09901130496
-                    <br />
-                    <strong>پشتیبانی:</strong> 09901130496
-                    <br />
-                    <strong>مرجوعی:</strong> 0990130496
-                  </p>
+                  <div className="text-gray-600 flex flex-col gap-2">
+
+
+                    <div className="flex items-center gap-2">
+
+                      <strong className="w-[70px]">فروش:</strong> <Link
+                        className="text-blue-500 underline hover:text-blue-700"
+                        href={`https://wa.me/${process.env.NEXT_PUBLIC_SUPPORTER_PHONE}?text=${process.env.NEXT_PUBLIC_WHATSAPP_MEESSAGE}`}
+                        target="_blank"
+                      >
+                        {process.env.NEXT_PUBLIC_SUPPORTER_PHONE}
+                      </Link>
+                    </div>
+
+
+                    <div className="flex items-center gap-2">
+
+                      <strong className="w-[70px]">پشتیبانی:</strong> <Link
+                        className="text-blue-500 underline hover:text-blue-700"
+                        href={`https://wa.me/${process.env.NEXT_PUBLIC_SUPPORTER_PHONE}?text=${process.env.NEXT_PUBLIC_WHATSAPP_MEESSAGE}`}
+                        target="_blank"
+                      >
+                        {process.env.NEXT_PUBLIC_SUPPORTER_PHONE}
+                      </Link>
+                    </div>
+
+
+                    <div className="flex items-center gap-2">
+
+                      <strong className="w-[70px]">مرجوعی:</strong> <Link
+                        className="text-blue-500 underline hover:text-blue-700"
+                        href={`https://wa.me/${process.env.NEXT_PUBLIC_SUPPORTER_PHONE}?text=${process.env.NEXT_PUBLIC_WHATSAPP_MEESSAGE}`}
+                        target="_blank"
+                      >
+                        {process.env.NEXT_PUBLIC_SUPPORTER_PHONE}
+                      </Link>
+                    </div>
+                  </div>
                 </CardContent>
               </Card>
 
@@ -107,13 +139,40 @@ export default function ContactUs() {
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <p className="text-gray-600">
-                    <strong>عمومی:</strong> info@nissanyadak.ir
-                    <br />
-                    <strong>پشتیبانی:</strong> support@nissanyadak.ir
-                    <br />
-                    <strong>سفارشات:</strong> orders@nissanyadak.ir
-                  </p>
+                  <div className="text-gray-600 flex flex-col gap-2">
+                    <div className="flex items-center gap-2">
+                      <strong className="w-[70px]">عمومی:</strong>
+                      <Link
+                        className="text-blue-500 underline hover:text-blue-700"
+                        href={`mailto:${process.env.NEXT_PUBLIC_SUPPORTER_EMAIL}?text=${process.env.NEXT_PUBLIC_WHATSAPP_MEESSAGE}`}
+                      target="_blank"
+                      >
+                        {process.env.NEXT_PUBLIC_SUPPORTER_EMAIL}
+                      </Link>
+                    </div>
+
+                    <div className="flex items-center gap-2">
+                      <strong className="w-[70px]">پشتیبانی:</strong>
+                      <Link
+                        className="text-blue-500 underline hover:text-blue-700"
+                        href={`mailto:${process.env.NEXT_PUBLIC_SUPPORTER_EMAIL}?text=${process.env.NEXT_PUBLIC_WHATSAPP_MEESSAGE}`}
+                      target="_blank"
+                      >
+                        {process.env.NEXT_PUBLIC_SUPPORTER_EMAIL}
+                      </Link>
+                    </div>
+
+                    <div className="flex items-center gap-2">
+                      <strong className="w-[70px]">سفارشات:</strong>
+                       <Link
+                        className="text-blue-500 underline hover:text-blue-700"
+                        href={`mailto:${process.env.NEXT_PUBLIC_SUPPORTER_EMAIL}?text=${process.env.NEXT_PUBLIC_WHATSAPP_MEESSAGE}`}
+                      target="_blank"
+                      >
+                        {process.env.NEXT_PUBLIC_SUPPORTER_EMAIL}
+                      </Link>
+                    </div>
+                  </div>
                 </CardContent>
               </Card>
 

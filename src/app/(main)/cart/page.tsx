@@ -140,9 +140,9 @@ export default function Cart() {
             {/* Cart Items */}
             <div className="lg:col-span-2 space-y-4">
               {cartItems.map((item: any) => (
-                <Card key={item._id}>
+                <Card key={item._id} className="py-0">
                   <CardContent className="p-6">
-                    <div className="flex items-center gap-4">
+                    <div className="flex items-center lg:flex-row flex-col gap-4">
                       {/* Product Image */}
                       <Image
                         src={item.imageUrl || "/images/new.jpg"}
@@ -151,16 +151,12 @@ export default function Cart() {
                         height={20}
                         className="object-cover w-20 h-20"
                       />
-                      {/* <img
-                        src={item.imageUrl || "/placeholder.svg"}
-                        alt={item.name}
-                        className="w-20 h-20 object-cover rounded-lg border"
-                      /> */}
+
 
                       {/* Product Info */}
-                      <div className="flex-1">
-                        <div className="flex items-start justify-between">
-                          <div>
+                      <div className="lg:flex-1 w-full">
+                        <div className="flex items-start justify-between w-full">
+                          <div className="flex flex-col gap-2">
                             <h3 className="font-semibold text-gray-900">
                               {item.name}
                             </h3>
