@@ -1,4 +1,3 @@
-
 import { NextResponse } from "next/server";
 import { compare } from "bcrypt";
 import db from "@/lib/db";
@@ -14,7 +13,7 @@ export async function POST(req: Request) {
   try {
     // connect to database
     await db.connect();
- 
+
     // find user
     const user = await User.findOne({ phone });
     if (!user) {
@@ -57,7 +56,8 @@ export async function POST(req: Request) {
       value: token,
       httpOnly: true,
       sameSite: "lax",
-      secure: process.env.NODE_ENV === "production",
+      // secure: process.env.NODE_ENV === "production",
+      secure: false,
       path: "/",
       maxAge: 1 * 24 * 60 * 60,
     });

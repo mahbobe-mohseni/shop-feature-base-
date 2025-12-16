@@ -1,4 +1,3 @@
-
 import { NextResponse } from "next/server";
 import db from "@/lib/db";
 import User from "models/User";
@@ -41,7 +40,8 @@ export async function POST(req: Request) {
       value: token,
       httpOnly: true,
       sameSite: "lax",
-      secure: process.env.NODE_ENV === "production",
+      // secure: process.env.NODE_ENV === "production",
+      secure: false,
       path: "/",
       maxAge: 1 * 24 * 60 * 60,
     });
