@@ -31,6 +31,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="fa" dir="rtl">
+      <head>
+        <meta name="enamad" content="37325665" />
+      </head>
       <body className={`${vazirFont.className} antialiased  select-none overflow-x-hidden overflow-y-auto`}>
         <ToastContainer />
         {children}
