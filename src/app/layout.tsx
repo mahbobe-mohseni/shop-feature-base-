@@ -20,7 +20,7 @@ const vazirFont = localFont({
 });
 
 export const metadata: Metadata = {
-  title: "37041136",
+  title: "43382068",
   description: "لوازم یدکی نیسان",
 };
 
@@ -32,7 +32,7 @@ export default function RootLayout({
   return (
     <html lang="fa" dir="rtl">
       <head>
-        <meta name="enamad" content="37325665" />
+        <meta name="enamad" content="43382068" />
       </head>
       <body className={`${vazirFont.className} antialiased  select-none overflow-x-hidden overflow-y-auto`}>
         <ToastContainer />
