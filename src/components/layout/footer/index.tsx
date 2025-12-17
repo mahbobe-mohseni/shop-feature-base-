@@ -56,7 +56,7 @@ export default function Footer() {
   return (
     <footer className="bg-gray-900 text-white">
       {/* اطلاعات اصلی */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+      <div className="w-full lg:px-[125px] mx-auto sm:px-6 py-12">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           {/* اطلاعات شرکت */}
           <div className="space-y-4">
@@ -154,20 +154,33 @@ export default function Footer() {
             </ul>
 
             {/* ثبت‌نام در خبرنامه */}
-            <div className="bg-gray-800 p-4 rounded-lg">
-              <h5 className="font-semibold mb-2 text-blue-400">دریافت اخبار</h5>
-              <p className="text-xs text-gray-400 mb-3">
-                عضویت در خبرنامه برای اطلاع از جدیدترین محصولات و تخفیف‌ها
-              </p>
-              <div className="flex gap-2">
-                <Input
-                  type="text"
-                  placeholder="ایمیل شما"
-                  className="bg-gray-700 border-gray-600 text-white placeholder-gray-400 text-sm"
-                />
-                <Button size="sm" className="bg-blue-600 hover:bg-blue-700">
-                  <Send className="h-4 w-4" />
-                </Button>
+            <div className="flex items-center gap-2 w-full">
+              <div className="bg-gray-800 p-4 rounded-lg">
+                <h5 className="font-semibold mb-2 text-blue-400">دریافت اخبار</h5>
+                <p className="text-xs text-gray-400 mb-3">
+                  عضویت در خبرنامه برای اطلاع از جدیدترین محصولات و تخفیف‌ها
+                </p>
+                <div className="flex gap-2">
+                  <Input
+                    type="text"
+                    placeholder="ایمیل شما"
+                    className="bg-gray-700 border-gray-600 text-white placeholder-gray-400 text-sm"
+                  />
+                  <Button size="sm" className="bg-blue-600 hover:bg-blue-700">
+                    <Send className="h-4 w-4" />
+                  </Button>
+                </div>
+              </div>
+              <div className="enamad-box bg-white min-w-32 w-32 h-[140px] rounded-lg">
+                <a referrerPolicy='origin'
+                  target='_blank'
+                  href='https://trustseal.enamad.ir/?id=688196&Code=lmhvcn5qy1X63LC84AXEpZxxan4rHH1t'>
+                  <img referrerPolicy='origin'
+                    src='https://trustseal.enamad.ir/logo.aspx?id=688196&Code=lmhvcn5qy1X63LC84AXEpZxxan4rHH1t'
+                    alt=''
+                    className="cursor-pointer"
+                    code='lmhvcn5qy1X63LC84AXEpZxxan4rHH1t' />
+                </a>
               </div>
             </div>
           </div>
