@@ -84,8 +84,7 @@ const ProductsList = () => {
     } finally {
       handleSetLoading(false)
     }
-  }
-,[paging.totalPages])
+  }, [paging.totalPages, handleSetLoading, handleSetPaging, handleSetProducts, searchQuery])
   const handlePageChange = (page: number = 1) => {
     handleSetPaging({
       currentPage: page,

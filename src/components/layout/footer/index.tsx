@@ -171,17 +171,10 @@ export default function Footer() {
                   </Button>
                 </div>
               </div>
-              <div className="enamad-box bg-white min-w-32 w-32 h-[140px] rounded-lg">
-                <a referrerPolicy='origin'
-                  target='_blank'
-                  href='https://trustseal.enamad.ir/?id=688196&Code=lmhvcn5qy1X63LC84AXEpZxxan4rHH1t'>
-                  <img referrerPolicy='origin'
-                    src='https://trustseal.enamad.ir/logo.aspx?id=688196&Code=lmhvcn5qy1X63LC84AXEpZxxan4rHH1t'
-                    alt=''
-                    className="cursor-pointer"
-                    code='lmhvcn5qy1X63LC84AXEpZxxan4rHH1t' />
-                </a>
-              </div>
+              <div
+                className="enamad-box bg-white min-w-32 w-32 h-[140px] rounded-lg"
+                dangerouslySetInnerHTML={{ __html: `<a referrerpolicy='origin' target='_blank' href='https://trustseal.enamad.ir/?id=688196&Code=lmhvcn5qy1X63LC84AXEpZxxan4rHH1t'><img referrerpolicy='origin' src='https://trustseal.enamad.ir/logo.aspx?id=688196&Code=lmhvcn5qy1X63LC84AXEpZxxan4rHH1t' alt='' style='cursor:pointer' code='lmhvcn5qy1X63LC84AXEpZxxan4rHH1t'></a>` }}
+              />
             </div>
           </div>
         </div>
