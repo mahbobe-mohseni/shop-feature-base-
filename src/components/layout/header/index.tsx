@@ -1,6 +1,6 @@
 "use client"
 
-import { type FormEvent, useCallback, useEffect, useState } from "react"
+import { type FormEvent, useEffect, useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Badge } from "@/components/ui/badge"
@@ -58,7 +58,7 @@ export default function Header() {
     { name: "تماس با ما", href: "/contact-us" },
   ]
 
-  const handleGetProducts = useCallback(async (q: string) => {
+  const handleGetProducts = async (q: string) => {
     try {
       handleSetLoading(true)
       const response = (await getProducts({
@@ -93,7 +93,7 @@ export default function Header() {
     } finally {
       handleSetLoading(false)
     }
-  }, [handleSetProducts, handleSetLoading, paging, handleSetPaging, searchQuery, handleSetSearchQuery])
+  }
 
   const handleOnChangeSearchInput = (e: FormEvent) => {
     e.preventDefault()
@@ -106,7 +106,7 @@ export default function Header() {
       handleGetProducts(searchQuery)
     }, 500)
     return () => clearTimeout(debounce)
-  }, [searchQuery, handleGetProducts])
+  }, [searchQuery])
 
   return (
     <header className="bg-white shadow-lg sticky top-0 z-50">
