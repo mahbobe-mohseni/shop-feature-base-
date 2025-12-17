@@ -158,8 +158,8 @@ export default function Header() {
                 <Truck className="h-8 w-8 text-white" />
               </div>
               <div>
-                <h1 className="text-md lg:text-2xl font-bold text-gray-900">لوازم یدکی نیسان</h1>
-                <p className="text-sm text-gray-600">Nissan Spare Parts</p>
+                <h1 className="text-md lg:text-2xl font-bold text-gray-900">جهان سایپا</h1>
+                <p className="text-sm text-gray-600">لوازم یدکی نیسان</p>
               </div>
             </div>
           </div>
